@@ -1,0 +1,180 @@
+{
+  "options": [
+    {
+      "id": "chassis",
+      "display_name": "Chassis",
+      "type": "enum",
+      "group": "attributes",
+      "is_configurable": false,
+      "notes": null
+    },
+    {
+      "id": "voltage",
+      "display_name": "Voltage",
+      "type": "enum",
+      "group": "electrical",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "vacuum",
+      "display_name": "Vacuum",
+      "type": "boolean",
+      "group": "process",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "model_variant",
+      "display_name": "Model",
+      "type": "enum",
+      "group": "core",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "basket",
+      "display_name": "Basket",
+      "type": "enum",
+      "group": "attributes",
+      "is_configurable": false,
+      "notes": null
+    },
+    {
+      "id": "robot_ready",
+      "display_name": "Robot Ready",
+      "type": "boolean",
+      "group": "automation",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "automatic_lid",
+      "display_name": "Automatic Lid",
+      "type": "boolean",
+      "group": "automation",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "adjustable_arm",
+      "display_name": "Adjustable Arm",
+      "type": "boolean",
+      "group": "automation",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "weight_options_standard",
+      "display_name": "Weight Options Standard",
+      "type": "enum",
+      "group": "weights",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "custom_weight_option",
+      "display_name": "Custom Weight Option",
+      "type": "custom",
+      "group": "weights",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "ul_cert",
+      "display_name": "UL Certification",
+      "type": "boolean",
+      "group": "compliance",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "remote_safety",
+      "display_name": "Remote Safety",
+      "type": "boolean",
+      "group": "controls",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "remote_operation",
+      "display_name": "Remote Operation",
+      "type": "boolean",
+      "group": "controls",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "industrialized",
+      "display_name": "Industrialized",
+      "type": "boolean",
+      "group": "mechanical",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "high_power",
+      "display_name": "High Power",
+      "type": "boolean",
+      "group": "electrical",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "temp_monitoring",
+      "display_name": "Temp Monitoring",
+      "type": "boolean",
+      "group": "sensors",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "c1d2",
+      "display_name": "C1D2",
+      "type": "boolean",
+      "group": "compliance",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "echo_mode",
+      "display_name": "Echo Mode",
+      "type": "boolean",
+      "group": "software",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "user_levels",
+      "display_name": "User Levels",
+      "type": "boolean",
+      "group": "software",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "operator_mode",
+      "display_name": "Operator Mode",
+      "type": "boolean",
+      "group": "software",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "label_printer",
+      "display_name": "Label Printer",
+      "type": "boolean",
+      "group": "software",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "ce_cert",
+      "display_name": "CE Certification",
+      "type": "boolean",
+      "group": "compliance",
+      "is_configurable": true,
+      "notes": "Referenced in Precludes but not defined in source sheet."
+    }
+  ]
+}

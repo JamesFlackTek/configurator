@@ -1,0 +1,225 @@
+{
+  "rules": [
+    {
+      "rule_id": "require_vacuum_model_variant_vac",
+      "when": {
+        "option_id": "vacuum",
+        "value": true
+      },
+      "effect": {
+        "type": "require",
+        "option_id": "model_variant",
+        "value": "VAC"
+      },
+      "reason": "Vacuum requires Model = VAC (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_robot_ready_from_c1d2",
+      "when": {
+        "option_id": "robot_ready",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "Robot Ready precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_robot_ready_from_ul_cert",
+      "when": {
+        "option_id": "robot_ready",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ul_cert",
+        "value": true
+      },
+      "reason": "Robot Ready precludes UL (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_robot_ready_from_ce_cert",
+      "when": {
+        "option_id": "robot_ready",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ce_cert",
+        "value": true
+      },
+      "reason": "Robot Ready precludes CE (from source sheet)"
+    },
+    {
+      "rule_id": "require_robot_ready_remote_safety",
+      "when": {
+        "option_id": "robot_ready",
+        "value": true
+      },
+      "effect": {
+        "type": "require",
+        "option_id": "remote_safety",
+        "value": true
+      },
+      "reason": "Robot Ready requires Remote Safety (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_automatic_lid_from_c1d2",
+      "when": {
+        "option_id": "automatic_lid",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "Automatic Lid precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_automatic_lid_from_ce_cert",
+      "when": {
+        "option_id": "automatic_lid",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ce_cert",
+        "value": true
+      },
+      "reason": "Automatic Lid precludes CE (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_ul_cert_from_c1d2",
+      "when": {
+        "option_id": "ul_cert",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "UL Certification precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_remote_safety_from_c1d2",
+      "when": {
+        "option_id": "remote_safety",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "Remote Safety precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_remote_safety_from_ul_cert",
+      "when": {
+        "option_id": "remote_safety",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ul_cert",
+        "value": true
+      },
+      "reason": "Remote Safety precludes UL (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_remote_operation_from_c1d2",
+      "when": {
+        "option_id": "remote_operation",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "Remote Operation precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_temp_monitoring_from_c1d2",
+      "when": {
+        "option_id": "temp_monitoring",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2",
+        "value": true
+      },
+      "reason": "Temp Monitoring precludes C1D2 (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_temp_monitoring_from_ul_cert",
+      "when": {
+        "option_id": "temp_monitoring",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ul_cert",
+        "value": true
+      },
+      "reason": "Temp Monitoring precludes UL (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_c1d2_from_ce_cert",
+      "when": {
+        "option_id": "c1d2",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ce_cert",
+        "value": true
+      },
+      "reason": "C1D2 precludes CE (from source sheet)"
+    },
+    {
+      "rule_id": "exclude_c1d2_from_ul_cert",
+      "when": {
+        "option_id": "c1d2",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "ul_cert",
+        "value": true
+      },
+      "reason": "C1D2 precludes UL (from source sheet)"
+    },
+    {
+      "rule_id": "require_remote_operation_pro",
+      "when": {
+        "option_id": "remote_operation",
+        "value": true
+      },
+      "effect": {
+        "type": "require",
+        "option_id": "model_variant",
+        "value": "Pro"
+      },
+      "reason": "Source cells show 'Pro Only' for Remote Operation on small models; enforced as Pro-only."
+    },
+    {
+      "rule_id": "require_echo_mode_pro",
+      "when": {
+        "option_id": "echo_mode",
+        "value": true
+      },
+      "effect": {
+        "type": "require",
+        "option_id": "model_variant",
+        "value": "Pro"
+      },
+      "reason": "Source cells show 'pro only' for Echo Mode on small models; enforced as Pro-only."
+    }
+  ]
+}
