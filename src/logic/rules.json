@@ -1,19 +1,6 @@
 {
   "rules": [
     {
-      "rule_id": "require_vacuum_model_variant_vac",
-      "when": {
-        "option_id": "vacuum",
-        "value": true
-      },
-      "effect": {
-        "type": "require",
-        "option_id": "model_variant",
-        "value": "VAC"
-      },
-      "reason": "Vacuum requires Model = VAC (from source sheet)"
-    },
-    {
       "rule_id": "exclude_robot_ready_from_c1d2",
       "when": {
         "option_id": "robot_ready",
@@ -198,6 +185,10 @@
     {
       "rule_id": "require_remote_operation_pro",
       "when": {
+        "model_id": [
+          "330_100",
+          "515_200"
+        ],
         "option_id": "remote_operation",
         "value": true
       },
@@ -211,6 +202,10 @@
     {
       "rule_id": "require_echo_mode_pro",
       "when": {
+        "model_id": [
+          "330_100",
+          "515_200"
+        ],
         "option_id": "echo_mode",
         "value": true
       },
@@ -220,6 +215,85 @@
         "value": "Pro"
       },
       "reason": "Source cells show 'pro only' for Echo Mode on small models; enforced as Pro-only."
+    },
+    {
+      "rule_id": "exclude_remote_operation_non_pro",
+      "when": {
+        "model_id": [
+          "330_100",
+          "515_200"
+        ],
+        "option_id": "model_variant",
+        "value": [
+          "SE",
+          "L"
+        ]
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "remote_operation",
+        "value": true
+      },
+      "reason": "Remote Operation is only available on Pro models for this family."
+    },
+    {
+      "rule_id": "exclude_echo_mode_non_pro",
+      "when": {
+        "model_id": [
+          "330_100",
+          "515_200"
+        ],
+        "option_id": "model_variant",
+        "value": [
+          "SE",
+          "L"
+        ]
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "echo_mode",
+        "value": true
+      },
+      "reason": "Echo Mode is only available on Pro models for this family."
+    },
+    {
+      "rule_id": "exclude_c1d2_switch_if_no_c1d2",
+      "when": {
+        "option_id": "c1d2",
+        "value": false
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "c1d2_remote_switch",
+        "value": true
+      },
+      "reason": "C1D2 Remote Switch requires C1D2 Certification."
+    },
+    {
+      "rule_id": "exclude_robot_cable_if_not_robot_ready",
+      "when": {
+        "option_id": "robot_ready",
+        "value": false
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "robot_interface_cable",
+        "value": true
+      },
+      "reason": "Robot Integration Cable requires Robot Ready."
+    },
+    {
+      "rule_id": "exclude_vacuum_kit_if_not_vacuum",
+      "when": {
+        "option_id": "vacuum",
+        "value": false
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "vacuum_pump_oil_kit",
+        "value": true
+      },
+      "reason": "Vacuum Maintenance Kit requires Vacuum integration."
     }
   ]
 }

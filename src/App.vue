@@ -1,136 +1,49 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { ConfiguratorLogic, type Configuration, type CatalogOption } from './logic/configurator';
+import { ConfiguratorLogic, type Configuration } from './logic/configurator';
+import StandardConfigurator from './components/StandardConfigurator.vue';
+import BlueLabelConfigurator from './components/BlueLabelConfigurator.vue';
+import AccessoriesConfigurator from './components/AccessoriesConfigurator.vue';
 
 const logic = new ConfiguratorLogic();
 
 const currentModelId = ref<string | null>(null);
+const currentView = ref<'machine' | 'accessories'>('machine');
 const configOptions = ref<Record<string, string | number | boolean>>({});
 
 // Initialize models
 const models = computed(() => logic.getModels());
 
-// Helper to get allowed values for current model and option
-const getAllowed = (optionId: string) => {
-  if (!currentModelId.value) return [];
-  return logic.getAllowedValues(currentModelId.value, optionId);
-};
-
-// Helper to check if option is available/valid
-const isAvailable = (optionId: string, value: string | number | boolean) => {
-  // If model not selected, nothing is available
-  if (!currentModelId.value) return false;
-  
-  // Create temp config to test
-  const tempConfig: Configuration = {
-    modelId: currentModelId.value,
-    options: { ...configOptions.value }
-  };
-  
-  return logic.isOptionAvailable(tempConfig, optionId, value);
-};
-
 const handleModelSelect = (modelId: string) => {
   currentModelId.value = modelId;
+  currentView.value = 'machine';
   // Reset options to defaults for this model
   const initialConfig = logic.createInitialConfig(modelId);
   configOptions.value = initialConfig.options;
 };
 
-const handleOptionChange = (optionId: string, value: string | number | boolean) => {
+const handleOptionChange = (data: { optionId: string; value: string | number | boolean }) => {
   if (!currentModelId.value) return;
   
   const currentConfig: Configuration = {
-    modelId: currentModelId.value,
-    options: { ...configOptions.value }
+      modelId: currentModelId.value,
+      options: { ...configOptions.value }
   };
   
-  // Toggle logic if same value selected? No, usually not for single-select enums.
-  // valuable for booleans though.
-  
-  const newConfig = logic.toggleOption(currentConfig, optionId, value);
+  const newConfig = logic.toggleOption(currentConfig, data.optionId, data.value);
   configOptions.value = newConfig.options;
 };
 
-const isSelected = (optionId: string, value: string | number | boolean) => {
-  return configOptions.value[optionId] === value;
+const handleReset = () => {
+    currentModelId.value = null;
+    currentView.value = 'machine';
+    configOptions.value = {};
 };
 
-// Formatting helpers
-const formatValue = (opt: CatalogOption, val: string | number | boolean): string => {
-  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
-  if (opt.id === 'voltage') {
-      if (val == 120) return '120V (US)';
-      if (val == 220) return '200-240V (Intl)';
-      if (val === '208/240') return '208V/240V (US)';
-      if (val === '208 3 phase') return '208V 3-Phase';
-  }
-  if (opt.id === 'vacuum') return val ? 'Vacuum' : 'Non-Vacuum';
-  if (opt.id === 'c1d2') return 'C1D2 (HazLoc)';
-  return String(val);
-};
-
-const getOptionLabel = (id: string) => {
-    const opt = logic.getOption(id);
-    return opt ? opt.display_name : id;
-};
-
-// Groups for UI rendering
-const uiGroups = {
-    specs: ['voltage', 'vacuum', 'basket', 'weight_options_standard', 'chassis'],
-    certifications: ['ul_cert', 'ce_cert', 'c1d2'],
-    advanced: ['adjustable_arm', 'robot_ready', 'automatic_lid', 'remote_safety', 'remote_operation', 'low_speed', 'high_power', 'temp_monitoring', 'echo_mode']
-};
-
-const machineImage = computed(() => { // Re-added machineImage
-    if (!currentModelId.value) return '';
-    return logic.getMachineImage({ modelId: currentModelId.value, options: configOptions.value });
-});
-
-const machineName = computed(() => {
-    if (!currentModelId.value) return 'Select Machine';
-    const model = models.value.find(m => m.id === currentModelId.value);
-    if (!model) return 'Unknown Mixer';
-    
-    let modelLabel = model.label;
-    
-    // For non-Blue Label models, replace XXX/XXXX with weight if available
-    if (currentModelId.value !== 'blue_label' && configOptions.value['weight_options_standard']) {
-        const weight = configOptions.value['weight_options_standard'];
-        modelLabel = modelLabel.replace(/XXX+/g, String(weight));
-    }
-    
-    // Append VAC if vacuum is selected
-    if (configOptions.value['vacuum'] === true) {
-        modelLabel += ' VAC';
-    }
-    
-    return `Mixer ${modelLabel}`;
-});
-
-const totalPrice = computed(() => {
-    if (!currentModelId.value) return 0;
-    const model = models.value.find(m => m.id === currentModelId.value);
-    let total = model?.price || 0;
-    
-    // Add option prices
-    if (configOptions.value['vacuum'] === true) total += 5000;
-    
-    return total;
-});
-
-const validation = computed(() => {
-    if (!currentModelId.value) return { valid: true, errors: [] };
-    return logic.validate({ modelId: currentModelId.value, options: configOptions.value });
-});
-
-const configCode = computed(() => {
-    if (!currentModelId.value) return '';
-    return logic.generateCode({ modelId: currentModelId.value, options: configOptions.value });
-});
-
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+const handleResetOptions = () => {
+    if (!currentModelId.value) return;
+    const initialConfig = logic.createInitialConfig(currentModelId.value);
+    configOptions.value = initialConfig.options;
 };
 
 // Select first model on mount
@@ -139,7 +52,6 @@ onMounted(() => {
         handleModelSelect(models.value[0]!.id);
     }
 });
-
 </script>
 
 <template>
@@ -149,127 +61,47 @@ onMounted(() => {
       <p style="color: var(--text-secondary); margin-bottom: 2rem;">Configure your industrial mixing solution.</p>
     </header>
 
-    <div class="configurator-grid">
-      <main>
-        <!-- Machine Preview -->
-        <section class="category-section preview-section">
-           <h2 class="machine-title-display">{{ machineName }}</h2>
-          <div class="glass-card preview-card">
-              <img v-if="machineImage" :src="machineImage" alt="Machine Preview" class="machine-preview-img" />
-          </div>
-        </section>
-
-        <!-- Step 1: Machine Family -->
-        <section class="category-section">
-          <h2 class="category-title">Step 1: Select Machine Family</h2>
-          <div class="options-grid">
-            <div 
-              v-for="model in models" 
-              :key="model.id"
-              class="glass-card option-card"
-              :class="{ selected: currentModelId === model.id }"
-              @click="handleModelSelect(model.id)"
-            >
-              <div class="option-name">{{ model.label }}</div>
-              <div class="option-desc">{{ model.description }}</div>
-              <div class="option-price">{{ formatPrice(model.price || 0) }}</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Step 2: Specs -->
-        <section class="category-section" v-if="currentModelId">
-           <h2 class="category-title">Step 2: Specifications</h2>
-           <div class="glass-card Specs-Container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-               
-               <!-- Loop through defined spec options -->
-               <div v-for="optId in uiGroups.specs" :key="optId" style="grid-column: span 1;">
-                   <template v-if="logic.getOption(optId) && getAllowed(optId).length > 0 && (optId !== 'chassis' || getAllowed(optId).length > 1)">
-                       <label class="config-code-label">{{ getOptionLabel(optId) }}</label>
-                       <div class="options-grid spec-grid" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
-                           <div 
-                                v-for="val in getAllowed(optId)" 
-                                :key="String(val)"
-                                class="glass-card option-card small-card"
-                                :class="{ 
-                                    selected: isSelected(optId, val),
-                                    disabled: !isAvailable(optId, val)
-                                }"
-                                @click="handleOptionChange(optId, val)"
-                           >
-                               <div class="option-name">{{ formatValue(logic.getOption(optId)!, val) }}</div>
-                           </div>
-                       </div>
-                   </template>
-               </div>
-           </div>
-        </section>
-
-        <!-- Certifications -->
-        <section class="category-section" v-if="currentModelId">
-            <h2 class="category-title">Certifications</h2>
-            <div class="options-grid">
-                <template v-for="optId in uiGroups.certifications" :key="optId">
-                    <div 
-                        v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
-                        class="glass-card option-card small-card"
-                        :class="{ selected: isSelected(optId, true) }"
-                        @click="handleOptionChange(optId, !configOptions[optId])"
-                    >
-                         <div class="option-name">{{ getOptionLabel(optId) }}</div>
-                         <div class="option-desc">{{ isSelected(optId, true) ? 'Selected' : 'Add' }}</div>
-                    </div>
-                </template>
-            </div>
-        </section>
-        
-         <!-- Advanced -->
-        <section class="category-section" v-if="currentModelId">
-            <h2 class="category-title">Advanced / Automation</h2>
-            <div class="options-grid">
-                <template v-for="optId in uiGroups.advanced" :key="optId">
-                    <div 
-                        v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
-                        class="glass-card option-card small-card"
-                        :class="{ selected: isSelected(optId, true) }"
-                        @click="handleOptionChange(optId, !configOptions[optId])"
-                    >
-                         <div class="option-name">{{ getOptionLabel(optId) }}</div>
-                    </div>
-                </template>
-            </div>
-        </section>
-
-      </main>
-
-      <aside class="summary-stick">
-        <div class="glass-card">
-           <h3 class="summary-title">Config Summary</h3>
-           <div class="summary-list">
-               <div v-for="(val, key) in configOptions" :key="key" class="summary-item">
-                   <template v-if="val !== undefined && val !== false && key !== 'model_variant'">
-                       <span style="display: block; margin-bottom: 0.25rem;">{{ getOptionLabel(key) }}: {{ formatValue(logic.getOption(key)!, val) }}</span>
-                   </template>
-               </div>
-           </div>
-           
-           <div class="total-row">
-            <span>Estimated Total</span>
-            <span class="total-price">{{ formatPrice(totalPrice) }}</span>
-          </div>
-          
-           <div v-if="!validation.valid" class="error-box">
-             <div class="error-title">Issues:</div>
-             <ul><li v-for="err in validation.errors" :key="err">{{ err }}</li></ul>
-           </div>
-           
-           <div class="config-code-box">
-            <div class="config-code-label">PROD CODE</div>
-            <div class="config-code">{{ configCode }}</div>
-          </div>
-        </div>
-      </aside>
-    </div>
+    <template v-if="currentModelId === 'blue_label'">
+        <BlueLabelConfigurator 
+            v-if="currentView === 'machine'"
+            :logic="logic"
+            :models="models"
+            :current-model-id="currentModelId"
+            :config-options="configOptions"
+            @option-change="handleOptionChange"
+            @reset="handleReset"
+            @reset-options="handleResetOptions"
+            @continue="currentView = 'accessories'"
+        />
+        <AccessoriesConfigurator
+            v-else
+            :logic="logic"
+            :current-model-id="currentModelId"
+            :config-options="configOptions"
+            @option-change="handleOptionChange"
+            @back="currentView = 'machine'"
+        />
+    </template>
+    <template v-else>
+        <StandardConfigurator 
+            v-if="currentView === 'machine'"
+            :logic="logic"
+            :models="models"
+            :current-model-id="currentModelId"
+            :config-options="configOptions"
+            @model-select="handleModelSelect"
+            @option-change="handleOptionChange"
+            @continue="currentView = 'accessories'"
+        />
+        <AccessoriesConfigurator
+            v-else
+            :logic="logic"
+            :current-model-id="currentModelId!"
+            :config-options="configOptions"
+            @option-change="handleOptionChange"
+            @back="currentView = 'machine'"
+        />
+    </template>
   </div>
 </template>
 

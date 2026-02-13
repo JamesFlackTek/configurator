@@ -175,6 +175,46 @@
       "group": "compliance",
       "is_configurable": true,
       "notes": "Referenced in Precludes but not defined in source sheet."
+    },
+    {
+      "id": "extended_warranty",
+      "display_name": "Extended Warranty (2yr)",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "c1d2_remote_switch",
+      "display_name": "C1D2 HazLoc Remote Toggle",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": "Available only with C1D2 Certification."
+    },
+    {
+      "id": "stainless_basket_upgrade",
+      "display_name": "Stainless Steel Basket Upgrade",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
+      "id": "robot_interface_cable",
+      "display_name": "Robot Integration Cable (10m)",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": "Available only when Robot Ready is selected."
+    },
+    {
+      "id": "vacuum_pump_oil_kit",
+      "display_name": "Vacuum Maintenance Kit",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": "Available only for Vacuum-integrated models."
     }
   ]
 }

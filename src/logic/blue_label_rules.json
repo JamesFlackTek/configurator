@@ -1,0 +1,119 @@
+{
+    "rules": [
+        {
+            "rule_id": "exclude_large_baskets_for_medium_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "basket",
+                "value": [
+                    "2000",
+                    "2800",
+                    "10000",
+                    "14000"
+                ]
+            },
+            "reason": "Large baskets are not compatible with Medium chassis."
+        },
+        {
+            "rule_id": "exclude_xl_baskets_for_medium_plus_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium +"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "basket",
+                "value": [
+                    "10000",
+                    "14000"
+                ]
+            },
+            "reason": "10000 and 14000 Baskets require Large chassis."
+        },
+        {
+            "rule_id": "exclude_small_baskets_for_large_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Large"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "basket",
+                "value": [
+                    "1200",
+                    "1400",
+                    "2000",
+                    "2800"
+                ]
+            },
+            "reason": "Large chassis is not compatible with small baskets (1200, 1400, 2000, 2800)."
+        },
+        {
+            "rule_id": "exclude_3_phase_for_medium_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "voltage",
+                "value": "208 3 Phase"
+            },
+            "reason": "208 3 Phase is not available on Medium chassis."
+        },
+        {
+            "rule_id": "exclude_3_phase_for_medium_plus_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium +"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "voltage",
+                "value": "208 3 Phase"
+            },
+            "reason": "208 3 Phase is not available on Medium + chassis."
+        },
+        {
+            "rule_id": "require_3_phase_for_large_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Large"
+            },
+            "effect": {
+                "type": "require",
+                "option_id": "voltage",
+                "value": "208 3 Phase"
+            },
+            "reason": "Large chassis requires 208 3 Phase power."
+        },
+        {
+            "rule_id": "exclude_120_220_for_large_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Large"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "voltage",
+                "value": [
+                    "120",
+                    "220",
+                    "208/240"
+                ]
+            },
+            "reason": "120, 220, 208/240 are not available on Large chassis."
+        }
+    ]
+}

@@ -1,6 +1,8 @@
 import capabilitiesData from './capabilities.json';
 import catalogData from './catalog.json';
 import rulesData from './rules.json';
+import blueLabelCapabilitiesData from './blue_label_capabilities.json';
+import blueLabelRulesData from './blue_label_rules.json';
 
 // --- Interfaces for JSON Data ---
 
@@ -24,8 +26,9 @@ export interface CatalogOption {
 }
 
 export interface RuleCondition {
-    option_id: string;
-    value: string | number | boolean;
+    option_id?: string;
+    value?: string | number | boolean;
+    model_id?: string;
 }
 
 export interface RuleEffect {
@@ -56,9 +59,15 @@ export class ConfiguratorLogic {
     private rules: Rule[];
 
     constructor() {
-        this.capabilities = capabilitiesData.capabilities;
+        this.capabilities = [
+            ...capabilitiesData.capabilities,
+            ...blueLabelCapabilitiesData.capabilities
+        ] as Capability[];
         this.catalog = catalogData.options as CatalogOption[];
-        this.rules = rulesData.rules as unknown as Rule[];
+        this.rules = [
+            ...(rulesData.rules as unknown as Rule[]),
+            ...(blueLabelRulesData.rules as unknown as Rule[])
+        ];
     }
 
     // --- Model Management ---
@@ -175,6 +184,17 @@ export class ConfiguratorLogic {
 
     applyRules(config: Configuration): Configuration {
         let currentConfig = { ...config, options: { ...config.options } };
+
+        // --- Custom logic for Vacuum-Variant integration ---
+        // For non-Blue Label models, vacuum is part of the variant name (e.g., "Standard", "VAC", "Pro VAC")
+        if (currentConfig.modelId && currentConfig.modelId !== 'blue_label') {
+            const variant = (currentConfig.options['model_variant'] as string) || '';
+            const shouldBeVac = variant.toUpperCase().includes('VAC');
+            if (currentConfig.options['vacuum'] !== shouldBeVac) {
+                currentConfig.options['vacuum'] = shouldBeVac;
+            }
+        }
+
         let changed = true;
         let iterations = 0;
 
@@ -188,21 +208,34 @@ export class ConfiguratorLogic {
                     const currentValue = currentConfig.options[effect.option_id];
 
                     if (effect.type === 'require') {
-                        if (currentValue !== effect.value) {
-                            currentConfig.options[effect.option_id] = effect.value;
+                        const isSatisfied = Array.isArray(effect.value)
+                            ? effect.value.includes(currentValue as any)
+                            : currentValue === effect.value;
+
+                        if (!isSatisfied) {
+                            currentConfig.options[effect.option_id] = Array.isArray(effect.value) ? effect.value[0] : effect.value;
                             changed = true;
                         }
                     } else if (effect.type === 'exclude') {
-                        if (currentValue === effect.value) {
+                        const isExcluded = Array.isArray(effect.value)
+                            ? effect.value.includes(currentValue as any)
+                            : currentValue === effect.value;
+
+                        if (isExcluded) {
                             // If excluded value is selected, we need to switch it
-                            // For boolean: flip
-                            // For enum: unset or pick default?
-                            // We'll unset it for now
-                            if (typeof effect.value === 'boolean') {
-                                currentConfig.options[effect.option_id] = !effect.value;
+                            if (typeof currentValue === 'boolean') {
+                                // For boolean: flip (though boolean exclusion usually doesn't use arrays)
+                                currentConfig.options[effect.option_id] = !currentValue;
                                 changed = true;
                             } else {
-                                delete currentConfig.options[effect.option_id];
+                                // For enums/other: pick first allowed value that isn't excluded
+                                const allowed = this.getAllowedValues(currentConfig.modelId!, effect.option_id);
+                                const validAlt = allowed.find(v => this.isOptionAvailable(currentConfig, effect.option_id, v));
+                                if (validAlt !== undefined) {
+                                    currentConfig.options[effect.option_id] = validAlt;
+                                } else {
+                                    delete currentConfig.options[effect.option_id];
+                                }
                                 changed = true;
                             }
                         }
@@ -215,8 +248,26 @@ export class ConfiguratorLogic {
     }
 
     checkCondition(config: Configuration, condition: RuleCondition): boolean {
-        const val = config.options[condition.option_id];
-        return val === condition.value;
+        // If model_id is specified, it must match
+        if (condition.model_id) {
+            if (Array.isArray(condition.model_id)) {
+                if (!condition.model_id.includes(config.modelId as string)) return false;
+            } else if (config.modelId !== condition.model_id) {
+                return false;
+            }
+        }
+
+        // If option_id/value are specified, they must match
+        if (condition.option_id !== undefined && condition.value !== undefined) {
+            const val = config.options[condition.option_id];
+            if (Array.isArray(condition.value)) {
+                return condition.value.includes(val as any);
+            }
+            return val === condition.value;
+        }
+
+        // If only model_id was provided (or nothing), and it passed, it's true
+        return true;
     }
 
     validate(config: Configuration): { valid: boolean; errors: string[] } {
@@ -224,14 +275,24 @@ export class ConfiguratorLogic {
         for (const rule of this.rules) {
             if (rule.effect.type === 'require') {
                 if (this.checkCondition(config, rule.when)) {
-                    if (config.options[rule.effect.option_id] !== rule.effect.value) {
+                    const currentValue = config.options[rule.effect.option_id];
+                    const isSatisfied = Array.isArray(rule.effect.value)
+                        ? rule.effect.value.includes(currentValue as any)
+                        : currentValue === rule.effect.value;
+
+                    if (!isSatisfied) {
                         errors.push(`Rule violation: ${rule.reason}`);
                     }
                 }
             }
             if (rule.effect.type === 'exclude') {
                 if (this.checkCondition(config, rule.when)) {
-                    if (config.options[rule.effect.option_id] === rule.effect.value) {
+                    const currentValue = config.options[rule.effect.option_id];
+                    const isExcluded = Array.isArray(rule.effect.value)
+                        ? rule.effect.value.includes(currentValue as any)
+                        : currentValue === rule.effect.value;
+
+                    if (isExcluded) {
                         errors.push(`Rule violation: ${rule.reason}`);
                     }
                 }
@@ -243,8 +304,12 @@ export class ConfiguratorLogic {
     getConflictReasons(config: Configuration, optionId: string, value: string | number | boolean): string[] {
         const reasons: string[] = [];
         for (const rule of this.rules) {
-            if (rule.effect.type === 'exclude' && rule.effect.option_id === optionId && rule.effect.value === value) {
-                if (this.checkCondition(config, rule.when)) {
+            if (rule.effect.type === 'exclude' && rule.effect.option_id === optionId) {
+                const isExcluded = Array.isArray(rule.effect.value)
+                    ? rule.effect.value.includes(value as any)
+                    : rule.effect.value === value;
+
+                if (isExcluded && this.checkCondition(config, rule.when)) {
                     reasons.push(rule.reason);
                 }
             }
@@ -277,35 +342,38 @@ export class ConfiguratorLogic {
         if (!modelId) return '';
 
         const isVac = config.options['vacuum'] === true;
+        const variant = config.options['model_variant'] as string || '';
 
+        // Small Models (330 / 515)
         if (modelId === '330_100' || modelId === '515_200') {
-            return 'https://flacktek.com/wp-content/uploads/2024/07/DAC-330-100-PRO_NoBGNoRef_V4_retouched-768x1024.png';
+            const v = variant.toUpperCase();
+            if (v.startsWith('L')) return '/images/Small 330-100 L.png';
+            if (v.startsWith('SE')) return '/images/Small 330-100 SE.png';
+            return '/images/Small 330-100 PRO.png';
         }
 
-        if (modelId.startsWith('1200') || modelId.startsWith('1400') || modelId.startsWith('2000') || modelId.startsWith('2800') || modelId === 'large_twin' || modelId === 'blue_label') {
-            // For now using placeholders for vacuum/non-vacuum variants
-            // In a real scenario, we'd have specific URLs
-            if (isVac) {
-                return '/images/medium-vac.png'; // Placeholder
-            } else {
-                return '/images/medium.png'; // Placeholder from previous data.ts
-            }
+        // Mid-Range Single (1200 / 1400)
+        if (modelId === '1200_xxx' || modelId === '1400_xxxx') {
+            return isVac ? '/images/Medium Vac.png' : '/images/Medium.png';
         }
 
-        // Large? The user said "large will just have the one pic for now"
-        // But what is "large"? In capabilities.json we have "large_twin". 
-        // We also had 'f-large' in old data.ts. 
-        // Based on model IDs, "large_twin" is likely what "large" referred to, or maybe high-capacity ones.
-        // User said: "1200 win and 2000 and 2800" (win -> twin?).
+        // Mid-Range Twin / High Capacity (1200 Twin / 2000 / 2800)
+        if (modelId === '1200_xxx_twin' || modelId === '2000_xxxx' || modelId === '2800_xxxx') {
+            return isVac ? '/images/Medium Plus VAC.png' : '/images/Medium Plus.png';
+        }
 
-        // Let's refine based on user request:
-        // "330 and 515 will default to the pro pic" -> Handle above.
-        // "1200 and 1400 will have pics for both non-vac and vac" -> Handle above.
-        // "same with 1200 win and 2000 and 2800" -> Handle above.
-        // "large will just have the one pic for now" -> Maybe "large_twin"?
-
+        // Large Twin
         if (modelId === 'large_twin') {
-            return 'https://flacktek.com/wp-content/uploads/2024/07/big_NoBGNoRef_V6_retouched-1002x1024.png';
+            return '/images/Large.png';
+        }
+
+        // Blue Label (Dynamic based on selected chassis)
+        if (modelId === 'blue_label') {
+            const chassis = config.options['chassis'] as string;
+            if (chassis === 'Large') return '/images/Large.png';
+            if (chassis === 'Medium +') return isVac ? '/images/Medium Plus VAC.png' : '/images/Medium Plus.png';
+            // Default to Medium for any other chassis selection (e.g. Medium)
+            return isVac ? '/images/Medium Vac.png' : '/images/Medium.png';
         }
 
         return '';

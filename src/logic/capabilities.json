@@ -73,17 +73,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "chassis",
-      "raw": "Medium, Medium +, Large",
-      "allowed_values": [
-        "Medium",
-        "Medium +",
-        "Large"
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "voltage",
@@ -107,22 +96,20 @@
       "model_id": "1200_xxx",
       "model_label": "1200-XXX",
       "option_id": "voltage",
-      "raw": "120, 220, 208/240",
+      "raw": "120, 220",
       "allowed_values": [
         "120",
-        "220",
-        "208/240"
+        "220"
       ]
     },
     {
       "model_id": "1400_xxxx",
       "model_label": "1400-XXXX",
       "option_id": "voltage",
-      "raw": "120, 220, 208/240",
+      "raw": "120, 220",
       "allowed_values": [
         "120",
-        "220",
-        "208/240"
+        "220"
       ]
     },
     {
@@ -165,98 +152,18 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "voltage",
-      "raw": "120, 220, 208/240, 208 3 Phase",
-      "allowed_values": [
-        "120",
-        "220",
-        "208/240",
-        "208 3 Phase"
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "vacuum",
-      "raw": "no",
+      "raw": "yes, no",
       "allowed_values": [
+        true,
         false
       ]
     },
     {
       "model_id": "515_200",
       "model_label": "515-200",
-      "option_id": "vacuum",
-      "raw": "no",
-      "allowed_values": [
-        false
-      ]
-    },
-    {
-      "model_id": "1200_xxx",
-      "model_label": "1200-XXX",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "1400_xxxx",
-      "model_label": "1400-XXXX",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "1200_xxx_twin",
-      "model_label": "1200-XXX Twin",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "2000_xxxx",
-      "model_label": "2000-XXXX",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "2800_xxxx",
-      "model_label": "2800-XXXX",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "large_twin",
-      "model_label": "Large Twin",
-      "option_id": "vacuum",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
       "option_id": "vacuum",
       "raw": "yes, no",
       "allowed_values": [
@@ -268,75 +175,126 @@
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "model_variant",
-      "raw": "Pro, L, SE",
+      "raw": "Pro, SE, L",
       "allowed_values": [
         "Pro",
-        "L",
-        "SE"
+        "SE",
+        "L"
       ]
     },
     {
       "model_id": "515_200",
       "model_label": "515-200",
       "option_id": "model_variant",
-      "raw": "Pro, L, SE",
+      "raw": "Pro, SE, L",
       "allowed_values": [
         "Pro",
-        "L",
-        "SE"
+        "SE",
+        "L"
       ]
     },
     {
       "model_id": "1200_xxx",
       "model_label": "1200-XXX",
       "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "raw": "Standard, VAC",
       "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
     {
       "model_id": "1400_xxxx",
       "model_label": "1400-XXXX",
-      "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "option_id": "vacuum",
+      "raw": "no",
       "allowed_values": [
+        false
+      ]
+    },
+    {
+      "model_id": "1400_xxxx",
+      "model_label": "1400-XXXX",
+      "option_id": "model_variant",
+      "raw": "Standard, VAC",
+      "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
     {
       "model_id": "1200_xxx_twin",
       "model_label": "1200-XXX Twin",
-      "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "option_id": "vacuum",
+      "raw": "no",
       "allowed_values": [
+        false
+      ]
+    },
+    {
+      "model_id": "1200_xxx_twin",
+      "model_label": "1200-XXX Twin",
+      "option_id": "model_variant",
+      "raw": "Standard, VAC",
+      "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
     {
       "model_id": "2000_xxxx",
       "model_label": "2000-XXXX",
-      "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "option_id": "vacuum",
+      "raw": "no",
       "allowed_values": [
+        false
+      ]
+    },
+    {
+      "model_id": "2000_xxxx",
+      "model_label": "2000-XXXX",
+      "option_id": "model_variant",
+      "raw": "Standard, VAC",
+      "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
     {
       "model_id": "2800_xxxx",
       "model_label": "2800-XXXX",
-      "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "option_id": "vacuum",
+      "raw": "no",
       "allowed_values": [
+        false
+      ]
+    },
+    {
+      "model_id": "2800_xxxx",
+      "model_label": "2800-XXXX",
+      "option_id": "model_variant",
+      "raw": "Standard, VAC",
+      "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
     {
       "model_id": "large_twin",
       "model_label": "Large Twin",
-      "option_id": "model_variant",
-      "raw": "\"\",VAC",
+      "option_id": "vacuum",
+      "raw": "no",
       "allowed_values": [
+        false
+      ]
+    },
+    {
+      "model_id": "large_twin",
+      "model_label": "Large Twin",
+      "option_id": "model_variant",
+      "raw": "Standard, VAC",
+      "allowed_values": [
+        "Standard",
         "VAC"
       ]
     },
@@ -407,25 +365,10 @@
       "model_id": "large_twin",
       "model_label": "Large Twin",
       "option_id": "basket",
-      "raw": "2.5, 3.5",
+      "raw": "10000, 14000",
       "allowed_values": [
-        "2.5",
-        "3.5"
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "basket",
-      "raw": "1200, 1400, 2000, 2800, 2.5, 3.5, Other",
-      "allowed_values": [
-        "1200",
-        "1400",
-        "2000",
-        "2800",
-        "2.5",
-        "3.5",
-        "Other"
+        "10000",
+        "14000"
       ]
     },
     {
@@ -501,16 +444,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "robot_ready",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "automatic_lid",
@@ -572,16 +505,6 @@
     {
       "model_id": "large_twin",
       "model_label": "Large Twin",
-      "option_id": "automatic_lid",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
       "option_id": "automatic_lid",
       "raw": "yes, no",
       "allowed_values": [
@@ -653,16 +576,6 @@
       "option_id": "adjustable_arm",
       "raw": "no",
       "allowed_values": [
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "adjustable_arm",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
         false
       ]
     },
@@ -670,9 +583,17 @@
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "weight_options_standard",
-      "raw": "100, 200",
+      "raw": "100",
       "allowed_values": [
-        "100",
+        "100"
+      ]
+    },
+    {
+      "model_id": "515_200",
+      "model_label": "515-200",
+      "option_id": "weight_options_standard",
+      "raw": "200",
+      "allowed_values": [
         "200"
       ]
     },
@@ -808,15 +729,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "custom_weight_option",
-      "raw": "Enter min/max total mass",
-      "allowed_values": [
-        "Enter min/max total mass"
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "ul_cert",
@@ -897,16 +809,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "ul_cert",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "remote_safety",
@@ -975,16 +877,6 @@
       "option_id": "remote_safety",
       "raw": "no",
       "allowed_values": [
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "remote_safety",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
         false
       ]
     },
@@ -1071,16 +963,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "remote_operation",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "industrialized",
@@ -1153,16 +1035,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "industrialized",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "high_power",
@@ -1231,16 +1103,6 @@
       "option_id": "high_power",
       "raw": "no",
       "allowed_values": [
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "high_power",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
         false
       ]
     },
@@ -1317,16 +1179,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "temp_monitoring",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "c1d2",
@@ -1395,16 +1247,6 @@
       "option_id": "c1d2",
       "raw": "no",
       "allowed_values": [
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "c1d2",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
         false
       ]
     },
@@ -1491,16 +1333,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "echo_mode",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "user_levels",
@@ -1571,16 +1403,6 @@
     {
       "model_id": "large_twin",
       "model_label": "Large Twin",
-      "option_id": "user_levels",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
       "option_id": "user_levels",
       "raw": "yes, no",
       "allowed_values": [
@@ -1667,16 +1489,6 @@
       ]
     },
     {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
-      "option_id": "operator_mode",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
       "model_id": "330_100",
       "model_label": "330-100",
       "option_id": "label_printer",
@@ -1747,16 +1559,6 @@
     {
       "model_id": "large_twin",
       "model_label": "Large Twin",
-      "option_id": "label_printer",
-      "raw": "yes, no",
-      "allowed_values": [
-        true,
-        false
-      ]
-    },
-    {
-      "model_id": "blue_label",
-      "model_label": "Blue Label",
       "option_id": "label_printer",
       "raw": "yes, no",
       "allowed_values": [
