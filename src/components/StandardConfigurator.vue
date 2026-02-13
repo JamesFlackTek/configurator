@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type ConfiguratorLogic, type Configuration, type CatalogOption } from '../logic/configurator';
+import ConfigurationSummary from './ConfigurationSummary.vue';
 
 const props = defineProps<{
     logic: ConfiguratorLogic;
@@ -66,58 +67,6 @@ const uiGroups = {
     certifications: ['ul_cert', 'ce_cert', 'c1d2'],
     advanced: ['adjustable_arm', 'robot_ready', 'automatic_lid', 'remote_safety', 'remote_operation', 'low_speed', 'high_power', 'temp_monitoring', 'echo_mode']
 };
-
-const machineImage = computed(() => {
-    if (!props.currentModelId) return '';
-    return props.logic.getMachineImage({ modelId: props.currentModelId, options: props.configOptions });
-});
-
-const machineName = computed(() => {
-    if (!props.currentModelId) return 'Select Machine';
-    const model = props.models.find(m => m.id === props.currentModelId);
-    if (!model) return 'Unknown FlackTek';
-    
-    let modelLabel = model.label;
-    
-    if (props.currentModelId !== 'blue_label' && props.configOptions['weight_options_standard']) {
-        const weight = props.configOptions['weight_options_standard'];
-        modelLabel = modelLabel.replace(/XXX+/g, String(weight));
-    }
-    
-    const variant = props.configOptions['model_variant'] as string || '';
-    if (variant && variant !== 'Standard') {
-        modelLabel += ` ${variant}`;
-    }
-    
-    // Naming fix: only append VAC if not already in variant name
-    if (props.configOptions['vacuum'] === true && !variant.toUpperCase().includes('VAC')) {
-        modelLabel += ' VAC';
-    }
-    
-    return `FlackTek ${modelLabel}`;
-});
-
-const totalPrice = computed(() => {
-    if (!props.currentModelId) return 0;
-    const model = props.models.find(m => m.id === props.currentModelId);
-    let total = model?.price || 0;
-    
-    if (props.configOptions['vacuum'] === true) {
-        total += 5000;
-    }
-    
-    return total;
-});
-
-const validation = computed(() => {
-    if (!props.currentModelId) return { valid: true, errors: [] };
-    return props.logic.validate({ modelId: props.currentModelId, options: props.configOptions });
-});
-
-const configCode = computed(() => {
-    if (!props.currentModelId) return '';
-    return props.logic.generateCode({ modelId: props.currentModelId, options: props.configOptions });
-});
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
@@ -224,40 +173,11 @@ const formatPrice = (price: number) => {
       </main>
 
       <aside class="summary-stick">
-        <!-- Machine Identity Preview -->
-        <div class="glass-card identity-card" style="margin-bottom: 1rem; padding: 1rem;">
-             <h3 class="machine-title-display" style="font-size: 1.1rem; margin-bottom: 0.5rem;">{{ machineName }}</h3>
-             <div class="sidebar-preview">
-                <img v-if="machineImage" :src="machineImage" alt="Machine Preview" class="machine-preview-img-small" />
-             </div>
-        </div>
-
-
-        <div class="glass-card">
-           <h3 class="summary-title">Config Summary</h3>
-           <div class="summary-list">
-               <div v-for="(val, key) in configOptions" :key="key" class="summary-item">
-                   <template v-if="val !== undefined && val !== false && key !== 'model_variant'">
-                       <span style="display: block; margin-bottom: 0.25rem;">{{ getOptionLabel(key) }}: {{ formatValue(logic.getOption(key)!, val) }}</span>
-                   </template>
-               </div>
-           </div>
-           
-           <div class="total-row">
-            <span>Estimated Total</span>
-            <span class="total-price">{{ formatPrice(totalPrice) }}</span>
-          </div>
-          
-           <div v-if="!validation.valid" class="error-box">
-             <div class="error-title">Issues:</div>
-             <ul><li v-for="err in validation.errors" :key="err">{{ err }}</li></ul>
-           </div>
-           
-           <div class="config-code-box">
-            <div class="config-code-label">PROD CODE</div>
-            <div class="config-code">{{ configCode }}</div>
-          </div>
-        </div>
+        <ConfigurationSummary 
+            v-if="currentModelId"
+            :logic="logic" 
+            :config="{ modelId: currentModelId, options: configOptions }" 
+        />
       </aside>
     </div>
 </template>
@@ -266,66 +186,108 @@ const formatPrice = (price: number) => {
 .configurator-grid {
     display: grid;
     grid-template-columns: 1fr 340px;
-    gap: 3rem;
-    align-items: flex-start;
+    gap: 2rem;
+}
+
+main {
+    flex: 1;
 }
 
 .summary-stick {
     position: sticky;
     top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
 }
 
-.sidebar-preview {
-    height: 180px; /* Further increased for portrait aspect ratio */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    overflow: hidden;
+.category-section {
+    margin-bottom: 3rem;
 }
 
-.machine-preview-img-small {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.horizontal-layout {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    text-align: left !important;
-    padding: 1.25rem !important;
-    min-height: auto !important;
-    gap: 1rem;
-}
-
-.custom-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--border-glass);
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.custom-checkbox.checked {
-    background: var(--accent-primary);
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 8px var(--accent-primary);
+.category-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
 }
 
 .options-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
-.spec-grid {
+.option-card {
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-card.selected {
+    border-color: var(--accent-primary);
+    background: rgba(var(--accent-primary-rgb), 0.1);
+}
+
+.option-name {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.option-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.option-price {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-primary);
+    font-weight: 700;
+}
+
+.horizontal-layout {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.small-card {
+    padding: 1rem;
+}
+
+.nav-btn {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.premium-btn {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, #2980b9 100%);
+    color: white;
+}
+
+.premium-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.4);
+}
+
+.btn-arrow {
+    margin-left: 0.5rem;
+}
+
+.mt-4 {
+    margin-top: 2rem;
+}
+
+.step-nav-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 </style>

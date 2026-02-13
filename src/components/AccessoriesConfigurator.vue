@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type ConfiguratorLogic, type Configuration } from '../logic/configurator';
+import ConfigurationSummary from './ConfigurationSummary.vue';
 
 const props = defineProps<{
     logic: ConfiguratorLogic;
@@ -9,6 +10,15 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['optionChange', 'back']);
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+};
+
+const formatValue = (val: any): string => {
+  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+  return String(val);
+};
 
 const groupedAccessories = computed(() => {
     const all = props.logic.getAccessories();
@@ -19,8 +29,6 @@ const groupedAccessories = computed(() => {
         if (opt.type === 'boolean') {
             visible = isAvailable(opt.id, true) || isAvailable(opt.id, false);
         } else {
-            // For enum/index, we show it if the model supports it at all,
-            // allowing it to be greyed out rather than hidden.
             const allowed = props.logic.getAllowedValues(props.currentModelId, opt.id);
             visible = allowed.length > 0;
         }
@@ -38,7 +46,6 @@ const groupedAccessories = computed(() => {
 });
 
 const isEnumAvailable = (optionId: string) => {
-    // Duration is specifically non-editable when Standard is selected
     if (optionId === 'fap_warranty_years' && props.configOptions['fap_standard'] === true) return false;
     
     const allowed = props.logic.getAllowedValues(props.currentModelId, optionId);
@@ -63,185 +70,224 @@ const handleEnumChange = (optionId: string, event: Event) => {
         emit('optionChange', { optionId, value: target.value });
     }
 };
-
 </script>
 
 <template>
-    <div class="accessories-screen fade-in">
-        <h2 class="category-title">Step 2: Additional Options and Accessories</h2>
-        <p class="step-desc">Enhance your mixing solution with optional upgrades and maintenance kits. Only compatible accessories are shown.</p>
+    <div class="configurator-grid fade-in">
+        <main>
+            <h2 class="category-title">Step 2: Additional Options and Accessories</h2>
+            <p class="step-desc">Enhance your mixing solution with optional upgrades and maintenance kits. Only compatible accessories are shown.</p>
 
-        <div class="accessory-groups">
-            <div v-for="(items, groupName) in groupedAccessories" :key="groupName" class="accessory-section">
-                <h3 class="section-title">{{ groupName }}</h3>
-                <div class="accessories-grid">
-                <div v-for="opt in items" :key="opt.id">
-                    <!-- Boolean Accessories -->
-                    <div 
-                        v-if="opt.type === 'boolean'"
-                        class="glass-card option-card accessory-card"
-                        :class="{ 
-                            selected: isSelected(opt.id, true),
-                            disabled: opt.group !== 'support' && !isAvailable(opt.id, true) && !isSelected(opt.id, true)
-                        }"
-                        @click="(opt.group === 'support' || isAvailable(opt.id, !configOptions[opt.id])) && emit('optionChange', { optionId: opt.id, value: !configOptions[opt.id] })"
-                    >
-                        <div class="accessory-info">
-                            <div class="option-name">{{ opt.display_name }}</div>
-                            <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
+            <div class="accessory-groups">
+                <div v-for="(items, groupName) in groupedAccessories" :key="groupName" class="accessory-section">
+                    <h3 class="section-title">{{ groupName }}</h3>
+                    <div class="accessories-grid">
+                    <div v-for="opt in items" :key="opt.id">
+                        <!-- Boolean Accessories -->
+                        <div 
+                            v-if="opt.type === 'boolean'"
+                            class="glass-card option-card accessory-card"
+                            :class="{ 
+                                selected: isSelected(opt.id, true),
+                                disabled: opt.group !== 'support' && !isAvailable(opt.id, true) && !isSelected(opt.id, true)
+                            }"
+                            @click="(opt.group === 'support' || isAvailable(opt.id, !configOptions[opt.id])) && emit('optionChange', { optionId: opt.id, value: !configOptions[opt.id] })"
+                        >
+                            <div class="accessory-info">
+                                <div class="option-name">{{ opt.display_name }}</div>
+                                <div class="price-tag" v-if="opt.price !== undefined">{{ formatPrice(opt.price) }}</div>
+                                <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
+                            </div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected(opt.id, true) }"></div>
                         </div>
-                        <div class="custom-checkbox" :class="{ checked: isSelected(opt.id, true) }"></div>
-                    </div>
 
-                    <!-- Enum Accessories (Dropdowns) -->
-                    <div 
-                        v-else-if="opt.type === 'enum' || opt.type === 'index'"
-                        class="glass-card option-card accessory-card enum-accessory"
-                        :class="{ disabled: !isEnumAvailable(opt.id) }"
-                    >
-                        <div class="accessory-info">
-                            <div class="option-name">{{ opt.display_name }}</div>
-                            <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
-                            <div class="select-wrapper">
-                                <select 
-                                    class="accessory-select" 
-                                    :value="configOptions[opt.id]"
-                                    :disabled="!isEnumAvailable(opt.id)"
-                                    @change="(e) => handleEnumChange(opt.id, e)"
-                                >
-                                    <option v-for="val in logic.getAllowedValues(currentModelId, opt.id)" :key="val.toString()" :value="val.toString()">
-                                        {{ val }}
-                                    </option>
-                                </select>
+                        <!-- Enum Accessories (Dropdowns) -->
+                        <div 
+                            v-else-if="opt.type === 'enum' || opt.type === 'index'"
+                            class="glass-card option-card accessory-card dropdown-card"
+                            :class="{ disabled: !isEnumAvailable(opt.id) }"
+                        >
+                            <div class="accessory-info">
+                                <div class="option-name">{{ opt.display_name }}</div>
+                                <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
+                                <div class="dropdown-wrapper">
+                                    <select 
+                                        :value="configOptions[opt.id]" 
+                                        @change="handleEnumChange(opt.id, $event)"
+                                        class="accessory-select"
+                                        :disabled="!isEnumAvailable(opt.id)"
+                                    >
+                                        <option v-for="val in logic.getAllowedValues(currentModelId, opt.id)" :key="String(val)" :value="val">
+                                            {{ val }} {{ opt.id === 'fap_warranty_years' ? (val === 1 ? 'Year' : 'Years') : '' }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
             </div>
-        </div>
 
-        <div class="step-nav-footer">
-            <button class="nav-btn prev" @click="emit('back')">← Back to Machine Spec</button>
-            <div style="flex-grow: 1;"></div>
-            <button class="nav-btn next premium-btn" @click="() => {}">
-                Complete Configuration
-                <span class="btn-arrow">✓</span>
-            </button>
-        </div>
+            <div class="actions-footer">
+                <button class="nav-btn back" @click="emit('back')">
+                    ← Back to Machine Config
+                </button>
+                <div class="summary-total-hint">
+                    Total: <span class="accent">{{ formatPrice(logic.getTotalPrice({ modelId: currentModelId, options: configOptions })) }}</span>
+                </div>
+            </div>
+        </main>
+
+        <aside class="summary-stick">
+            <ConfigurationSummary 
+                :logic="logic" 
+                :config="{ modelId: currentModelId, options: configOptions }" 
+            />
+        </aside>
     </div>
 </template>
 
 <style scoped>
+.configurator-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+}
+
+.category-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.step-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
 .accessory-section {
     margin-top: 3rem;
 }
 
 .section-title {
-    font-size: 1.1rem;
-    color: var(--accent-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 1.2rem;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .accessories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
 }
 
 .accessory-card {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    text-align: left !important;
-    padding: 1.5rem !important;
-    align-items: center !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+.accessory-card:hover:not(.disabled) {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.08);
 }
 
 .accessory-info {
     flex: 1;
 }
 
-.custom-checkbox {
-    width: 22px;
-    height: 22px;
-    border: 2px solid var(--border-glass);
-    border-radius: 4px;
-    margin-left: 1.5rem;
-    flex-shrink: 0;
+.price-tag {
+    font-family: 'JetBrains Mono', 'Monaco', monospace;
+    color: var(--accent-primary);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
 }
 
-.custom-checkbox.checked {
-    background: var(--accent-primary);
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 10px var(--accent-primary);
+.dropdown-card {
+    cursor: default;
 }
 
-.step-nav-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-glass);
-}
-.enum-accessory {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    cursor: default !important;
-}
-
-.select-wrapper {
-    position: relative;
+.dropdown-wrapper {
     margin-top: 1rem;
-    width: 100%;
 }
 
 .accessory-select {
     width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border-glass);
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 6px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    color: white;
+    padding: 0.5rem;
     outline: none;
     cursor: pointer;
-    appearance: none;
-    transition: all 0.2s ease;
 }
 
-.accessory-select:hover {
-    border-color: var(--accent-primary);
-    background: rgba(0, 0, 0, 0.4);
+.summary-stick {
+    position: sticky;
+    top: 2rem;
 }
 
-.accessory-select:focus {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.2);
+.actions-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.accessory-select:disabled {
+.nav-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-btn.back {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+.nav-btn.back:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.summary-total-hint {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.accent {
+    color: var(--accent-primary);
+}
+
+.disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    filter: grayscale(0.5);
 }
 
-.accessory-card.disabled .select-wrapper::after {
-    opacity: 0.3;
-}
-
-.select-wrapper::after {
-    content: '▼';
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    pointer-events: none;
+@media (max-width: 1024px) {
+    .configurator-grid {
+        grid-template-columns: 1fr;
+    }
+    .summary-stick {
+        position: static;
+        margin-top: 2rem;
+    }
 }
 </style>

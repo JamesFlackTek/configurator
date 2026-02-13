@@ -6,7 +6,8 @@
             "type": "boolean",
             "group": "support",
             "is_configurable": true,
-            "notes": "Standard factory protection (included)."
+            "notes": "Standard factory protection (included).",
+            "price": 0
         },
         {
             "id": "fap_gold",
@@ -14,7 +15,8 @@
             "type": "boolean",
             "group": "support",
             "is_configurable": true,
-            "notes": "Enhanced protection with faster response."
+            "notes": "Enhanced protection with faster response.",
+            "price": 500
         },
         {
             "id": "fap_platinum",
@@ -22,7 +24,8 @@
             "type": "boolean",
             "group": "support",
             "is_configurable": true,
-            "notes": "Comprehensive top-tier coverage."
+            "notes": "Comprehensive top-tier coverage.",
+            "price": 1000
         },
         {
             "id": "fap_warranty_years",
@@ -36,512 +39,70 @@
                     "fap_gold": true,
                     "fap_platinum": true
                 }
-            }
+            },
+            "price": 0
         },
         {
-            "id": "custom_holder_1200_standard",
-            "display_name": "Custom Holder 1200 Standard Complexity",
+            "id": "medium_cart",
+            "display_name": "Medium Cart",
             "type": "boolean",
-            "group": "holders",
+            "group": "accessories",
+            "is_configurable": true,
+            "notes": "",
             "requires": {
-                "basket": [
-                    "1200"
-                ],
-                "min_weight": "0",
-                "max_weight": "800g"
-            }
+                "options": {
+                    "chassis": "Medium"
+                }
+            },
+            "price": 0
         },
         {
-            "id": "precision_holder",
-            "display_name": "Precision Holder",
+            "id": "vacuum_pump_65",
+            "display_name": "Vacuum Pump - 65 L/min",
             "type": "boolean",
-            "group": "holders",
+            "group": "vacuum_pumps",
             "requires": {
-                "basket": [
-                    "1200",
-                    "1400"
-                ],
-                "max_weight": "400g"
-            }
+                "options": {
+                    "vacuum": true
+                }
+            },
+            "price": 0
         },
         {
-            "id": "mobile_stand",
-            "display_name": "Mobile Stand",
+            "id": "vacuum_pump_100",
+            "display_name": "Vacuum Pump - 100 L/min",
             "type": "boolean",
-            "group": "hardware",
+            "group": "vacuum_pumps",
+            "requires": {
+                "options": {
+                    "vacuum": true
+                }
+            },
+            "price": 0
+        },
+        {
+            "id": "vacuum_pump_175",
+            "display_name": "Vacuum Pump - 175 L/min",
+            "type": "boolean",
+            "group": "vacuum_pumps",
+            "requires": {
+                "options": {
+                    "vacuum": true
+                }
+            },
+            "price": 0
+        },
+        {
+            "id": "mobile_stand_medium_plus",
+            "display_name": "Medium + Cart",
+            "type": "boolean",
+            "group": "accessories",
             "requires": {
                 "chassis": [
-                    "Medium",
                     "Medium +"
                 ]
-            }
-        },
-        {
-            "id": "reinforced_table_mount",
-            "display_name": "Reinforced Table Mount",
-            "type": "boolean",
-            "group": "hardware",
-            "requires": {
-                "chassis": [
-                    "Large"
-                ]
-            }
-        },
-        {
-            "id": "acc_f100428_150_353",
-            "display_name": "30cc Syringe",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100428"
-        },
-        {
-            "id": "acc_f100429_150_352",
-            "display_name": "10cc Syringe",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100429"
-        },
-        {
-            "id": "acc_f100430_150_351",
-            "display_name": "5cc Syringe",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100430"
-        },
-        {
-            "id": "acc_f100431_150_140quad",
-            "display_name": "SC 12 Quad",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100431"
-        },
-        {
-            "id": "acc_f100432_501_122",
-            "display_name": "Max 60",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100432"
-        },
-        {
-            "id": "acc_f100435_150_103",
-            "display_name": "SC 185/SC 250 Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100435"
-        },
-        {
-            "id": "acc_f100436_501_123",
-            "display_name": "Max 40",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100436"
-        },
-        {
-            "id": "acc_f100437_501_121h",
-            "display_name": "Max 100 Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100437"
-        },
-        {
-            "id": "acc_f100438_501_121",
-            "display_name": "Max 100",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100438"
-        },
-        {
-            "id": "acc_f100438_501_121l",
-            "display_name": "Max 100 Long",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100438"
-        },
-        {
-            "id": "acc_f100439_150_100",
-            "display_name": "SC 185/SC 250",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100439"
-        },
-        {
-            "id": "acc_f100440_501_126",
-            "display_name": "Max 10",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100440"
-        },
-        {
-            "id": "acc_f100441_150_120",
-            "display_name": "SC 60",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100441"
-        },
-        {
-            "id": "acc_f100442_501_124",
-            "display_name": "Max 20",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100442"
-        },
-        {
-            "id": "acc_f100443_501_124light",
-            "display_name": "Max 20 Light",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100443"
-        },
-        {
-            "id": "acc_f100445_150_150",
-            "display_name": "SC 6",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100445"
-        },
-        {
-            "id": "acc_f100446_501_126double",
-            "display_name": "Max 10 Twin/Double",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100446"
-        },
-        {
-            "id": "acc_f100447_150_140",
-            "display_name": "SC 12",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100447"
-        },
-        {
-            "id": "acc_f100448_150_110",
-            "display_name": "SC 90",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F100448"
-        },
-        {
-            "id": "acc_f102483_501_124l",
-            "display_name": "Max 20 Long",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102483"
-        },
-        {
-            "id": "acc_f101189_150_130",
-            "display_name": "SC 25",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F101189"
-        },
-        {
-            "id": "acc_f102170_150_350",
-            "display_name": "3cc Syringe",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102170"
-        },
-        {
-            "id": "acc_f102335_501_127",
-            "display_name": "Max 15",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102335"
-        },
-        {
-            "id": "acc_f102336_501_121sh",
-            "display_name": "Max 100 Super Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102336"
-        },
-        {
-            "id": "acc_f102337_501_130",
-            "display_name": "Cart No. 1",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102337"
-        },
-        {
-            "id": "acc_f102340_150_150quad",
-            "display_name": "SC 6 Quad",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102340"
-        },
-        {
-            "id": "acc_f102342_150_110light",
-            "display_name": "SC 90 Light",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102342"
-        },
-        {
-            "id": "acc_f102343_150_110h",
-            "display_name": "SC 90 Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102343"
-        },
-        {
-            "id": "acc_f102365_150_501",
-            "display_name": "VAC Chamber - Max 40",
-            "type": "boolean",
-            "group": "chamber",
-            "is_configurable": true,
-            "notes": "Part Code: F102365"
-        },
-        {
-            "id": "acc_f102371_150_195",
-            "display_name": "4ml Vial",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102371"
-        },
-        {
-            "id": "acc_f102374_150_150double",
-            "display_name": "SC 6 Double",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102374"
-        },
-        {
-            "id": "acc_f102375_150_193",
-            "display_name": "20ml Vial Twin/Double",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102375"
-        },
-        {
-            "id": "acc_f102377_150_100sh",
-            "display_name": "SC 185/SC 250 Super Heavy Holder",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102377"
-        },
-        {
-            "id": "acc_f102378_150_110sh",
-            "display_name": "SC 90 Super Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102378"
-        },
-        {
-            "id": "acc_f102379_501_131",
-            "display_name": "Cart No. 2",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102379"
-        },
-        {
-            "id": "acc_f102380_150_349",
-            "display_name": "1cc Syringe",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102380"
-        },
-        {
-            "id": "acc_f102381_150_325",
-            "display_name": "2.5oz Semco",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102381"
-        },
-        {
-            "id": "acc_f103278_150_511",
-            "display_name": "VAC Chamber - SC 90",
-            "type": "boolean",
-            "group": "chamber",
-            "is_configurable": true,
-            "notes": "Part Code: F103278"
-        },
-        {
-            "id": "acc_f102484_501_126light",
-            "display_name": "Max 10 Light",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102484"
-        },
-        {
-            "id": "acc_f102485_501_122h",
-            "display_name": "Max 60 Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102485"
-        },
-        {
-            "id": "acc_f102486_501_122light",
-            "display_name": "Max 60 Light",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102486"
-        },
-        {
-            "id": "acc_f102487_501_123l",
-            "display_name": "Max 40 Long",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102487"
-        },
-        {
-            "id": "acc_f102488_501_123light",
-            "display_name": "Max 40 Light",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102488"
-        },
-        {
-            "id": "acc_f102490_501_123h",
-            "display_name": "Max 40 Heavy",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F102490"
-        },
-        {
-            "id": "acc_f102491_150_505",
-            "display_name": "VAC Chamber Insert - SC 6",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102491"
-        },
-        {
-            "id": "acc_f102492_150_503",
-            "display_name": "VAC Chamber Insert - Max 10",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102492"
-        },
-        {
-            "id": "acc_f102493_150_507",
-            "display_name": "VAC Chamber Insert - SC 25",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102493"
-        },
-        {
-            "id": "acc_f102494_150_506",
-            "display_name": "VAC Chamber Insert - SC 12",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102494"
-        },
-        {
-            "id": "acc_f102496_150_502",
-            "display_name": "VAC Chamber Insert - Max 20",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102496"
-        },
-        {
-            "id": "acc_f102496_150_504",
-            "display_name": "VAC Chamber Insert - Max 20 Long",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102496"
-        },
-        {
-            "id": "acc_f102497_150_508",
-            "display_name": "VAC Chamber Insert - SC 60",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102497"
-        },
-        {
-            "id": "acc_f102498_150_512",
-            "display_name": "VAC Chamber Insert - SC 6",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102498"
-        },
-        {
-            "id": "acc_f102499_150_513",
-            "display_name": "VAC Chamber Insert - SC 12",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F102499"
-        },
-        {
-            "id": "acc_f103017_150_514",
-            "display_name": "VAC Chamber Insert - SC 25",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F103017"
-        },
-        {
-            "id": "acc_f103018_150_515",
-            "display_name": "VAC Chamber Insert - SC 60",
-            "type": "boolean",
-            "group": "chamber_inserts",
-            "is_configurable": true,
-            "notes": "Part Code: F103018"
-        },
-        {
-            "id": "acc_f103121_150_198",
-            "display_name": "20ml Vial",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F103121"
-        },
-        {
-            "id": "acc_f103155_150_190",
-            "display_name": "Max 100 Aluminum Metal Cup",
-            "type": "boolean",
-            "group": "holders",
-            "is_configurable": true,
-            "notes": "Part Code: F103155"
+            },
+            "price": 0
         }
     ]
 }

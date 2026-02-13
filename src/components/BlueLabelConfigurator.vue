@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type ConfiguratorLogic, type Configuration, type CatalogOption } from '../logic/configurator';
+import ConfigurationSummary from './ConfigurationSummary.vue';
 
 const props = defineProps<{
     logic: ConfiguratorLogic;
@@ -44,20 +45,7 @@ const machineName = computed(() => {
     return `FlackTek ${label}`;
 });
 
-const totalPrice = computed(() => {
-    const model = props.models.find(m => m.id === props.currentModelId);
-    let total = model?.price || 0;
-    if (props.configOptions['vacuum'] === true) total += 5000;
-    return total;
-});
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-};
-
-const configCode = computed(() => {
-    return props.logic.generateCode({ modelId: props.currentModelId, options: props.configOptions });
-});
 
 const getAllowed = (optionId: string) => {
   return props.logic.getAllowedValues(props.currentModelId, optionId);
@@ -303,34 +291,11 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
       </main>
 
       <aside class="summary-stick">
-        <!-- Machine Identity Preview -->
-        <div class="glass-card identity-card" style="margin-bottom: 1rem; padding: 1rem;">
-             <h3 class="machine-title-display" style="font-size: 1.1rem; margin-bottom: 0.5rem;">{{ machineName }}</h3>
-             <div class="sidebar-preview">
-                <img v-if="machineImage" :src="machineImage" alt="Machine Preview" class="machine-preview-img-small" />
-             </div>
-        </div>
-
-        <div class="glass-card">
-           <h3 class="summary-title">Blue Label Summary</h3>
-           <div class="summary-list">
-               <div v-for="(val, key) in configOptions" :key="key" class="summary-item">
-                   <template v-if="val !== undefined && val !== false && key !== 'model_variant'">
-                       <span style="display: block; margin-bottom: 0.25rem;">{{ getOptionLabel(key) }}: {{ formatValue(logic.getOption(key)!, val) }}</span>
-                   </template>
-               </div>
-           </div>
-           
-           <div class="total-row">
-            <span>Premium Total</span>
-            <span class="total-price">{{ formatPrice(totalPrice) }}</span>
-          </div>
-          
-           <div class="config-code-box">
-            <div class="config-code-label">PROD CODE</div>
-            <div class="config-code">{{ configCode }}</div>
-          </div>
-        </div>
+            <ConfigurationSummary 
+                :logic="logic" 
+                :config="{ modelId: currentModelId, options: configOptions }" 
+                title="Blue Label Summary"
+            />
       </aside>
     </div>
 </template>
@@ -634,6 +599,25 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
 
 .reset-link-btn:hover {
     background: rgba(var(--accent-primary-rgb), 0.1);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.summary-label {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.summary-price {
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    margin-left: 1rem;
 }
 
 .reset-icon {
