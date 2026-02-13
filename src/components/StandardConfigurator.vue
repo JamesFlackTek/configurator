@@ -14,46 +14,46 @@ const emit = defineEmits(['modelSelect', 'optionChange', 'continue']);
 
 // Helper to get allowed values for current model and option
 const getAllowed = (optionId: string) => {
-  if (!props.currentModelId) return [];
-  return props.logic.getAllowedValues(props.currentModelId, optionId);
+    if (!props.currentModelId) return [];
+    return props.logic.getAllowedValues(props.currentModelId, optionId);
 };
 
 // Helper to check if option is available/valid
 const isAvailable = (optionId: string, value: string | number | boolean) => {
-  if (!props.currentModelId) return false;
-  
-  const tempConfig: Configuration = {
-    modelId: props.currentModelId,
-    options: { ...props.configOptions }
-  };
-  
-  return props.logic.isOptionAvailable(tempConfig, optionId, value);
+    if (!props.currentModelId) return false;
+
+    const tempConfig: Configuration = {
+        modelId: props.currentModelId,
+        options: { ...props.configOptions }
+    };
+
+    return props.logic.isOptionAvailable(tempConfig, optionId, value);
 };
 
 const handleModelSelect = (modelId: string) => {
-  emit('modelSelect', modelId);
+    emit('modelSelect', modelId);
 };
 
 const handleOptionChange = (optionId: string, value: string | number | boolean) => {
-  emit('optionChange', { optionId, value });
+    emit('optionChange', { optionId, value });
 };
 
 const isSelected = (optionId: string, value: string | number | boolean) => {
-  return props.configOptions[optionId] === value;
+    return props.configOptions[optionId] === value;
 };
 
 // Formatting helpers
 const formatValue = (opt: CatalogOption, val: string | number | boolean): string => {
-  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
-  if (opt.id === 'voltage') {
-      if (val == 120) return '120V (US)';
-      if (val == 220) return '200-240V (Intl)';
-      if (val === '208/240') return '208/240V (US)';
-      if (val === '208 3 phase') return '208V 3-Phase';
-  }
-  if (opt.id === 'vacuum') return val ? 'Vacuum' : 'Non-Vacuum';
-  if (opt.id === 'c1d2') return 'C1D2 (HazLoc)';
-  return String(val);
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+    if (opt.id === 'voltage') {
+        if (val == 120) return '120V (US)';
+        if (val == 220) return '200-240V (Intl)';
+        if (val === '208/240') return '208/240V (US)';
+        if (val === '208 3 phase') return '208V 3-Phase';
+    }
+    if (opt.id === 'vacuum') return val ? 'Vacuum' : 'Non-Vacuum';
+    if (opt.id === 'c1d2') return 'C1D2 (HazLoc)';
+    return String(val);
 };
 
 const getOptionLabel = (id: string) => {
@@ -69,116 +69,128 @@ const uiGroups = {
 };
 
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+};
+
+const getVariantDelta = (val: string | number | boolean) => {
+    if (!props.currentModelId) return 0;
+    const defaultPrice = props.logic.getModelBasePrice(props.currentModelId);
+    const variantPrice = props.logic.getModelBasePrice(props.currentModelId, String(val));
+    return variantPrice - defaultPrice;
 };
 </script>
 
 <template>
     <div class="configurator-grid">
-      <main>
+        <main>
 
-        <!-- Step 1: Machine Family -->
-        <section class="category-section">
-          <h2 class="category-title">Step 1: Select Machine Family</h2>
-          <div class="options-grid">
-            <div 
-              v-for="model in models" 
-              :key="model.id"
-              class="glass-card option-card"
-              :class="{ selected: currentModelId === model.id }"
-              @click="handleModelSelect(model.id)"
-            >
-              <div class="option-name">{{ model.label }}</div>
-              <div class="option-desc">{{ model.description }}</div>
-              <div class="option-price">{{ formatPrice(model.price || 0) }}</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Step 2: Specs -->
-        <section class="category-section" v-if="currentModelId">
-           <h2 class="category-title">Step 2: Specifications</h2>
-           <div class="glass-card Specs-Container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-               
-               <div v-for="optId in uiGroups.specs" :key="optId" style="grid-column: span 1;">
-                   <template v-if="logic.getOption(optId) && getAllowed(optId).length > 0 && (optId !== 'chassis' || getAllowed(optId).length > 1)">
-                       <label class="config-code-label">{{ getOptionLabel(optId) }}</label>
-                       <div class="options-grid spec-grid" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
-                           <div 
-                                v-for="val in getAllowed(optId)" 
-                                :key="String(val)"
-                                class="glass-card option-card horizontal-layout small-card"
-                                :class="{ 
-                                    selected: isSelected(optId, val),
-                                    disabled: !isAvailable(optId, val)
-                                }"
-                                @click="handleOptionChange(optId, val)"
-                           >
-                               <div class="option-name">{{ formatValue(logic.getOption(optId)!, val) }}</div>
-                                <div class="custom-checkbox" :class="{ checked: isSelected(optId, val) }"></div>
-                           </div>
-                       </div>
-                   </template>
-               </div>
-           </div>
-        </section>
-
-        <!-- Certifications -->
-        <section class="category-section" v-if="currentModelId">
-            <h2 class="category-title">Certifications</h2>
-            <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <template v-for="optId in uiGroups.certifications" :key="optId">
-                    <div 
-                        v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
-                        class="glass-card option-card horizontal-layout small-card"
-                        :class="{ selected: isSelected(optId, true) }"
-                        @click="handleOptionChange(optId, !configOptions[optId])"
-                    >
-                         <div class="option-name">{{ getOptionLabel(optId) }}</div>
-                         <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+            <!-- Step 1: Machine Family -->
+            <section class="category-section">
+                <h2 class="category-title">Step 1: Select Machine Family</h2>
+                <div class="options-grid">
+                    <div v-for="model in models" :key="model.id" class="glass-card option-card"
+                        :class="{ selected: currentModelId === model.id }" @click="handleModelSelect(model.id)">
+                        <div class="option-name">{{ model.label }}</div>
+                        <div class="option-desc">{{ model.description }}</div>
+                        <div class="option-price">{{ formatPrice(logic.getModelBasePrice(model.id)) }}</div>
                     </div>
-                </template>
-            </div>
-        </section>
-        
-         <!-- Advanced -->
-        <section class="category-section" v-if="currentModelId">
-            <h2 class="category-title">Advanced / Automation</h2>
-            <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                <template v-for="optId in uiGroups.advanced" :key="optId">
-                    <div 
-                        v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
-                        class="glass-card option-card horizontal-layout small-card"
-                        :class="{ 
-                            selected: isSelected(optId, true),
-                            disabled: !isAvailable(optId, true)
-                        }"
-                        @click="isAvailable(optId, true) && handleOptionChange(optId, !configOptions[optId])"
-                    >
-                         <div class="option-name">{{ getOptionLabel(optId) }}</div>
-                         <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                </div>
+            </section>
+
+            <!-- Step 2: Specs -->
+            <section class="category-section" v-if="currentModelId">
+                <h2 class="category-title">Step 2: Specifications</h2>
+                <div class="glass-card Specs-Container"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+
+                    <div v-for="optId in uiGroups.specs" :key="optId" style="grid-column: span 1;">
+                        <template
+                            v-if="logic.getOption(optId) && getAllowed(optId).length > 0 && (optId !== 'chassis' || getAllowed(optId).length > 1)">
+                            <label class="config-code-label">{{ getOptionLabel(optId) }}</label>
+                            <div class="options-grid spec-grid"
+                                style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
+                                <div v-for="val in getAllowed(optId)" :key="String(val)"
+                                    class="glass-card option-card horizontal-layout small-card" :class="{
+                                        selected: isSelected(optId, val),
+                                        disabled: !isAvailable(optId, val)
+                                    }" @click="handleOptionChange(optId, val)">
+                                    <div class="option-info">
+                                        <div class="option-name">{{ formatValue(logic.getOption(optId)!, val) }}</div>
+                                        <div class="option-price-hint"
+                                            v-if="optId === 'model_variant' && getVariantDelta(val) !== 0"
+                                            style="white-space: nowrap;">
+                                            {{ getVariantDelta(val) > 0 ? '+ ' : '− ' }}{{
+                                            formatPrice(Math.abs(getVariantDelta(val))) }}
+                                        </div>
+                                        <div class="option-price-hint" v-else-if="logic.getOptionPrice(optId, val) > 0">
+                                            +{{ formatPrice(logic.getOptionPrice(optId, val)) }}
+                                        </div>
+                                    </div>
+                                    <div class="custom-checkbox" :class="{ checked: isSelected(optId, val) }"></div>
+                                </div>
+                            </div>
+                        </template>
                     </div>
-                </template>
+                </div>
+            </section>
+
+            <!-- Certifications -->
+            <section class="category-section" v-if="currentModelId">
+                <h2 class="category-title">Certifications</h2>
+                <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <template v-for="optId in uiGroups.certifications" :key="optId">
+                        <div v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
+                            class="glass-card option-card horizontal-layout small-card"
+                            :class="{ selected: isSelected(optId, true) }"
+                            @click="handleOptionChange(optId, !configOptions[optId])">
+                            <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                            </div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- Advanced -->
+            <section class="category-section" v-if="currentModelId">
+                <h2 class="category-title">Advanced / Automation</h2>
+                <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <template v-for="optId in uiGroups.advanced" :key="optId">
+                        <div v-if="logic.getOption(optId) && getAllowed(optId).includes(true)"
+                            class="glass-card option-card horizontal-layout small-card" :class="{
+                                selected: isSelected(optId, true),
+                                disabled: !isAvailable(optId, true)
+                            }" @click="isAvailable(optId, true) && handleOptionChange(optId, !configOptions[optId])">
+                            <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                            </div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <div class="step-nav-footer mt-4" v-if="currentModelId">
+                <div style="flex-grow: 1;"></div>
+                <button class="nav-btn next premium-btn" @click="emit('continue')">
+                    Continue to Accessories
+                    <span class="btn-arrow">→</span>
+                </button>
             </div>
-        </section>
 
-        <div class="step-nav-footer mt-4" v-if="currentModelId">
-            <div style="flex-grow: 1;"></div>
-            <button class="nav-btn next premium-btn" @click="emit('continue')">
-                Continue to Accessories
-                <span class="btn-arrow">→</span>
-            </button>
-        </div>
+        </main>
 
-      </main>
-
-      <aside class="summary-stick">
-        <ConfigurationSummary 
-            v-if="currentModelId"
-            :logic="logic" 
-            :config="{ modelId: currentModelId, options: configOptions }" 
-        />
-      </aside>
+        <aside class="summary-stick">
+            <ConfigurationSummary v-if="currentModelId" :logic="logic"
+                :config="{ modelId: currentModelId, options: configOptions }" />
+        </aside>
     </div>
 </template>
 
@@ -227,18 +239,17 @@ main {
 
 .option-name {
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
-.option-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
+.option-info {
+    flex: 1;
 }
 
-.option-price {
+.option-price-hint {
     font-family: 'JetBrains Mono', monospace;
     color: var(--accent-primary);
+    font-size: 0.8rem;
     font-weight: 700;
 }
 
@@ -283,7 +294,7 @@ main {
     display: flex;
     justify-content: flex-end;
     padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .disabled {

@@ -93,9 +93,11 @@ const handleEnumChange = (optionId: string, event: Event) => {
                             }"
                             @click="(opt.group === 'support' || isAvailable(opt.id, !configOptions[opt.id])) && emit('optionChange', { optionId: opt.id, value: !configOptions[opt.id] })"
                         >
-                            <div class="accessory-info">
+                            <div class="option-info">
                                 <div class="option-name">{{ opt.display_name }}</div>
-                                <div class="price-tag" v-if="opt.price !== undefined">{{ formatPrice(opt.price) }}</div>
+                                <div class="option-price-hint" v-if="opt.price !== undefined">
+                                    +{{ formatPrice(opt.price) }}
+                                </div>
                                 <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
                             </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected(opt.id, true) }"></div>
@@ -107,7 +109,7 @@ const handleEnumChange = (optionId: string, event: Event) => {
                             class="glass-card option-card accessory-card dropdown-card"
                             :class="{ disabled: !isEnumAvailable(opt.id) }"
                         >
-                            <div class="accessory-info">
+                            <div class="option-info">
                                 <div class="option-name">{{ opt.display_name }}</div>
                                 <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
                                 <div class="dropdown-wrapper">
@@ -204,15 +206,16 @@ const handleEnumChange = (optionId: string, event: Event) => {
     background: rgba(255,255,255,0.08);
 }
 
-.accessory-info {
+.option-info {
     flex: 1;
 }
 
-.price-tag {
+.option-price-hint {
     font-family: 'JetBrains Mono', 'Monaco', monospace;
     color: var(--accent-primary);
     font-weight: 700;
     margin-bottom: 0.25rem;
+    font-size: 0.85rem;
 }
 
 .dropdown-card {

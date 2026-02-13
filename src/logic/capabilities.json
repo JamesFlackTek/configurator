@@ -186,11 +186,10 @@
             "model_id": "515_200",
             "model_label": "515-200",
             "option_id": "model_variant",
-            "raw": "Pro, SE, L",
+            "raw": "Pro, SE",
             "allowed_values": [
                 "Pro",
-                "SE",
-                "L"
+                "SE"
             ]
         },
         {

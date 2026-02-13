@@ -17,6 +17,10 @@ const handleOptionChange = (optionId: string, value: string | number | boolean) 
 };
 
 // Formatting helpers
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+};
+
 const formatValue = (opt: CatalogOption, val: string | number | boolean): string => {
   if (typeof val === 'boolean') return val ? 'Yes' : 'No';
   if (opt.id === 'voltage') {
@@ -39,10 +43,7 @@ const machineImage = computed(() => {
 });
 
 const machineName = computed(() => {
-    const model = props.models.find(m => m.id === props.currentModelId);
-    let label = model?.label || 'Blue Label';
-    if (props.configOptions['vacuum'] === true) label += ' VAC';
-    return `FlackTek ${label}`;
+    return props.logic.getConfigurationName({ modelId: props.currentModelId, options: props.configOptions });
 });
 
 
@@ -96,7 +97,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             }"
                             @click="handleOptionChange('chassis', val)"
                         >
-                            <div class="option-name">{{ val }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ val }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('chassis', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('chassis', val)) }}
+                                </div>
+                            </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected('chassis', val) }"></div>
                         </div>
                     </div>
@@ -112,7 +118,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             :class="{ selected: isSelected('vacuum', val) }"
                             @click="handleOptionChange('vacuum', val)"
                         >
-                            <div class="option-name">{{ val ? 'Vacuum' : 'Non-Vacuum' }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ val ? 'Vacuum' : 'Non-Vacuum' }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('vacuum', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('vacuum', val)) }}
+                                </div>
+                            </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected('vacuum', val) }"></div>
                         </div>
                     </div>
@@ -131,7 +142,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             }"
                             @click="handleOptionChange('voltage', val)"
                         >
-                            <div class="option-name">{{ formatValue(props.logic.getOption('voltage')!, val) }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ formatValue(props.logic.getOption('voltage')!, val) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('voltage', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('voltage', val)) }}
+                                </div>
+                            </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected('voltage', val) }"></div>
                         </div>
                     </div>
@@ -153,7 +169,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             }"
                             @click="isAvailable('arm_option', val) && handleOptionChange('arm_option', val)"
                         >
-                            <div class="option-name">{{ val }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ val }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('arm_option', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('arm_option', val)) }}
+                                </div>
+                            </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected('arm_option', val) }"></div>
                         </div>
                     </div>
@@ -172,10 +193,15 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             }"
                             @click="isAvailable('basket', val) && handleOptionChange('basket', val)"
                         >
-                            <div class="option-name">
-                                <template v-if="val === 'Other'">Custom</template>
-                                <template v-else-if="Number(val) < 100">{{ val }}kg</template>
-                                <template v-else>{{ val }}g</template>
+                            <div class="option-info">
+                                <div class="option-name">
+                                    <template v-if="val === 'Other'">Custom</template>
+                                    <template v-else-if="Number(val) < 100">{{ val }}kg</template>
+                                    <template v-else>{{ val }}g</template>
+                                </div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('basket', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('basket', val)) }}
+                                </div>
                             </div>
                             <div class="custom-checkbox" :class="{ checked: isSelected('basket', val) }"></div>
                         </div>
@@ -195,7 +221,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             :class="{ selected: isSelected('min_weight', val) }"
                             @click="handleOptionChange('min_weight', val)"
                         >
-                            <div class="option-name">{{ val }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ val }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('min_weight', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('min_weight', val)) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,7 +241,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             :class="{ selected: isSelected('max_weight', val) }"
                             @click="handleOptionChange('max_weight', val)"
                         >
-                            <div class="option-name">{{ val }}</div>
+                            <div class="option-info">
+                                <div class="option-name">{{ val }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice('max_weight', val) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice('max_weight', val)) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,7 +258,7 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                     <label class="config-code-label">Advanced Features</label>
                     <div class="options-grid vertical-stack">
                         <div 
-                            v-for="optId in ['high_power', 'industrialized']" 
+                            v-for="optId in ['high_power', 'industrialized', 'temp_monitoring', 'ul_cert', 'c1d2']" 
                             :key="optId"
                             class="glass-card option-card horizontal-layout"
                             :class="{ 
@@ -231,7 +267,12 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                             }"
                             @click="isAvailable(optId, true) && handleOptionChange(optId, !configOptions[optId])"
                         >
-                             <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                             <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                             </div>
                              <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
                         </div>
                     </div>
@@ -611,6 +652,17 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
 .summary-label {
     flex: 1;
     font-size: 0.85rem;
+}
+
+.option-info {
+    flex: 1;
+}
+
+.option-price-hint {
+    font-family: 'JetBrains Mono', 'Monaco', monospace;
+    color: var(--accent-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
 }
 
 .summary-price {

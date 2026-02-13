@@ -18,15 +18,7 @@ const formatValue = (val: any): string => {
 };
 
 const machineName = computed(() => {
-    const model = props.logic.getModels().find(m => m.id === props.config.modelId);
-    let label = model?.label || 'Machine';
-    
-    // Add VAC suffix if vacuum is enabled (user liked this)
-    if (props.config.options['vacuum'] === true && !label.includes('VAC')) {
-        label += ' VAC';
-    }
-    
-    return `FlackTek ${label}`;
+    return props.logic.getConfigurationName(props.config);
 });
 
 const machineImage = computed(() => {
@@ -58,7 +50,15 @@ const getDisplayPrice = (item: CatalogOption) => {
 const machineMods = computed(() => {
     return props.logic.getMachineOptions().filter(opt => {
         const val = props.config.options[opt.id];
-        return val !== undefined && (val !== false || opt.type !== 'boolean') && opt.id !== 'model_variant';
+        const isSelected = val !== undefined && (val !== false || opt.type !== 'boolean') && opt.id !== 'model_variant';
+        
+        // Hide Blue Label-specific info for standard machines
+        if (props.config.modelId !== 'blue_label') {
+            const blueLabelOnly = ['chassis', 'basket', 'weight_options_standard'];
+            if (blueLabelOnly.includes(opt.id)) return false;
+        }
+        
+        return isSelected;
     });
 });
 
@@ -90,7 +90,7 @@ const selectedAccessories = computed(() => {
                 <div class="summary-group">
                     <div class="summary-row primary">
                         <span class="summary-label main-item">{{ machineName }}</span>
-                        <span class="summary-price">{{ formatPrice(logic.getModelBasePrice(config.modelId)) }}</span>
+                        <span class="summary-price">{{ formatPrice(logic.getModelBasePrice(config.modelId, config.options['model_variant'] as string)) }}</span>
                     </div>
                     
                     <!-- Machine Options (Modifications) -->

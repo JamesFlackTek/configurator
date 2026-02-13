@@ -32,6 +32,7 @@ export interface CatalogOption {
     notes: string | null;
     requires?: AccessoryRequirements;
     price?: number;
+    option_prices?: Record<string, number>;
 }
 
 export interface RuleCondition {
@@ -68,6 +69,7 @@ export class ConfiguratorLogic {
     private catalog: CatalogOption[];
     private machineCatalog: CatalogOption[];
     private accessoriesCatalog: CatalogOption[];
+    private modelPrices: Record<string, Record<string, number>>;
     private rules: Rule[];
 
     constructor() {
@@ -77,6 +79,7 @@ export class ConfiguratorLogic {
         ] as Capability[];
 
         this.machineCatalog = machineCatalogData.options as CatalogOption[];
+        this.modelPrices = (machineCatalogData as any).model_prices || {};
         this.accessoriesCatalog = accessoriesCatalogData.accessories as CatalogOption[];
 
         this.catalog = [
@@ -121,9 +124,25 @@ export class ConfiguratorLogic {
         return '';
     }
 
-    public getModelBasePrice(id: string | null): number {
+    public getModelBasePrice(id: string | null, variant?: string): number {
         if (!id) return 0;
-        // Check if we have dynamic capability for base price
+
+        let targetVariant = variant;
+        
+        // If no variant provided, try to find a default one from capabilities
+        if (!targetVariant) {
+            const variantCap = this.capabilities.find(c => c.model_id === id && c.option_id === 'model_variant');
+            if (variantCap && variantCap.allowed_values.length > 0) {
+                targetVariant = variantCap.allowed_values[0] as string;
+            }
+        }
+
+        // 1. Check for model+variant specific price from machine_catalog.json
+        if (targetVariant && this.modelPrices[id] && this.modelPrices[id][targetVariant] !== undefined) {
+            return this.modelPrices[id][targetVariant];
+        }
+
+        // 2. Check if we have dynamic capability for base price
         const cap = this.capabilities.find(c => c.model_id === id && c.option_id === 'base_price');
         if (cap) return (cap.allowed_values[0] as number);
 
@@ -137,6 +156,35 @@ export class ConfiguratorLogic {
         if (id === 'large_twin') return 80000;
         if (id === 'blue_label') return 85000;
         return 0;
+    }
+
+    public getConfigurationName(config: Configuration): string {
+        if (!config.modelId) return 'Select Machine';
+
+        const models = this.getModels();
+        const model = models.find(m => m.id === config.modelId);
+        if (!model) return 'Unknown FlackTek';
+
+        let label = model.label;
+
+        // Dynamic Weight Replacement
+        if (config.modelId !== 'blue_label' && config.options['weight_options_standard']) {
+            const weight = config.options['weight_options_standard'];
+            label = label.replace(/XXX+/g, String(weight));
+        }
+
+        // Handle Variants
+        const variant = config.options['model_variant'] as string || '';
+        if (variant && variant !== 'Standard') {
+            label += ` ${variant}`;
+        }
+
+        // Add VAC suffix
+        if (config.options['vacuum'] === true && !variant.toUpperCase().includes('VAC')) {
+            label += ' VAC';
+        }
+
+        return `FlackTek ${label}`;
     }
 
     public getMachineOptions(): CatalogOption[] {
@@ -246,7 +294,8 @@ export class ConfiguratorLogic {
         let total = 0;
 
         // Base machine price
-        total += this.getModelBasePrice(config.modelId!);
+        const variant = config.options['model_variant'] as string || undefined;
+        total += this.getModelBasePrice(config.modelId!, variant);
 
         // Option prices
         for (const [optionId, value] of Object.entries(config.options)) {
@@ -254,6 +303,14 @@ export class ConfiguratorLogic {
             if (!option) continue;
 
             let itemPrice = (option.price || 0);
+
+            // Value-based pricing for enums/indices
+            if (option.option_prices && value !== undefined) {
+                const valStr = String(value);
+                if (option.option_prices[valStr] !== undefined) {
+                    itemPrice = option.option_prices[valStr];
+                }
+            }
 
             // Scaled FAP logic
             if ((optionId === 'fap_gold' || optionId === 'fap_platinum') && value === true) {
@@ -269,11 +326,35 @@ export class ConfiguratorLogic {
         }
 
         // Special logic for vacuum if it's not explicitly in the catalog with a price
-        if (config.options['vacuum'] === true && !this.getOption('vacuum')?.price) {
+        // (Removing the hardcoded 5000 if it's already covered by VAC variant or catalog price)
+        if (config.options['vacuum'] === true && !this.getOption('vacuum')?.price && !config.options['model_variant']?.toString().includes('VAC')) {
             total += 5000;
         }
 
         return total;
+    }
+
+    public getOptionPrice(optionId: string, value?: string | number | boolean, config?: Configuration): number {
+        const option = this.getOption(optionId);
+        if (!option) return 0;
+
+        let price = (option.price || 0);
+
+        // Value-based pricing for enums/indices
+        if (option.option_prices && value !== undefined) {
+            const valStr = String(value);
+            if (option.option_prices[valStr] !== undefined) {
+                price = option.option_prices[valStr];
+            }
+        }
+
+        // Scaled FAP logic (requires config context)
+        if (config && (optionId === 'fap_gold' || optionId === 'fap_platinum') && value === true) {
+            const years = config.options['fap_warranty_years'] as number || 1;
+            price *= years;
+        }
+
+        return price;
     }
 
     applyRules(config: Configuration): Configuration {
