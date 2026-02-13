@@ -205,6 +205,87 @@
                 true,
                 false
             ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "arm_option",
+            "raw": "1200 Standard, 1200/1400 Adjustable, 1400 Fixed, 1200 Twin, 2800 Adjustable, 2800 Fixed, Large Twin",
+            "allowed_values": [
+                "1200 Standard",
+                "1200/1400 Adjustable",
+                "1400 Fixed",
+                "1200 Twin",
+                "2800 Adjustable",
+                "2800 Fixed",
+                "Large Twin"
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "min_weight",
+            "raw": "0, 200g, 300g, 400g",
+            "allowed_values": [
+                "0",
+                "200g",
+                "300g",
+                "400g"
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "max_weight",
+            "raw": "400g, 600g, 800g",
+            "allowed_values": [
+                "400g",
+                "600g",
+                "800g"
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "fap_standard",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "fap_gold",
+            "raw": "no, yes",
+            "allowed_values": [
+                false,
+                true
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "fap_platinum",
+            "raw": "no, yes",
+            "allowed_values": [
+                false,
+                true
+            ]
+        },
+        {
+            "model_id": "blue_label",
+            "model_label": "Blue Label",
+            "option_id": "fap_warranty_years",
+            "raw": "1, 2, 3, 4, 5",
+            "allowed_values": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
         }
     ]
 }

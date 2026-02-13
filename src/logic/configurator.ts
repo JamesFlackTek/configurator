@@ -1,5 +1,6 @@
 import capabilitiesData from './capabilities.json';
-import catalogData from './catalog.json';
+import machineCatalogData from './machine_catalog.json';
+import accessoriesCatalogData from './accessories_catalog.json';
 import rulesData from './rules.json';
 import blueLabelCapabilitiesData from './blue_label_capabilities.json';
 import blueLabelRulesData from './blue_label_rules.json';
@@ -14,20 +15,30 @@ export interface Capability {
     allowed_values: (string | number | boolean)[];
 }
 
+export interface AccessoryRequirements {
+    basket?: string[];
+    min_weight?: string;
+    max_weight?: string;
+    chassis?: string[];
+    options?: Record<string, string | number | boolean>;
+}
+
 export interface CatalogOption {
     id: string;
     display_name: string;
-    type: 'enum' | 'boolean' | 'custom';
+    type: 'enum' | 'boolean' | 'custom' | 'index';
     group: string;
     is_configurable: boolean;
     notes: string | null;
-    description?: string; // Add description support even if not in JSON schema explicitly yet
-    price?: number; // Add price support
+    description?: string;
+    price?: number;
+    requires?: AccessoryRequirements;
 }
 
 export interface RuleCondition {
     option_id?: string;
     value?: string | number | boolean;
+    values?: (string | number | boolean)[];
     model_id?: string;
 }
 
@@ -56,6 +67,7 @@ export interface Configuration {
 export class ConfiguratorLogic {
     private capabilities: Capability[];
     private catalog: CatalogOption[];
+    private accessoriesCatalog: CatalogOption[];
     private rules: Rule[];
 
     constructor() {
@@ -63,7 +75,15 @@ export class ConfiguratorLogic {
             ...capabilitiesData.capabilities,
             ...blueLabelCapabilitiesData.capabilities
         ] as Capability[];
-        this.catalog = catalogData.options as CatalogOption[];
+
+        const machineOptions = machineCatalogData.options as CatalogOption[];
+        this.accessoriesCatalog = accessoriesCatalogData.accessories as CatalogOption[];
+
+        this.catalog = [
+            ...machineOptions,
+            ...this.accessoriesCatalog
+        ];
+
         this.rules = [
             ...(rulesData.rules as unknown as Rule[]),
             ...(blueLabelRulesData.rules as unknown as Rule[])
@@ -119,6 +139,10 @@ export class ConfiguratorLogic {
         return this.catalog.filter(opt => opt.group === group);
     }
 
+    getAccessories(): CatalogOption[] {
+        return this.accessoriesCatalog;
+    }
+
     getOption(optionId: string): CatalogOption | undefined {
         return this.catalog.find(o => o.id === optionId);
     }
@@ -150,12 +174,16 @@ export class ConfiguratorLogic {
         catalogOpts.forEach(opt => {
             const allowed = this.getAllowedValues(modelId, opt.id);
             if (allowed.length > 0) {
-                // If it's a boolean, default to false if allowed, else true?
-                if (opt.type === 'boolean') {
+                if (opt.id === 'fap_standard') {
+                    config.options[opt.id] = true;
+                } else if (['fap_gold', 'fap_platinum'].includes(opt.id)) {
+                    config.options[opt.id] = false;
+                } else if (opt.id === 'fap_warranty_years') {
+                    config.options[opt.id] = 1;
+                } else if (opt.type === 'boolean') {
                     if (allowed.includes(false)) config.options[opt.id] = false;
                     else if (allowed.includes(true)) config.options[opt.id] = true;
                 } else {
-                    // Enum/Custom: Pick first
                     config.options[opt.id] = allowed[0]!;
                 }
             }
@@ -165,18 +193,31 @@ export class ConfiguratorLogic {
     }
 
     toggleOption(config: Configuration, optionId: string, value: string | number | boolean): Configuration {
-        // Create new config state
-        const newConfig: Configuration = {
-            modelId: config.modelId,
-            options: { ...config.options }
+        const option = this.getOption(optionId);
+        const isSupport = option?.group === 'support';
+
+        // Allow support group (FAP tiers) to bypass availability check so they can be switched.
+        // We handle mutual exclusion explicitly here for a smoother UX.
+        if (!isSupport && !this.isOptionAvailable(config, optionId, value)) return config;
+
+        const newOptions = { ...config.options };
+
+        // Explicit mutual exclusion for support group (Standard, Gold, Platinum)
+        if (isSupport && value === true) {
+            this.getAccessories()
+                .filter(acc => acc.group === 'support' && acc.id !== optionId && acc.type === 'boolean')
+                .forEach(acc => {
+                    newOptions[acc.id] = false;
+                });
+        }
+
+        newOptions[optionId] = value;
+
+        const newConfig = {
+            ...config,
+            options: newOptions
         };
 
-        // For boolean toggle logic (if UI sends toggle request without explicit value)
-        // If value passed is determined by UI, use it.
-        // But if UI sends "toggle this option", we need to know current state.
-        // WE assume caller sends the DESIRED value.
-
-        newConfig.options[optionId] = value;
         return this.applyRules(newConfig);
     }
 
@@ -201,6 +242,16 @@ export class ConfiguratorLogic {
         while (changed && iterations < 10) {
             changed = false;
             iterations++;
+
+            // Pass 1: Catalog-level 'requires' (e.g. for accessories)
+            for (const opt of this.catalog) {
+                if (opt.requires && currentConfig.options[opt.id] === true) {
+                    if (!this.isOptionAvailable(currentConfig, opt.id, true)) {
+                        currentConfig.options[opt.id] = false;
+                        changed = true;
+                    }
+                }
+            }
 
             for (const rule of this.rules) {
                 if (this.checkCondition(currentConfig, rule.when)) {
@@ -318,10 +369,36 @@ export class ConfiguratorLogic {
     }
 
     isOptionAvailable(config: Configuration, optionId: string, value: string | number | boolean): boolean {
-        // Check if `value` is in allowed_values for current model
+        // If it's a model-aware selection (not just boolean toggle)
         if (config.modelId) {
             const allowed = this.getAllowedValues(config.modelId, optionId);
-            if (!allowed.includes(value)) return false;
+            if (allowed.length > 0 && !allowed.includes(value)) return false;
+        }
+
+        // Check catalog-level requirements (e.g., for accessories)
+        // If requirements aren't met, the option cannot be set to 'true' (for booleans)
+        // or a specific value (for enums, though less common for accessories currently)
+        const option = this.getOption(optionId);
+        if (option?.requires && value === true) {
+            const req = option.requires;
+            if (req.chassis && !req.chassis.includes(config.options['chassis'] as string)) return false;
+            if (req.basket && !req.basket.includes(config.options['basket'] as string)) return false;
+            if (req.min_weight && config.options['min_weight'] !== req.min_weight) return false;
+            if (req.max_weight && config.options['max_weight'] !== req.max_weight) return false;
+
+            if (req.options) {
+                let anyMet = false;
+                const entries = Object.entries(req.options);
+                for (const [key, val] of entries) {
+                    const currentVal = config.options[key];
+                    if (Array.isArray(val)) {
+                        if (val.includes(currentVal)) { anyMet = true; break; }
+                    } else {
+                        if (currentVal === val) { anyMet = true; break; }
+                    }
+                }
+                if (!anyMet) return false;
+            }
         }
 
         return this.getConflictReasons(config, optionId, value).length === 0;
@@ -329,12 +406,65 @@ export class ConfiguratorLogic {
 
     generateCode(config: Configuration): string {
         if (!config.modelId) return '';
-        const parts = [config.modelId];
-        const keys = Object.keys(config.options).sort();
-        keys.forEach(k => {
-            parts.push(`${k}:${config.options[k]}`);
+
+        const models = this.getModels();
+        const modelIndex = models.findIndex(m => m.id === config.modelId);
+        if (modelIndex === -1) return '';
+
+        // Version 2: Positional Encoding
+        // [ModelIndex][OptionValueIndex1][OptionValueIndex2]...
+        // Using a custom char set for indices (0-9, a-z, A-Z)
+        const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        let code = 'V2' + alphabet[modelIndex];
+
+        this.catalog.forEach(opt => {
+            const allowed = this.getAllowedValues(config.modelId!, opt.id);
+            const value = config.options[opt.id];
+
+            if (value === undefined || value === null) {
+                code += '.'; // Placeholder for unset
+            } else {
+                const valIndex = allowed.findIndex(v => v === value);
+                if (valIndex === -1) {
+                    code += '.'; // Invalid value for this model
+                } else {
+                    code += alphabet[valIndex] || '?';
+                }
+            }
         });
-        return btoa(parts.join('|'));
+
+        return code;
+    }
+
+    parseCode(code: string): Configuration | null {
+        if (!code.startsWith('V2')) return null;
+
+        const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const models = this.getModels();
+
+        const modelChar = code[2];
+        const modelIndex = alphabet.indexOf(modelChar!);
+        if (modelIndex === -1 || !models[modelIndex]) return null;
+
+        const modelId = models[modelIndex].id;
+        const options: Record<string, string | number | boolean> = {};
+
+        const optionPart = code.substring(3);
+        this.catalog.forEach((opt, idx) => {
+            const valChar = optionPart[idx];
+            if (!valChar || valChar === '.') return;
+
+            const valIndex = alphabet.indexOf(valChar);
+            if (valIndex === -1) return;
+
+            const allowed = this.getAllowedValues(modelId, opt.id);
+            if (allowed[valIndex] !== undefined) {
+                options[opt.id] = allowed[valIndex]!;
+            }
+        });
+
+        return { modelId, options };
     }
 
     getMachineImage(config: Configuration): string {

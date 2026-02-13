@@ -294,6 +294,84 @@
         "value": true
       },
       "reason": "Vacuum Maintenance Kit requires Vacuum integration."
+    },
+    {
+      "rule_id": "fap_gold_excludes_standard",
+      "when": {
+        "option_id": "fap_gold",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_standard",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
+    },
+    {
+      "rule_id": "fap_gold_excludes_platinum",
+      "when": {
+        "option_id": "fap_gold",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_platinum",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
+    },
+    {
+      "rule_id": "fap_platinum_excludes_standard",
+      "when": {
+        "option_id": "fap_platinum",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_standard",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
+    },
+    {
+      "rule_id": "fap_platinum_excludes_gold",
+      "when": {
+        "option_id": "fap_platinum",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_gold",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
+    },
+    {
+      "rule_id": "fap_standard_excludes_gold",
+      "when": {
+        "option_id": "fap_standard",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_gold",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
+    },
+    {
+      "rule_id": "fap_standard_excludes_platinum",
+      "when": {
+        "option_id": "fap_standard",
+        "value": true
+      },
+      "effect": {
+        "type": "exclude",
+        "option_id": "fap_platinum",
+        "value": true
+      },
+      "reason": "Only one FAP tier allowed."
     }
   ]
 }

@@ -41,6 +41,14 @@
       "notes": null
     },
     {
+      "id": "arm_option",
+      "display_name": "Arm Option",
+      "type": "enum",
+      "group": "attributes",
+      "is_configurable": true,
+      "notes": null
+    },
+    {
       "id": "robot_ready",
       "display_name": "Robot Ready",
       "type": "boolean",
@@ -52,7 +60,7 @@
       "id": "automatic_lid",
       "display_name": "Automatic Lid",
       "type": "boolean",
-      "group": "automation",
+      "group": "advanced",
       "is_configurable": true,
       "notes": null
     },
@@ -177,44 +185,20 @@
       "notes": "Referenced in Precludes but not defined in source sheet."
     },
     {
-      "id": "extended_warranty",
-      "display_name": "Extended Warranty (2yr)",
-      "type": "boolean",
-      "group": "accessories",
+      "id": "min_weight",
+      "display_name": "Min System Weight",
+      "type": "index",
+      "group": "attributes",
       "is_configurable": true,
       "notes": null
     },
     {
-      "id": "c1d2_remote_switch",
-      "display_name": "C1D2 HazLoc Remote Toggle",
-      "type": "boolean",
-      "group": "accessories",
-      "is_configurable": true,
-      "notes": "Available only with C1D2 Certification."
-    },
-    {
-      "id": "stainless_basket_upgrade",
-      "display_name": "Stainless Steel Basket Upgrade",
-      "type": "boolean",
-      "group": "accessories",
+      "id": "max_weight",
+      "display_name": "Max System Weight",
+      "type": "index",
+      "group": "attributes",
       "is_configurable": true,
       "notes": null
-    },
-    {
-      "id": "robot_interface_cable",
-      "display_name": "Robot Integration Cable (10m)",
-      "type": "boolean",
-      "group": "accessories",
-      "is_configurable": true,
-      "notes": "Available only when Robot Ready is selected."
-    },
-    {
-      "id": "vacuum_pump_oil_kit",
-      "display_name": "Vacuum Maintenance Kit",
-      "type": "boolean",
-      "group": "accessories",
-      "is_configurable": true,
-      "notes": "Available only for Vacuum-integrated models."
     }
   ]
 }

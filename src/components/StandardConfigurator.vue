@@ -75,7 +75,7 @@ const machineImage = computed(() => {
 const machineName = computed(() => {
     if (!props.currentModelId) return 'Select Machine';
     const model = props.models.find(m => m.id === props.currentModelId);
-    if (!model) return 'Unknown Mixer';
+    if (!model) return 'Unknown FlackTek';
     
     let modelLabel = model.label;
     
@@ -94,7 +94,7 @@ const machineName = computed(() => {
         modelLabel += ' VAC';
     }
     
-    return `Mixer ${modelLabel}`;
+    return `FlackTek ${modelLabel}`;
 });
 
 const totalPrice = computed(() => {
@@ -263,6 +263,21 @@ const formatPrice = (price: number) => {
 </template>
 
 <style scoped>
+.configurator-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.summary-stick {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 .sidebar-preview {
     height: 180px; /* Further increased for portrait aspect ratio */
     display: flex;

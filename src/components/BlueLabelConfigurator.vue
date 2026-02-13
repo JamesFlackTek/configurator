@@ -41,7 +41,7 @@ const machineName = computed(() => {
     const model = props.models.find(m => m.id === props.currentModelId);
     let label = model?.label || 'Blue Label';
     if (props.configOptions['vacuum'] === true) label += ' VAC';
-    return `Mixer ${label}`;
+    return `FlackTek ${label}`;
 });
 
 const totalPrice = computed(() => {
@@ -93,8 +93,8 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
             </div>
             <p class="step-desc">Configure all machine aspects on a single screen. Your selections will dynamically update the machine identity and accessories eligibility.</p>
 
-            <!-- Row 1: Chassis & Vacuum -->
-            <div class="config-grid-section">
+            <!-- Row 1: Chassis, Vacuum & Voltage -->
+            <div class="config-grid-section three-col-grid">
                 <div class="spec-col">
                     <label class="config-code-label">Chassis Style</label>
                     <div class="options-grid vertical-stack">
@@ -129,10 +129,7 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Row 2: Voltage & Basket -->
-            <div class="config-grid-section mt-4">
                 <div class="spec-col">
                     <label class="config-code-label">Voltage Selection</label>
                     <div class="options-grid vertical-stack">
@@ -151,10 +148,32 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Row 2 & 3: Arm Option & Basket Size (Combined Row) -->
+            <div class="config-grid-section one-to-one-grid mt-4">
+                <div class="spec-col">
+                    <label class="config-code-label">Arm Option</label>
+                    <div class="options-grid checkbox-grid mt-2">
+                        <div 
+                            v-for="val in getAllowed('arm_option')" 
+                            :key="String(val)"
+                            class="glass-card option-card horizontal-layout"
+                            :class="{ 
+                                selected: isSelected('arm_option', val),
+                                disabled: !isAvailable('arm_option', val)
+                            }"
+                            @click="isAvailable('arm_option', val) && handleOptionChange('arm_option', val)"
+                        >
+                            <div class="option-name">{{ val }}</div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected('arm_option', val) }"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="spec-col">
                     <label class="config-code-label">Basket Size</label>
-                    <div class="options-grid checkbox-grid">
+                    <div class="options-grid checkbox-grid mt-2">
                         <div 
                             v-for="val in getAllowed('basket')" 
                             :key="String(val)"
@@ -176,13 +195,46 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                 </div>
             </div>
 
-            <!-- Row 3: Advanced Options & Certs -->
-            <div class="config-grid-section mt-4">
-                <div class="spec-col">
-                    <label class="config-code-label">Certifications</label>
+            <!-- Row 3: Weight Configuration (Full Width 4-Col) -->
+            <div class="config-grid-section mt-4 spec-4col-grid">
+                <div class="spec-col col-span-2">
+                    <label class="config-code-label">Min System Weight</label>
                     <div class="options-grid checkbox-grid">
                         <div 
-                            v-for="optId in ['ul_cert', 'ce_cert', 'c1d2']" 
+                            v-for="val in getAllowed('min_weight')" 
+                            :key="String(val)"
+                            class="glass-card option-card small-card"
+                            :class="{ selected: isSelected('min_weight', val) }"
+                            @click="handleOptionChange('min_weight', val)"
+                        >
+                            <div class="option-name">{{ val }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-col col-span-2">
+                    <label class="config-code-label">Max System Weight</label>
+                    <div class="options-grid checkbox-grid">
+                        <div 
+                            v-for="val in getAllowed('max_weight')" 
+                            :key="String(val)"
+                            class="glass-card option-card small-card"
+                            :class="{ selected: isSelected('max_weight', val) }"
+                            @click="handleOptionChange('max_weight', val)"
+                        >
+                            <div class="option-name">{{ val }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Advanced & Automation (50/50) -->
+            <div class="config-grid-section mt-4 spec-2col-grid">
+                <div class="spec-col">
+                    <label class="config-code-label">Advanced Features</label>
+                    <div class="options-grid vertical-stack">
+                        <div 
+                            v-for="optId in ['high_power', 'industrialized']" 
                             :key="optId"
                             class="glass-card option-card horizontal-layout"
                             :class="{ 
@@ -199,11 +251,33 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
 
                 <div class="spec-col">
                     <label class="config-code-label">Automation</label>
-                    <div class="options-grid checkbox-grid">
+                    <div class="options-grid vertical-stack">
                         <div 
                             v-for="optId in ['temp_monitoring', 'robot_ready', 'automatic_lid']" 
                             :key="optId"
                             class="glass-card option-card horizontal-layout"
+                            :class="{ 
+                                selected: isSelected(optId, true),
+                                disabled: !isAvailable(optId, true)
+                            }"
+                            @click="isAvailable(optId, true) && handleOptionChange(optId, !configOptions[optId])"
+                        >
+                             <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                             <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 5: Certifications (Full Width) -->
+            <div class="config-grid-section mt-4 spec-full-grid">
+                <div class="spec-col">
+                    <label class="config-code-label">Certifications</label>
+                    <div class="options-grid four-col-grid">
+                        <div 
+                            v-for="optId in ['ul_cert', 'ce_cert', 'c1d2']" 
+                            :key="optId"
+                            class="glass-card option-card horizontal-layout cert-card"
                             :class="{ 
                                 selected: isSelected(optId, true),
                                 disabled: !isAvailable(optId, true)
@@ -368,10 +442,103 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
     opacity: 1;
 }
 
+.configurator-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.summary-stick {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
 .specs-mini-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
+}
+
+.spec-2col-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3.5rem;
+    align-items: flex-start;
+}
+
+.spec-4col-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr !important;
+    gap: 2rem !important;
+}
+
+.spec-full-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100%;
+}
+
+.col-span-2 {
+    grid-column: span 2 !important;
+}
+
+.spec-col-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+}
+
+.weight-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.four-col-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem !important;
+    width: 100%;
+}
+
+.cert-card {
+    padding: 0.85rem 1.25rem !important;
+    font-size: 0.9rem !important;
+}
+
+.cert-card .option-name {
+    white-space: nowrap;
+}
+
+.sub-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.weight-sub-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.small-card {
+    min-width: 80px;
+    padding: 0.75rem !important;
+    text-align: center;
+    justify-content: center !important;
+    min-height: auto !important;
 }
 
 .vertical-stack {
@@ -440,6 +607,14 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 0.5rem;
+}
+
+.three-col-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+.one-to-one-grid {
+    grid-template-columns: 1fr 1fr !important;
 }
 
 .reset-link-btn {

@@ -114,6 +114,108 @@
                 ]
             },
             "reason": "120, 220, 208/240 are not available on Large chassis."
+        },
+        {
+            "rule_id": "exclude_xl_arms_for_medium_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "arm_option",
+                "value": [
+                    "1200 Twin",
+                    "2800 Adjustable",
+                    "2800 Fixed",
+                    "Large Twin"
+                ]
+            },
+            "reason": "XL arms are not available on Medium chassis."
+        },
+        {
+            "rule_id": "exclude_large_twin_for_medium_plus_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Medium +"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "arm_option",
+                "value": "Large Twin"
+            },
+            "reason": "Large Twin arm requires Large chassis."
+        },
+        {
+            "rule_id": "exclude_standard_arms_for_large_chassis_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": "Large"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "arm_option",
+                "value": [
+                    "1200 Standard",
+                    "1200/1400 Adjustable",
+                    "1400 Fixed",
+                    "1200 Twin",
+                    "2800 Adjustable",
+                    "2800 Fixed"
+                ]
+            },
+            "reason": "Large chassis is only compatible with Large Twin arm."
+        },
+        {
+            "rule_id": "high_power_voltage_requirement",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "high_power",
+                "value": true
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "voltage",
+                "value": [
+                    "120",
+                    "220"
+                ]
+            },
+            "reason": "High Power requires 208/240V or 208V 3-Phase on Medium/Medium+ chassis."
+        },
+        {
+            "rule_id": "industrialized_only_for_medium_chassis",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "chassis",
+                "value": [
+                    "Medium +",
+                    "Large"
+                ]
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "industrialized",
+                "value": true
+            },
+            "reason": "Industrialized option is only available on Medium chassis."
+        },
+        {
+            "rule_id": "industrialized_only_for_non_vacuum",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "vacuum",
+                "value": true
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "industrialized",
+                "value": true
+            },
+            "reason": "Industrialized option is only available on non-vacuum configurations."
         }
     ]
 }
