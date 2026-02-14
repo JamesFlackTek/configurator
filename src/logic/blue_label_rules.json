@@ -216,6 +216,24 @@
                 "value": true
             },
             "reason": "Industrialized option is only available on non-vacuum configurations."
+        },
+        {
+            "rule_id": "exclude_incompatible_baskets_for_1200_twin_arm_blue_label",
+            "when": {
+                "model_id": "blue_label",
+                "option_id": "arm_option",
+                "value": "1200 Twin"
+            },
+            "effect": {
+                "type": "exclude",
+                "option_id": "basket",
+                "value": [
+                    "1400",
+                    "2000",
+                    "2800"
+                ]
+            },
+            "reason": "The 1200 Twin arm is not compatible with 1400, 2000, or 2800 baskets on the Blue Label machine."
         }
     ]
 }

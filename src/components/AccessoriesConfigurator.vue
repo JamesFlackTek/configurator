@@ -9,7 +9,7 @@ const props = defineProps<{
     configOptions: Record<string, string | number | boolean>;
 }>();
 
-const emit = defineEmits(['optionChange', 'back']);
+const emit = defineEmits(['optionChange', 'back', 'complete']);
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
@@ -136,7 +136,9 @@ const handleEnumChange = (optionId: string, event: Event) => {
                     ← Back to Machine Config
                 </button>
                 <div class="summary-total-hint">
-                    Total: <span class="accent">{{ formatPrice(logic.getTotalPrice({ modelId: currentModelId, options: configOptions })) }}</span>
+                    <button class="primary-btn add-to-cart-btn" @click="emit('complete')">
+                        Next: Add to Cart →
+                    </button>
                 </div>
             </div>
         </main>
@@ -276,6 +278,21 @@ const handleEnumChange = (optionId: string, event: Event) => {
 
 .accent {
     color: var(--accent-primary);
+}
+
+.primary-btn {
+    background: var(--accent-primary);
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
 }
 
 .disabled {

@@ -1,4 +1,56 @@
 {
+  "models": [
+    {
+      "id": "330_100",
+      "label": "330-100",
+      "description": "Process ≤ 100g of Material using Containers up to 330 mL."
+    },
+    {
+      "id": "515_200",
+      "label": "515-200",
+      "description": "Process 100-200g of Material using Containers up to 515 mL."
+    },
+    {
+      "id": "1200_xxx",
+      "label": "1200-XXX",
+      "description": "Process 100-700g of Material using Containers up to 1200 mL."
+    },
+    {
+      "id": "1400_xxxx",
+      "label": "1400-XXXX",
+      "description": "Process 200-1000g of Material using Containers up to 1400 mL."
+    },
+    {
+      "id": "1200_xxx_twin",
+      "label": "1200-XXX Twin",
+      "description": "Process 200-1000g of Material using Two Containers up to 1200 mL."
+    },
+    {
+      "id": "2000_xxxx",
+      "label": "2000-XXXX",
+      "description": "Process 300-1000g of Material using Containers up to 2000 mL."
+    },
+    {
+      "id": "2800_xxxx",
+      "label": "2800-XXXX",
+      "description": "Process 300-1000g of Material using Containers up to 2800 mL."
+    },
+    {
+      "id": "large_twin",
+      "label": "Large Twin",
+      "description": "Process 5-20kg of Material using Containers up to 5 gallons."
+    },
+    {
+      "id": "blue_label",
+      "label": "Blue Label",
+      "description": "Customize Your FlackTek"
+    },
+    {
+      "id": "bt_speed_dispsense",
+      "label": "Benchtop Speed Dispsense",
+      "description": "Dispense Materials from the SpeedDispense Container"
+    }
+  ],
   "options": [
     {
       "id": "chassis",

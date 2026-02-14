@@ -4,12 +4,25 @@ import { ConfiguratorLogic, type Configuration } from './logic/configurator';
 import StandardConfigurator from './components/StandardConfigurator.vue';
 import BlueLabelConfigurator from './components/BlueLabelConfigurator.vue';
 import AccessoriesConfigurator from './components/AccessoriesConfigurator.vue';
+import CartView from './components/CartView.vue';
+import { type Capability } from './logic/configurator';
 
 const logic = new ConfiguratorLogic();
 
+interface CartItem {
+  id: string;
+  config: Configuration;
+}
+
 const currentModelId = ref<string | null>(null);
-const currentView = ref<'machine' | 'accessories'>('machine');
+const currentView = ref<'catalog' | 'machine' | 'accessories' | 'cart'>('catalog');
 const configOptions = ref<Record<string, string | number | boolean>>({});
+const cart = ref<CartItem[]>([]);
+const editingItemId = ref<string | null>(null);
+
+const cartTotal = computed(() => {
+  return cart.value.reduce((total, item) => total + logic.getTotalPrice(item.config), 0);
+});
 
 // Initialize models
 const models = computed(() => logic.getModels());
@@ -20,6 +33,7 @@ const handleModelSelect = (modelId: string) => {
   // Reset options to defaults for this model
   const initialConfig = logic.createInitialConfig(modelId);
   configOptions.value = initialConfig.options;
+  editingItemId.value = null;
 };
 
 const handleOptionChange = (data: { optionId: string; value: string | number | boolean }) => {
@@ -36,7 +50,7 @@ const handleOptionChange = (data: { optionId: string; value: string | number | b
 
 const handleReset = () => {
     currentModelId.value = null;
-    currentView.value = 'machine';
+    currentView.value = 'catalog';
     configOptions.value = {};
 };
 
@@ -46,66 +60,229 @@ const handleResetOptions = () => {
     configOptions.value = initialConfig.options;
 };
 
-// Select first model on mount
-onMounted(() => {
-    if (models.value.length > 0) {
-        handleModelSelect(models.value[0]!.id);
+const handleAddToCart = () => {
+  if (!currentModelId.value) return;
+
+  const config: Configuration = {
+    modelId: currentModelId.value,
+    options: { ...configOptions.value }
+  };
+
+  if (editingItemId.value) {
+    const index = cart.value.findIndex(item => item.id === editingItemId.value);
+    if (index !== -1) {
+      cart.value[index]!.config = config;
     }
+    editingItemId.value = null;
+  } else {
+    cart.value.push({
+      id: crypto.randomUUID(),
+      config
+    });
+  }
+
+  currentView.value = 'cart';
+};
+
+const handleRemoveFromCart = (itemId: string) => {
+  cart.value = cart.value.filter(item => item.id !== itemId);
+};
+
+const handleEditCartItem = (itemId: string) => {
+  const item = cart.value.find(i => i.id === itemId);
+  if (item) {
+    currentModelId.value = item.config.modelId;
+    configOptions.value = { ...item.config.options };
+    editingItemId.value = itemId;
+    currentView.value = 'machine';
+  }
+};
+
+const handleNewMachine = () => {
+  currentModelId.value = null;
+  configOptions.value = {};
+  editingItemId.value = null;
+  currentView.value = 'catalog';
+};
+
+// Select first model on mount (Optional: keep as catalog redirect?)
+onMounted(() => {
+    // We start at 'catalog' view by default now
 });
 </script>
 
 <template>
   <div class="container fade-in">
-    <header>
-      <h1>Machine Configurator</h1>
-      <p style="color: var(--text-secondary); margin-bottom: 2rem;">Configure your industrial mixing solution.</p>
+    <header class="app-nav">
+      <div class="nav-content">
+        <div class="logo">
+          <h1>FlackTek Configurator</h1>
+        </div>
+        <nav class="nav-links">
+          <button @click="currentView = 'catalog'" :class="{ active: currentView === 'catalog' }">Catalog</button>
+          <button @click="currentView = 'cart'" :class="{ active: currentView === 'cart' }">
+            Cart 
+            <span v-if="cart.length > 0" class="cart-badge">{{ cart.length }}</span>
+          </button>
+        </nav>
+      </div>
     </header>
 
-    <template v-if="currentModelId === 'blue_label'">
-        <BlueLabelConfigurator 
-            v-if="currentView === 'machine'"
-            :logic="logic"
-            :models="models"
-            :current-model-id="currentModelId"
-            :config-options="configOptions"
-            @option-change="handleOptionChange"
-            @reset="handleReset"
-            @reset-options="handleResetOptions"
-            @continue="currentView = 'accessories'"
+    <div class="view-container">
+      <template v-if="currentView === 'catalog'">
+        <div class="catalog-view fade-in">
+          <h2 class="category-title">Select a Machine</h2>
+          <p class="step-desc">Choose the base model to start your configuration.</p>
+          <div class="options-grid">
+            <div 
+              v-for="model in models" 
+              :key="model.id" 
+              class="glass-card option-card horizontal-card"
+              @click="handleModelSelect(model.id)"
+            >
+              <div class="option-info">
+                <div class="option-name">{{ model.label }}</div>
+                <div class="option-desc">{{ model.description }}</div>
+                <div class="option-price">Starting at {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(model.price || 0) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template v-else-if="currentView === 'cart'">
+        <CartView 
+          :cart="cart"
+          :logic="logic"
+          @edit="handleEditCartItem"
+          @remove="handleRemoveFromCart"
+          @new-machine="handleNewMachine"
         />
-        <AccessoriesConfigurator
-            v-else
-            :logic="logic"
-            :current-model-id="currentModelId"
-            :config-options="configOptions"
-            @option-change="handleOptionChange"
-            @back="currentView = 'machine'"
-        />
-    </template>
-    <template v-else>
-        <StandardConfigurator 
-            v-if="currentView === 'machine'"
-            :logic="logic"
-            :models="models"
-            :current-model-id="currentModelId"
-            :config-options="configOptions"
-            @model-select="handleModelSelect"
-            @option-change="handleOptionChange"
-            @continue="currentView = 'accessories'"
-        />
-        <AccessoriesConfigurator
-            v-else
-            :logic="logic"
-            :current-model-id="currentModelId!"
-            :config-options="configOptions"
-            @option-change="handleOptionChange"
-            @back="currentView = 'machine'"
-        />
-    </template>
+      </template>
+
+      <template v-else-if="currentModelId === 'blue_label'">
+          <BlueLabelConfigurator 
+              v-if="currentView === 'machine'"
+              :logic="logic"
+              :models="models"
+              :current-model-id="currentModelId"
+              :config-options="configOptions"
+              @option-change="handleOptionChange"
+              @reset="handleReset"
+              @reset-options="handleResetOptions"
+              @continue="currentView = 'accessories'"
+          />
+          <AccessoriesConfigurator
+              v-else
+              :logic="logic"
+              :current-model-id="currentModelId"
+              :config-options="configOptions"
+              @option-change="handleOptionChange"
+              @back="currentView = 'machine'"
+              @complete="handleAddToCart"
+          />
+      </template>
+      <template v-else>
+          <StandardConfigurator 
+              v-if="currentView === 'machine'"
+              :logic="logic"
+              :models="models"
+              :current-model-id="currentModelId"
+              :config-options="configOptions"
+              @model-select="handleModelSelect"
+              @option-change="handleOptionChange"
+              @continue="currentView = 'accessories'"
+          />
+          <AccessoriesConfigurator
+              v-else
+              :logic="logic"
+              :current-model-id="currentModelId!"
+              :config-options="configOptions"
+              @option-change="handleOptionChange"
+              @back="currentView = 'machine'"
+              @complete="handleAddToCart"
+          />
+      </template>
+    </div>
   </div>
 </template>
 
 <style>
+/* App Navigation Styles */
+.app-nav {
+  border-bottom: 1px solid var(--border-glass);
+  background: rgba(10, 12, 16, 0.8);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo h1 {
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-links button:hover, .nav-links button.active {
+  color: var(--text-primary);
+}
+
+.nav-links button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-primary);
+}
+
+.cart-badge {
+  background: var(--accent-primary);
+  color: #000;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.view-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
 /* Reusing existing styles */
 .custom-select {
   width: 100%;

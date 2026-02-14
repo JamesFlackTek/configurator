@@ -42,6 +42,13 @@ export interface RuleCondition {
     model_id?: string;
 }
 
+export interface ModelMetadata {
+    id: string;
+    label: string;
+    description: string;
+    price?: number;
+}
+
 export interface RuleEffect {
     type: 'require' | 'exclude';
     option_id: string;
@@ -70,6 +77,7 @@ export class ConfiguratorLogic {
     private machineCatalog: CatalogOption[];
     private accessoriesCatalog: CatalogOption[];
     private modelPrices: Record<string, Record<string, number>>;
+    private modelMetadata: ModelMetadata[];
     private rules: Rule[];
 
     constructor() {
@@ -79,6 +87,7 @@ export class ConfiguratorLogic {
         ] as Capability[];
 
         this.machineCatalog = machineCatalogData.options as CatalogOption[];
+        this.modelMetadata = (machineCatalogData as any).models as ModelMetadata[];
         this.modelPrices = (machineCatalogData as any).model_prices || {};
         this.accessoriesCatalog = accessoriesCatalogData.accessories as CatalogOption[];
 
@@ -95,40 +104,19 @@ export class ConfiguratorLogic {
 
     // --- Model Management ---
 
-    getModels(): { id: string; label: string; description?: string; price?: number }[] {
-        const models = new Map<string, string>();
-        for (const cap of this.capabilities) {
-            if (!models.has(cap.model_id)) {
-                models.set(cap.model_id, cap.model_label);
-            }
-        }
-        // Metadata for models which isn't in capabilities.json - we might need a mapping or just hardcode for now
-        // Or cleaner: check if 'catalog.json' has model definitions? No.
-        // I will add some hardcoded metadata for display purposes for now, or derive from existing knowlege
-        return Array.from(models.entries()).map(([id, label]) => ({
-            id,
-            label,
-            description: this.getModelDescription(id),
-            price: this.getModelBasePrice(id)
+    getModels(): ModelMetadata[] {
+        return this.modelMetadata.map(model => ({
+            ...model,
+            price: this.getModelBasePrice(model.id)
         }));
     }
 
-    private getModelDescription(id: string): string {
-        if (id === '330_100') return 'Compact mixing for small batches.';
-        if (id === '515_200') return 'Compact mixing for medium batches.';
-        if (id.startsWith('1200')) return 'Versatile mid-range performance.';
-        if (id.startsWith('1400')) return 'Extended capacity mid-range.';
-        if (id.startsWith('2000')) return 'High-volume industrial mixing.';
-        if (id === 'large_twin') return 'High-volume twin mixing.';
-        if (id === 'blue_label') return 'Premium advanced configurations.';
-        return '';
-    }
 
     public getModelBasePrice(id: string | null, variant?: string): number {
         if (!id) return 0;
 
         let targetVariant = variant;
-        
+
         // If no variant provided, try to find a default one from capabilities
         if (!targetVariant) {
             const variantCap = this.capabilities.find(c => c.model_id === id && c.option_id === 'model_variant');
@@ -138,8 +126,10 @@ export class ConfiguratorLogic {
         }
 
         // 1. Check for model+variant specific price from machine_catalog.json
-        if (targetVariant && this.modelPrices[id] && this.modelPrices[id][targetVariant] !== undefined) {
-            return this.modelPrices[id][targetVariant];
+        const pricesForModel = this.modelPrices[id];
+        if (targetVariant && pricesForModel) {
+            const price = pricesForModel[targetVariant];
+            if (price !== undefined) return price;
         }
 
         // 2. Check if we have dynamic capability for base price
@@ -330,7 +320,7 @@ export class ConfiguratorLogic {
         // Chassis-based pricing (for options like ul_cert)
         if (typeof price === 'object' && config) {
             let chassis = config.options['chassis'] as string;
-            
+
             // For standard machines, determine chassis from model ID
             if (!chassis && config.modelId) {
                 const modelId = config.modelId;
@@ -342,7 +332,7 @@ export class ConfiguratorLogic {
                     chassis = 'large';
                 }
             }
-            
+
             if (chassis && price[chassis] !== undefined) {
                 price = price[chassis];
             } else {
