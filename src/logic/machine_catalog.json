@@ -284,6 +284,119 @@
       "is_configurable": true,
       "notes": null,
       "price": 0
+    },
+    {
+      "id": "fap_standard",
+      "display_name": "FAP Standard",
+      "type": "boolean",
+      "group": "support",
+      "is_configurable": true,
+      "notes": "Standard factory protection (included).",
+      "price": 0
+    },
+    {
+      "id": "fap_gold",
+      "display_name": "FAP Gold",
+      "type": "boolean",
+      "group": "support",
+      "is_configurable": true,
+      "notes": "Enhanced protection with faster response.",
+      "price": 500
+    },
+    {
+      "id": "fap_platinum",
+      "display_name": "FAP Platinum",
+      "type": "boolean",
+      "group": "support",
+      "is_configurable": true,
+      "notes": "Comprehensive top-tier coverage.",
+      "price": 1000
+    },
+    {
+      "id": "fap_warranty_years",
+      "display_name": "FAP Warranty Duration",
+      "type": "enum",
+      "group": "support",
+      "is_configurable": true,
+      "notes": "Select coverage period (1-5 years).",
+      "requires": {
+        "options": {
+          "fap_gold": true,
+          "fap_platinum": true
+        }
+      },
+      "price": 0
+    },
+    {
+      "id": "medium_cart",
+      "display_name": "Medium Cart",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": "",
+      "requires": {
+        "options": {
+          "chassis": "Medium"
+        }
+      },
+      "price": 0
+    },
+    {
+      "id": "vacuum_pump_65",
+      "display_name": "Vacuum Pump - 65 L/min",
+      "type": "boolean",
+      "group": "vacuum_pumps",
+      "requires": {
+        "options": {
+          "vacuum": true
+        }
+      },
+      "price": 0
+    },
+    {
+      "id": "vacuum_pump_100",
+      "display_name": "Vacuum Pump - 100 L/min",
+      "type": "boolean",
+      "group": "vacuum_pumps",
+      "requires": {
+        "options": {
+          "vacuum": true
+        }
+      },
+      "price": 0
+    },
+    {
+      "id": "vacuum_pump_175",
+      "display_name": "Vacuum Pump - 175 L/min",
+      "type": "boolean",
+      "group": "vacuum_pumps",
+      "requires": {
+        "options": {
+          "vacuum": true
+        }
+      },
+      "price": 0
+    },
+    {
+      "id": "mobile_stand_medium_plus",
+      "display_name": "Medium + Cart",
+      "type": "boolean",
+      "group": "accessories",
+      "requires": {
+        "chassis": [
+          "Medium +"
+        ]
+      },
+      "price": 0
+    },
+    {
+      "id": "aux_box",
+      "display_name": "Aux Box",
+      "type": "boolean",
+      "group": "accessories",
+      "is_configurable": true,
+      "notes": "Additional auxiliary control box.",
+      "price": 0
     }
   ],
   "model_prices": {

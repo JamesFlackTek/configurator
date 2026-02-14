@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { } from 'vue';
 import { type ConfiguratorLogic, type Configuration, type CatalogOption } from '../logic/configurator';
 import ConfigurationSummary from './ConfigurationSummary.vue';
 
@@ -38,13 +38,6 @@ const getOptionLabel = (id: string) => {
     return opt ? opt.display_name : id;
 };
 
-const machineImage = computed(() => {
-    return props.logic.getMachineImage({ modelId: props.currentModelId, options: props.configOptions });
-});
-
-const machineName = computed(() => {
-    return props.logic.getConfigurationName({ modelId: props.currentModelId, options: props.configOptions });
-});
 
 
 
@@ -320,11 +313,73 @@ const isAvailable = (optionId: string, value: string | number | boolean) => {
                 </div>
             </div>
 
+            <!-- Support & Accessories (Merged) -->
+            <div class="config-grid-section mt-4 spec-2col-grid">
+                <!-- Support -->
+                <div class="spec-col">
+                    <label class="config-code-label">Support & Protection</label>
+                    <div class="options-grid vertical-stack">
+                        <template v-for="optId in ['fap_standard', 'fap_gold', 'fap_platinum', 'fap_warranty_years']" :key="optId">
+                            <div v-if="logic.getOption(optId) && (logic.getOption(optId)!.type === 'boolean' ? getAllowed(optId).includes(true) : getAllowed(optId).length > 0)"
+                                class="glass-card option-card horizontal-layout small-card" 
+                                :class="{ 
+                                    selected: logic.getOption(optId)!.type === 'boolean' ? isSelected(optId, true) : false,
+                                    disabled: !isAvailable(optId, logic.getOption(optId)!.type === 'boolean' ? true : (getAllowed(optId)[0] ?? ''))
+                                }"
+                                @click="logic.getOption(optId)!.type === 'boolean' ? handleOptionChange(optId, !configOptions[optId]) : null"
+                            >
+                                <div class="option-info">
+                                    <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                    <div class="option-price-hint" v-if="logic.getOption(optId)!.type === 'boolean' && logic.getOptionPrice(optId, true) > 0">
+                                        +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                    </div>
+                                    <div v-if="logic.getOption(optId)!.type === 'enum' || logic.getOption(optId)!.type === 'index'" class="mt-2">
+                                        <select 
+                                            :value="configOptions[optId]" 
+                                            @change="handleOptionChange(optId, ($event.target as HTMLSelectElement).value)"
+                                            class="custom-select"
+                                            style="margin-top: 0;"
+                                        >
+                                            <option v-for="val in getAllowed(optId)" :key="String(val)" :value="val">
+                                                {{ val }} {{ optId === 'fap_warranty_years' ? (val === 1 ? 'Year' : 'Years') : '' }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div v-if="logic.getOption(optId)!.type === 'boolean'" class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Accessories & Vacuum Pumps -->
+                <div class="spec-col">
+                    <label class="config-code-label">Options & Accessories</label>
+                    <div class="options-grid vertical-stack">
+                        <template v-for="optId in ['aux_box', 'label_printer', 'medium_cart', 'mobile_stand_medium_plus', 'vacuum_pump_65', 'vacuum_pump_100', 'vacuum_pump_175']" :key="optId">
+                            <div v-if="logic.getOption(optId) && isAvailable(optId, true)"
+                                class="glass-card option-card horizontal-layout small-card"
+                                :class="{ selected: isSelected(optId, true) }"
+                                @click="handleOptionChange(optId, !configOptions[optId])"
+                            >
+                                <div class="option-info">
+                                    <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                    <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                        +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                    </div>
+                                </div>
+                                <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
             <div class="step-nav-footer">
                 <button class="nav-btn prev" @click="emit('reset')">← Back to Standard Machines</button>
                 <div style="flex-grow: 1;"></div>
                 <button class="nav-btn next premium-btn" @click="emit('continue')">
-                    Continue to Accessories
+                    Add to Cart
                     <span class="btn-arrow">→</span>
                 </button>
             </div>

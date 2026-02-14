@@ -6,6 +6,7 @@ import ConfigurationSummary from './ConfigurationSummary.vue';
 const props = defineProps<{
     logic: ConfiguratorLogic;
     currentModelId: string;
+    machineConfig?: Configuration; // New prop for scoped management
     configOptions: Record<string, string | number | boolean>;
 }>();
 
@@ -15,25 +16,20 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 };
 
-const formatValue = (val: any): string => {
-  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
-  return String(val);
-};
-
 const groupedAccessories = computed(() => {
     const all = props.logic.getAccessories();
     const groups: Record<string, any[]> = {};
     
     all.forEach(opt => {
-        let visible = false;
+        let available = false;
         if (opt.type === 'boolean') {
-            visible = isAvailable(opt.id, true) || isAvailable(opt.id, false);
+            available = isAvailable(opt.id, true);
         } else {
             const allowed = props.logic.getAllowedValues(props.currentModelId, opt.id);
-            visible = allowed.length > 0;
+            available = allowed.some(val => isAvailable(opt.id, val));
         }
 
-        if (visible) {
+        if (available) {
             const groupName = opt.group.charAt(0).toUpperCase() + opt.group.slice(1);
             if (!groups[groupName]) {
                 groups[groupName] = [];
@@ -45,6 +41,19 @@ const groupedAccessories = computed(() => {
     return groups;
 });
 
+const getQuantity = (optionId: string) => {
+    const val = props.configOptions[optionId];
+    if (typeof val === 'number') return val;
+    if (val === true) return 1;
+    return 0;
+};
+
+const updateQuantity = (optionId: string, delta: number) => {
+    const current = getQuantity(optionId);
+    const next = Math.max(0, current + delta);
+    emit('optionChange', { optionId, value: next === 0 ? false : next });
+};
+
 const isEnumAvailable = (optionId: string) => {
     if (optionId === 'fap_warranty_years' && props.configOptions['fap_standard'] === true) return false;
     
@@ -52,16 +61,16 @@ const isEnumAvailable = (optionId: string) => {
     return allowed.some(val => isAvailable(optionId, val));
 };
 
-const isSelected = (optionId: string, value: string | number | boolean) => {
-  return props.configOptions[optionId] === value;
-};
 
 const isAvailable = (optionId: string, value: string | number | boolean) => {
-  const tempConfig: Configuration = {
+  // If we have a machineConfig (from cart context), use it for compatibility checks
+  // Otherwise, use a default fallback (if we were still using the old flow, which we aren't)
+  const baseConfig = props.machineConfig || {
     modelId: props.currentModelId,
-    options: { ...props.configOptions }
+    options: {}
   };
-  return props.logic.isOptionAvailable(tempConfig, optionId, value);
+
+  return props.logic.isOptionAvailable(baseConfig, optionId, value);
 };
 
 const handleEnumChange = (optionId: string, event: Event) => {
@@ -86,21 +95,26 @@ const handleEnumChange = (optionId: string, event: Event) => {
                         <!-- Boolean Accessories -->
                         <div 
                             v-if="opt.type === 'boolean'"
-                            class="glass-card option-card accessory-card"
-                            :class="{ 
-                                selected: isSelected(opt.id, true),
-                                disabled: opt.group !== 'support' && !isAvailable(opt.id, true) && !isSelected(opt.id, true)
-                            }"
-                            @click="(opt.group === 'support' || isAvailable(opt.id, !configOptions[opt.id])) && emit('optionChange', { optionId: opt.id, value: !configOptions[opt.id] })"
+                            class="glass-card option-card accessory-card quantity-card"
+                            :class="{ selected: getQuantity(opt.id) > 0 }"
                         >
                             <div class="option-info">
                                 <div class="option-name">{{ opt.display_name }}</div>
                                 <div class="option-price-hint" v-if="opt.price !== undefined">
                                     +{{ formatPrice(opt.price) }}
                                 </div>
+                                <div class="option-details mt-1" v-if="(opt as any).fts_pn || (opt as any).accessory_mass">
+                                    <span v-if="(opt as any).fts_pn" class="badge">FTS: {{ (opt as any).fts_pn }}</span>
+                                    <span v-if="(opt as any).accessory_mass && (opt as any).accessory_mass !== '0'" class="badge">Mass: {{ (opt as any).accessory_mass }}g</span>
+                                </div>
                                 <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
                             </div>
-                            <div class="custom-checkbox" :class="{ checked: isSelected(opt.id, true) }"></div>
+                            
+                            <div class="quantity-controls">
+                                <button class="qty-btn" @click.stop="updateQuantity(opt.id, -1)">-</button>
+                                <span class="qty-value">{{ getQuantity(opt.id) }}</span>
+                                <button class="qty-btn" @click.stop="updateQuantity(opt.id, 1)">+</button>
+                            </div>
                         </div>
 
                         <!-- Enum Accessories (Dropdowns) -->
@@ -112,6 +126,10 @@ const handleEnumChange = (optionId: string, event: Event) => {
                             <div class="option-info">
                                 <div class="option-name">{{ opt.display_name }}</div>
                                 <div class="option-desc" v-if="opt.notes">{{ opt.notes }}</div>
+                                <div class="option-details mt-1" v-if="(opt as any).fts_pn || (opt as any).accessory_mass">
+                                    <span v-if="(opt as any).fts_pn" class="badge">FTS: {{ (opt as any).fts_pn }}</span>
+                                    <span v-if="(opt as any).accessory_mass && (opt as any).accessory_mass !== '0'" class="badge">Mass: {{ (opt as any).accessory_mass }}g</span>
+                                </div>
                                 <div class="dropdown-wrapper">
                                     <select 
                                         :value="configOptions[opt.id]" 
@@ -133,11 +151,11 @@ const handleEnumChange = (optionId: string, event: Event) => {
 
             <div class="actions-footer">
                 <button class="nav-btn back" @click="emit('back')">
-                    ← Back to Machine Config
+                    ← {{ machineConfig ? 'Return to Cart' : 'Back to Machine Config' }}
                 </button>
                 <div class="summary-total-hint">
                     <button class="primary-btn add-to-cart-btn" @click="emit('complete')">
-                        Next: Add to Cart →
+                        {{ machineConfig ? 'Return to Cart' : 'Next: Add to Cart' }} →
                     </button>
                 </div>
             </div>
@@ -145,6 +163,13 @@ const handleEnumChange = (optionId: string, event: Event) => {
 
         <aside class="summary-stick">
             <ConfigurationSummary 
+                v-if="machineConfig"
+                :logic="logic" 
+                :config="machineConfig"
+                :accessories="configOptions"
+            />
+            <ConfigurationSummary 
+                v-else
                 :logic="logic" 
                 :config="{ modelId: currentModelId, options: configOptions }" 
             />
@@ -165,6 +190,7 @@ const handleEnumChange = (optionId: string, event: Event) => {
     font-weight: 800;
     margin-bottom: 0.5rem;
     background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -223,6 +249,19 @@ const handleEnumChange = (optionId: string, event: Event) => {
 .dropdown-card {
     cursor: default;
 }
+.option-details {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: var(--text-secondary);
+}
 
 .dropdown-wrapper {
     margin-top: 1rem;
@@ -237,6 +276,45 @@ const handleEnumChange = (optionId: string, event: Event) => {
     padding: 0.5rem;
     outline: none;
     cursor: pointer;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.4rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.qty-btn:hover {
+    background: var(--accent-primary);
+    color: black;
+}
+
+.qty-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    min-width: 1.5rem;
+    text-align: center;
 }
 
 .summary-stick {

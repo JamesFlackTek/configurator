@@ -5,13 +5,14 @@ import StandardConfigurator from './components/StandardConfigurator.vue';
 import BlueLabelConfigurator from './components/BlueLabelConfigurator.vue';
 import AccessoriesConfigurator from './components/AccessoriesConfigurator.vue';
 import CartView from './components/CartView.vue';
-import { type Capability } from './logic/configurator';
 
 const logic = new ConfiguratorLogic();
 
 interface CartItem {
   id: string;
-  config: Configuration;
+  machineConfig: Configuration;
+  quantity: number;
+  accessories: Record<string, number>;
 }
 
 const currentModelId = ref<string | null>(null);
@@ -19,10 +20,8 @@ const currentView = ref<'catalog' | 'machine' | 'accessories' | 'cart'>('catalog
 const configOptions = ref<Record<string, string | number | boolean>>({});
 const cart = ref<CartItem[]>([]);
 const editingItemId = ref<string | null>(null);
+const activeCartItemId = ref<string | null>(null);
 
-const cartTotal = computed(() => {
-  return cart.value.reduce((total, item) => total + logic.getTotalPrice(item.config), 0);
-});
 
 // Initialize models
 const models = computed(() => logic.getModels());
@@ -60,10 +59,15 @@ const handleResetOptions = () => {
     configOptions.value = initialConfig.options;
 };
 
+// Persistence
+const saveCart = () => {
+    localStorage.setItem('flacktek_cart', JSON.stringify(cart.value));
+};
+
 const handleAddToCart = () => {
   if (!currentModelId.value) return;
 
-  const config: Configuration = {
+  const machineConfig: Configuration = {
     modelId: currentModelId.value,
     options: { ...configOptions.value }
   };
@@ -71,28 +75,102 @@ const handleAddToCart = () => {
   if (editingItemId.value) {
     const index = cart.value.findIndex(item => item.id === editingItemId.value);
     if (index !== -1) {
-      cart.value[index]!.config = config;
+      cart.value[index]!.machineConfig = machineConfig;
     }
     editingItemId.value = null;
   } else {
-    cart.value.push({
-      id: crypto.randomUUID(),
-      config
+    // Check for identical configuration to merge
+    const existingIndex = cart.value.findIndex(item => {
+        return item.machineConfig.modelId === machineConfig.modelId && 
+               JSON.stringify(item.machineConfig.options) === JSON.stringify(machineConfig.options);
     });
+
+    if (existingIndex !== -1) {
+        cart.value[existingIndex]!.quantity += 1;
+    } else {
+        cart.value.push({
+          id: crypto.randomUUID(),
+          machineConfig,
+          quantity: 1,
+          accessories: {}
+        });
+    }
   }
 
+  saveCart();
   currentView.value = 'cart';
+};
+
+const handleManageAccessories = (itemId: string) => {
+    const item = cart.value.find(i => i.id === itemId);
+    if (item) {
+        activeCartItemId.value = itemId;
+        currentModelId.value = item.machineConfig.modelId;
+        configOptions.value = { ...item.accessories };
+        currentView.value = 'accessories';
+    }
+};
+
+const handleUpdateAccessories = (data: { optionId: string, value: any }) => {
+    if (activeCartItemId.value) {
+        const item = cart.value.find(i => i.id === activeCartItemId.value);
+        if (item) {
+            if (data.value === false || data.value === 0) {
+                delete item.accessories[data.optionId];
+            } else {
+                item.accessories[data.optionId] = data.value;
+            }
+            configOptions.value = { ...item.accessories };
+            saveCart();
+        }
+    }
+};
+
+const handleCompleteAccessories = () => {
+    activeCartItemId.value = null;
+    currentView.value = 'cart';
 };
 
 const handleRemoveFromCart = (itemId: string) => {
   cart.value = cart.value.filter(item => item.id !== itemId);
+  saveCart();
+};
+
+const handleUpdateCartQuantity = (itemId: string, delta: number) => {
+    const item = cart.value.find(i => i.id === itemId);
+    if (item) {
+        item.quantity = Math.max(0, item.quantity + delta);
+        if (item.quantity === 0) {
+            handleRemoveFromCart(itemId);
+        } else {
+            saveCart();
+        }
+    }
+};
+
+const handleUpdateCartOption = (itemId: string, optionId: string, delta: number) => {
+    const item = cart.value.find(i => i.id === itemId);
+    if (item) {
+        const val = item.accessories[optionId];
+        let currentQty = 0;
+        if (typeof val === 'number') currentQty = val;
+        else if (val === true) currentQty = 1;
+        
+        const nextQty = Math.max(0, currentQty + delta);
+        if (nextQty === 0) {
+            delete item.accessories[optionId];
+        } else {
+            item.accessories[optionId] = nextQty;
+        }
+        saveCart();
+    }
 };
 
 const handleEditCartItem = (itemId: string) => {
   const item = cart.value.find(i => i.id === itemId);
   if (item) {
-    currentModelId.value = item.config.modelId;
-    configOptions.value = { ...item.config.options };
+    currentModelId.value = item.machineConfig.modelId;
+    configOptions.value = { ...item.machineConfig.options };
     editingItemId.value = itemId;
     currentView.value = 'machine';
   }
@@ -105,9 +183,24 @@ const handleNewMachine = () => {
   currentView.value = 'catalog';
 };
 
-// Select first model on mount (Optional: keep as catalog redirect?)
+const totalItems = computed(() => {
+    return cart.value.reduce((sum, item) => sum + item.quantity, 0);
+});
+
+const activeCartItem = computed(() => {
+    if (!activeCartItemId.value) return null;
+    return cart.value.find(i => i.id === activeCartItemId.value) || null;
+});
+
 onMounted(() => {
-    // We start at 'catalog' view by default now
+    const saved = localStorage.getItem('flacktek_cart');
+    if (saved) {
+        try {
+            cart.value = JSON.parse(saved);
+        } catch (e) {
+            console.error('Failed to load cart', e);
+        }
+    }
 });
 </script>
 
@@ -122,7 +215,7 @@ onMounted(() => {
           <button @click="currentView = 'catalog'" :class="{ active: currentView === 'catalog' }">Catalog</button>
           <button @click="currentView = 'cart'" :class="{ active: currentView === 'cart' }">
             Cart 
-            <span v-if="cart.length > 0" class="cart-badge">{{ cart.length }}</span>
+            <span v-if="totalItems > 0" class="cart-badge">{{ totalItems }}</span>
           </button>
         </nav>
       </div>
@@ -152,10 +245,13 @@ onMounted(() => {
 
       <template v-else-if="currentView === 'cart'">
         <CartView 
-          :cart="cart"
-          :logic="logic"
-          @edit="handleEditCartItem"
+          :cart="cart" 
+          :logic="logic" 
+          @edit="handleEditCartItem" 
           @remove="handleRemoveFromCart"
+          @update-quantity="handleUpdateCartQuantity"
+          @update-option="handleUpdateCartOption"
+          @manage-accessories="handleManageAccessories"
           @new-machine="handleNewMachine"
         />
       </template>
@@ -170,16 +266,17 @@ onMounted(() => {
               @option-change="handleOptionChange"
               @reset="handleReset"
               @reset-options="handleResetOptions"
-              @continue="currentView = 'accessories'"
+              @continue="handleAddToCart"
           />
           <AccessoriesConfigurator
-              v-else
+              v-else-if="currentView === 'accessories' && currentModelId"
               :logic="logic"
               :current-model-id="currentModelId"
+              :machine-config="activeCartItem?.machineConfig"
               :config-options="configOptions"
-              @option-change="handleOptionChange"
-              @back="currentView = 'machine'"
-              @complete="handleAddToCart"
+              @option-change="handleUpdateAccessories"
+              @back="handleCompleteAccessories"
+              @complete="handleCompleteAccessories"
           />
       </template>
       <template v-else>
@@ -191,16 +288,17 @@ onMounted(() => {
               :config-options="configOptions"
               @model-select="handleModelSelect"
               @option-change="handleOptionChange"
-              @continue="currentView = 'accessories'"
+              @continue="handleAddToCart"
           />
           <AccessoriesConfigurator
-              v-else
+              v-else-if="currentView === 'accessories' && currentModelId"
               :logic="logic"
               :current-model-id="currentModelId!"
+              :machine-config="activeCartItem?.machineConfig"
               :config-options="configOptions"
-              @option-change="handleOptionChange"
-              @back="currentView = 'machine'"
-              @complete="handleAddToCart"
+              @option-change="handleUpdateAccessories"
+              @back="handleCompleteAccessories"
+              @complete="handleCompleteAccessories"
           />
       </template>
     </div>

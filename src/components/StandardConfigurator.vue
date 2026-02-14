@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {  } from 'vue';
 import { type ConfiguratorLogic, type Configuration, type CatalogOption } from '../logic/configurator';
 import ConfigurationSummary from './ConfigurationSummary.vue';
 
@@ -63,9 +63,12 @@ const getOptionLabel = (id: string) => {
 
 // Groups for UI rendering
 const uiGroups = {
-    specs: ['model_variant', 'voltage', 'basket', 'weight_options_standard', 'chassis'], // Removed vacuum
+    specs: ['model_variant', 'voltage', 'basket', 'weight_options_standard', 'chassis'],
     certifications: ['ul_cert', 'ce_cert', 'c1d2'],
-    advanced: ['adjustable_arm', 'robot_ready', 'automatic_lid', 'remote_safety', 'remote_operation', 'low_speed', 'high_power', 'temp_monitoring', 'echo_mode']
+    advanced: ['adjustable_arm', 'robot_ready', 'automatic_lid', 'remote_safety', 'remote_operation', 'low_speed', 'high_power', 'temp_monitoring', 'echo_mode'],
+    support: ['fap_standard', 'fap_gold', 'fap_platinum', 'fap_warranty_years'],
+    vacuum_pumps: ['vacuum_pump_65', 'vacuum_pump_100', 'vacuum_pump_175'],
+    accessories: ['medium_cart', 'mobile_stand_medium_plus', 'aux_box', 'label_printer']
 };
 
 const formatPrice = (price: number) => {
@@ -177,10 +180,91 @@ const getVariantDelta = (val: string | number | boolean) => {
                 </div>
             </section>
 
+            <!-- Support -->
+            <section class="category-section" v-if="currentModelId">
+                <h2 class="category-title">Support & Protection</h2>
+                <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+                    <template v-for="optId in uiGroups.support" :key="optId">
+                        <div v-if="logic.getOption(optId) && (logic.getOption(optId)!.type === 'boolean' ? getAllowed(optId).includes(true) : getAllowed(optId).length > 0)"
+                            class="glass-card option-card horizontal-layout small-card" 
+                            :class="{ 
+                                selected: logic.getOption(optId)!.type === 'boolean' ? !!configOptions[optId] : false,
+                                disabled: !isAvailable(optId, logic.getOption(optId)!.type === 'boolean' ? true : (getAllowed(optId)[0] ?? ''))
+                            }"
+                            @click="logic.getOption(optId)!.type === 'boolean' ? handleOptionChange(optId, !configOptions[optId]) : null"
+                        >
+                            <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOption(optId)!.type === 'boolean' && logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                                <div v-if="logic.getOption(optId)!.type === 'enum' || logic.getOption(optId)!.type === 'index'" class="mt-2">
+                                    <select 
+                                        :value="configOptions[optId]" 
+                                        @change="handleOptionChange(optId, ($event.target as HTMLSelectElement).value)"
+                                        class="custom-select"
+                                        style="margin-top: 0;"
+                                    >
+                                        <option v-for="val in getAllowed(optId)" :key="String(val)" :value="val">
+                                            {{ val }} {{ optId === 'fap_warranty_years' ? (val === 1 ? 'Year' : 'Years') : '' }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div v-if="logic.getOption(optId)!.type === 'boolean'" class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- Vacuum Pumps -->
+            <section class="category-section" v-if="currentModelId && configOptions['vacuum']">
+                <h2 class="category-title">Vacuum Pumps</h2>
+                <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <template v-for="optId in uiGroups.vacuum_pumps" :key="optId">
+                        <div v-if="logic.getOption(optId) && isAvailable(optId, true)"
+                            class="glass-card option-card horizontal-layout small-card"
+                            :class="{ selected: isSelected(optId, true) }"
+                            @click="handleOptionChange(optId, !configOptions[optId])"
+                        >
+                            <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                            </div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- Accessories -->
+            <section class="category-section" v-if="currentModelId">
+                <h2 class="category-title">Options & Accessories</h2>
+                <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <template v-for="optId in uiGroups.accessories" :key="optId">
+                        <div v-if="logic.getOption(optId) && isAvailable(optId, true)"
+                            class="glass-card option-card horizontal-layout small-card"
+                            :class="{ selected: isSelected(optId, true) }"
+                            @click="handleOptionChange(optId, !configOptions[optId])"
+                        >
+                            <div class="option-info">
+                                <div class="option-name">{{ getOptionLabel(optId) }}</div>
+                                <div class="option-price-hint" v-if="logic.getOptionPrice(optId, true) > 0">
+                                    +{{ formatPrice(logic.getOptionPrice(optId, true)) }}
+                                </div>
+                            </div>
+                            <div class="custom-checkbox" :class="{ checked: isSelected(optId, true) }"></div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
             <div class="step-nav-footer mt-4" v-if="currentModelId">
                 <div style="flex-grow: 1;"></div>
                 <button class="nav-btn next premium-btn" @click="emit('continue')">
-                    Continue to Accessories
+                    Add to Cart
                     <span class="btn-arrow">→</span>
                 </button>
             </div>

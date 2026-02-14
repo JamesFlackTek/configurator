@@ -2406,6 +2406,66 @@
                 false,
                 true
             ]
+        },
+        {
+            "model_id": "1200_xxx",
+            "model_label": "1200-XXX",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "1400_xxxx",
+            "model_label": "1400-XXXX",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "1200_xxx_twin",
+            "model_label": "1200-XXX Twin",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "2000_xxxx",
+            "model_label": "2000-XXXX",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "2800_xxxx",
+            "model_label": "2800-XXXX",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "model_id": "large_twin",
+            "model_label": "Large Twin",
+            "option_id": "aux_box",
+            "raw": "yes, no",
+            "allowed_values": [
+                true,
+                false
+            ]
         }
     ]
 }

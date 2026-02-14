@@ -17,10 +17,9 @@ export interface Capability {
 
 export interface AccessoryRequirements {
     basket?: string[];
-    min_weight?: string;
-    max_weight?: string;
+    mass?: number | string | { min: number; max: number };
     chassis?: string[];
-    options?: Record<string, string | number | boolean>;
+    options?: Record<string, string | number | boolean | string[]>;
 }
 
 export interface CatalogOption {
@@ -191,6 +190,45 @@ export class ConfiguratorLogic {
         return this.accessoriesCatalog;
     }
 
+    getMachinePhysicalParameters(config: Configuration): { basket: string; mass: number | { min: number; max: number } } {
+        if (!config.modelId) return { basket: '', mass: 0 };
+
+        if (config.modelId === 'blue_label') {
+            const min = Number(config.options['min_weight']) || 0;
+            const max = Number(config.options['max_weight']) || 0;
+            return {
+                basket: (config.options['basket'] as string) || '',
+                mass: { min, max }
+            };
+        }
+
+        // For standard models, parse from ID or look up
+        const model = this.modelMetadata.find(m => m.id === config.modelId);
+        if (!model) return { basket: '', mass: 0 };
+
+        // Parse "1200-XXX" style labels if needed, or just hardcode the known ones
+        const parts = config.modelId.split('_');
+        const basket = parts[0] || '';
+
+        // Manual mapping for standard models based on the catalog
+        const massMap: Record<string, number> = {
+            '330_100': 100,
+            '515_200': 200,
+            '1200_xxx': 700,
+            '1400_xxxx': 1000,
+            '1200_xxx_twin': 1000,
+            '2000_xxxx': 1000,
+            '2800_xxxx': 1000,
+            'large_twin': 20000,
+            'bt_speed_dispsense': 200
+        };
+
+        return {
+            basket,
+            mass: massMap[config.modelId] || 0
+        };
+    }
+
     getOption(optionId: string): CatalogOption | undefined {
         return this.catalog.find(o => o.id === optionId);
     }
@@ -295,8 +333,13 @@ export class ConfiguratorLogic {
             // Use getOptionPrice to handle chassis-based pricing and other special cases
             const itemPrice = this.getOptionPrice(optionId, value, config);
 
-            if (option.type === 'boolean' && value === true) {
-                total += itemPrice;
+            if (option.type === 'boolean') {
+                if (typeof value === 'number') {
+                    // Quantity support
+                    total += itemPrice * value;
+                } else if (value === true) {
+                    total += itemPrice;
+                }
             } else if (option.type === 'enum' || option.type === 'index') {
                 total += itemPrice;
             }
@@ -514,10 +557,41 @@ export class ConfiguratorLogic {
         const option = this.getOption(optionId);
         if (option?.requires && value === true) {
             const req = option.requires;
+            const params = this.getMachinePhysicalParameters(config);
+
             if (req.chassis && !req.chassis.includes(config.options['chassis'] as string)) return false;
-            if (req.basket && !req.basket.includes(config.options['basket'] as string)) return false;
-            if (req.min_weight && config.options['min_weight'] !== req.min_weight) return false;
-            if (req.max_weight && config.options['max_weight'] !== req.max_weight) return false;
+
+            // Basket check (multi-support)
+            if (req.basket && !req.basket.includes(params.basket)) {
+                // Special case for twin models which might support single-size baskets too
+                if (!config.modelId || !req.basket.includes(config.modelId)) return false;
+            }
+
+            // Mass check
+            if (req.mass !== undefined) {
+                const machineMass = params.mass;
+                const reqMass = req.mass;
+
+                if (typeof machineMass === 'number') {
+                    // Standard machine (point mass)
+                    if (typeof reqMass === 'number') {
+                        if (machineMass !== reqMass) return false;
+                    } else if (typeof reqMass === 'object') {
+                        if (machineMass < reqMass.min || machineMass > reqMass.max) return false;
+                    }
+                } else {
+                    // Blue Label machine (range mass)
+                    if (typeof reqMass === 'number') {
+                        // Check if required mass is within machine's selected range
+                        if (reqMass < machineMass.min || reqMass > machineMass.max) return false;
+                    } else if (typeof reqMass === 'object') {
+                        // Check if ranges overlap or if req range is within machine range?
+                        // Usually "requires" means it needs to work in that range.
+                        // We'll check if the required range is fully supported by the machine.
+                        if (reqMass.min < machineMass.min || reqMass.max > machineMass.max) return false;
+                    }
+                }
+            }
 
             if (req.options) {
                 let anyMet = false;
@@ -525,7 +599,7 @@ export class ConfiguratorLogic {
                 for (const [key, val] of entries) {
                     const currentVal = config.options[key];
                     if (Array.isArray(val)) {
-                        if (val.includes(currentVal)) { anyMet = true; break; }
+                        if (val.includes(currentVal as any)) { anyMet = true; break; }
                     } else {
                         if (currentVal === val) { anyMet = true; break; }
                     }
@@ -567,24 +641,7 @@ export class ConfiguratorLogic {
     }
 
     generateOrderCode(config: Configuration): string {
-        const productCode = this.generateProductCode(config);
-        if (!productCode) return '';
-
-        const alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let accPart = '';
-
-        this.accessoriesCatalog.forEach(opt => {
-            const value = config.options[opt.id];
-            if (opt.type === 'boolean') {
-                accPart += value === true ? '1' : '0';
-            } else {
-                const allowed = this.getAllowedValues(config.modelId!, opt.id);
-                const valIndex = allowed.findIndex(v => v === value);
-                accPart += (valIndex === -1 ? '.' : alphabet[valIndex]);
-            }
-        });
-
-        return `${productCode}-${accPart}`;
+        return this.generateProductCode(config);
     }
 
     generateCode(config: Configuration): string {

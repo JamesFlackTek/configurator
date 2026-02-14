@@ -1,107 +1,3506 @@
 {
     "accessories": [
         {
-            "id": "fap_standard",
-            "display_name": "FAP Standard",
+            "id": "F100263",
+            "display_name": "Adaptor for 330-100 Holders",
+            "fts_pn": "250 250",
             "type": "boolean",
-            "group": "support",
+            "group": "holders",
             "is_configurable": true,
-            "notes": "Standard factory protection (included).",
+            "notes": "FTS P/N: 250 250. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "515"
+                ],
+                "mass": 200
+            },
+            "accessory_mass": "100",
             "price": 0
         },
         {
-            "id": "fap_gold",
-            "display_name": "FAP Gold",
+            "id": "F101027",
+            "display_name": "SC 330",
+            "fts_pn": "250 130",
             "type": "boolean",
-            "group": "support",
+            "group": "holders",
             "is_configurable": true,
-            "notes": "Enhanced protection with faster response.",
-            "price": 500
+            "notes": "FTS P/N: 250 130. Mass: 110g",
+            "requires": {
+                "basket": [
+                    "515"
+                ],
+                "mass": 200
+            },
+            "accessory_mass": "110",
+            "price": 0
         },
         {
-            "id": "fap_platinum",
-            "display_name": "FAP Platinum",
+            "id": "F102136",
+            "display_name": "VAC Chamber - SC 330/330-100 Holders",
+            "fts_pn": "250 501",
             "type": "boolean",
-            "group": "support",
+            "group": "holders",
             "is_configurable": true,
-            "notes": "Comprehensive top-tier coverage.",
-            "price": 1000
+            "notes": "FTS P/N: 250 501. Mass: 175g",
+            "requires": {
+                "basket": [
+                    "515"
+                ],
+                "mass": 200
+            },
+            "accessory_mass": "175",
+            "price": 0
         },
         {
-            "id": "fap_warranty_years",
-            "display_name": "FAP Warranty Duration",
-            "type": "enum",
-            "group": "support",
+            "id": "F100428",
+            "display_name": "30cc Syringe",
+            "fts_pn": "150 353",
+            "type": "boolean",
+            "group": "holders",
             "is_configurable": true,
-            "notes": "Select coverage period (1-5 years).",
+            "notes": "FTS P/N: 150 353. Mass: 110g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "110",
+            "price": 0
+        },
+        {
+            "id": "F100429",
+            "display_name": "10cc Syringe",
+            "fts_pn": "150 352",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 352. Mass: 130g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "130",
+            "price": 0
+        },
+        {
+            "id": "F100430",
+            "display_name": "5cc Syringe",
+            "fts_pn": "150 351",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 351. Mass: 140g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "140",
+            "price": 0
+        },
+        {
+            "id": "F100431",
+            "display_name": "SC 12 Quad",
+            "fts_pn": "150 140quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 140quad. Mass: 105g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "105",
+            "price": 0
+        },
+        {
+            "id": "F100432",
+            "display_name": "Max 60",
+            "fts_pn": "501 122",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 122. Mass: 85g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "85",
+            "price": 0
+        },
+        {
+            "id": "F100435",
+            "display_name": "SC 185/SC 250 Heavy",
+            "fts_pn": "150 103",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 103. Mass: 65g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "65",
+            "price": 0
+        },
+        {
+            "id": "F100436",
+            "display_name": "Max 40",
+            "fts_pn": "501 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 123. Mass: 90g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "90",
+            "price": 0
+        },
+        {
+            "id": "F100437",
+            "display_name": "Max 100 Heavy",
+            "fts_pn": "501 121H",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 121H. Mass: 80g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "80",
+            "price": 0
+        },
+        {
+            "id": "F100438",
+            "display_name": "Max 100",
+            "fts_pn": "501 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 121. Mass: 50g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "50",
+            "price": 0
+        },
+        {
+            "id": "F100438_501_121L",
+            "display_name": "Max 100 Long",
+            "fts_pn": "501 121L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 121L. Mass: 58g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "58",
+            "price": 0
+        },
+        {
+            "id": "F100439",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "150 100",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 100. Mass: 45g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "45",
+            "price": 0
+        },
+        {
+            "id": "F100440",
+            "display_name": "Max 10",
+            "fts_pn": "501 126",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 126. Mass: 130g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "130",
+            "price": 0
+        },
+        {
+            "id": "F100441",
+            "display_name": "SC 60",
+            "fts_pn": "150 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 120. Mass: 95g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "95",
+            "price": 0
+        },
+        {
+            "id": "F100442",
+            "display_name": "Max 20",
+            "fts_pn": "501 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 124. Mass: 110g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "110",
+            "price": 0
+        },
+        {
+            "id": "F100443",
+            "display_name": "Max 20 Light",
+            "fts_pn": "501 124light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 124light. Mass: 90g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "90",
+            "price": 0
+        },
+        {
+            "id": "F100445",
+            "display_name": "SC 6",
+            "fts_pn": "150 150",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 150. Mass: 120g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "120",
+            "price": 0
+        },
+        {
+            "id": "F100446",
+            "display_name": "Max 10 Twin/Double",
+            "fts_pn": "501 126double",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 126double. Mass: 110g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "110",
+            "price": 0
+        },
+        {
+            "id": "F100447",
+            "display_name": "SC 12",
+            "fts_pn": "150 140",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 140. Mass: 115g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "115",
+            "price": 0
+        },
+        {
+            "id": "F100448",
+            "display_name": "SC 90",
+            "fts_pn": "150 110",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 110. Mass: 85g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "85",
+            "price": 0
+        },
+        {
+            "id": "F102483",
+            "display_name": "Max 20 Long",
+            "fts_pn": "501 124L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 124L. Mass: 110g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "110",
+            "price": 0
+        },
+        {
+            "id": "F101189",
+            "display_name": "SC 25",
+            "fts_pn": "150 130",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 130. Mass: 115g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "115",
+            "price": 0
+        },
+        {
+            "id": "F102170",
+            "display_name": "3cc Syringe",
+            "fts_pn": "150 350",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 350. Mass: 140g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "140",
+            "price": 0
+        },
+        {
+            "id": "F102335",
+            "display_name": "Max 15",
+            "fts_pn": "501 127",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 127. Mass: 120g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "120",
+            "price": 0
+        },
+        {
+            "id": "F102336",
+            "display_name": "Max 100 Super Heavy",
+            "fts_pn": "501 121SH",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 121SH. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "100",
+            "price": 0
+        },
+        {
+            "id": "F102337",
+            "display_name": "Cart No. 1",
+            "fts_pn": "501 130",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 130. Mass: 85g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "85",
+            "price": 0
+        },
+        {
+            "id": "F102340",
+            "display_name": "SC 6 Quad",
+            "fts_pn": "150 150quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 150quad. Mass: 105g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "105",
+            "price": 0
+        },
+        {
+            "id": "F102342",
+            "display_name": "SC 90 Light",
+            "fts_pn": "150 110Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 110Light. Mass: 80g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "80",
+            "price": 0
+        },
+        {
+            "id": "F102343",
+            "display_name": "SC 90 Heavy",
+            "fts_pn": "150 110H",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 110H. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "100",
+            "price": 0
+        },
+        {
+            "id": "F102365",
+            "display_name": "VAC Chamber - Max 40",
+            "fts_pn": "150 501",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 501. Mass: 61g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "61",
+            "price": 0
+        },
+        {
+            "id": "F102371",
+            "display_name": "4ml Vial",
+            "fts_pn": "150 195",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 195. Mass: 130g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "130",
+            "price": 0
+        },
+        {
+            "id": "F102374",
+            "display_name": "SC 6 Double",
+            "fts_pn": "150 150double",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 150double. Mass: 115g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "115",
+            "price": 0
+        },
+        {
+            "id": "F102375",
+            "display_name": "20ml Vial Twin/Double",
+            "fts_pn": "150 193",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 193. Mass: 120g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "120",
+            "price": 0
+        },
+        {
+            "id": "F102377",
+            "display_name": "SC 185/SC 250 Super Heavy Holder",
+            "fts_pn": "150 100SH",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 100SH. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "100",
+            "price": 0
+        },
+        {
+            "id": "F102378",
+            "display_name": "SC 90 Super Heavy",
+            "fts_pn": "150 110SH",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 110SH. Mass: 120g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "120",
+            "price": 0
+        },
+        {
+            "id": "F102379",
+            "display_name": "Cart No. 2",
+            "fts_pn": "501 131",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 131. Mass: 25g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "25",
+            "price": 0
+        },
+        {
+            "id": "F102380",
+            "display_name": "1cc Syringe",
+            "fts_pn": "150 349",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 349. Mass: 140g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "140",
+            "price": 0
+        },
+        {
+            "id": "F102381",
+            "display_name": "2.5oz Semco",
+            "fts_pn": "150 325",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 325. Mass: 80g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "80",
+            "price": 0
+        },
+        {
+            "id": "F103278",
+            "display_name": "VAC Chamber - SC 90",
+            "fts_pn": "150 511",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 511. Mass: 76g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "76",
+            "price": 0
+        },
+        {
+            "id": "F102484",
+            "display_name": "Max 10 Light",
+            "fts_pn": "501 126light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 126light. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "100",
+            "price": 0
+        },
+        {
+            "id": "F102485",
+            "display_name": "Max 60 Heavy",
+            "fts_pn": "501 122H",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 122H. Mass: 105g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "105",
+            "price": 0
+        },
+        {
+            "id": "F102486",
+            "display_name": "Max 60 Light",
+            "fts_pn": "501 122Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 122Light. Mass: 55g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "55",
+            "price": 0
+        },
+        {
+            "id": "F102487",
+            "display_name": "Max 40 Long",
+            "fts_pn": "501 123L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 123L. Mass: 90g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "90",
+            "price": 0
+        },
+        {
+            "id": "F102488",
+            "display_name": "Max 40 Light",
+            "fts_pn": "501 123light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 123light. Mass: 70g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "70",
+            "price": 0
+        },
+        {
+            "id": "F102490",
+            "display_name": "Max 40 Heavy",
+            "fts_pn": "501 123H",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 501 123H. Mass: 120g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "120",
+            "price": 0
+        },
+        {
+            "id": "F102491",
+            "display_name": "VAC Chamber Insert - SC 6",
+            "fts_pn": "150 505",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 505. Mass: g",
             "requires": {
                 "options": {
-                    "fap_gold": true,
-                    "fap_platinum": true
+                    "vac_chamber": "VAC Chamber - Max 40"
                 }
             },
+            "accessory_mass": "",
             "price": 0
         },
         {
-            "id": "medium_cart",
-            "display_name": "Medium Cart",
+            "id": "F102492",
+            "display_name": "VAC Chamber Insert - Max 10",
+            "fts_pn": "150 503",
             "type": "boolean",
-            "group": "accessories",
+            "group": "holders",
             "is_configurable": true,
-            "notes": "",
+            "notes": "FTS P/N: 150 503. Mass: g",
             "requires": {
                 "options": {
-                    "chassis": "Medium"
+                    "vac_chamber": "VAC Chamber - Max 40"
                 }
             },
+            "accessory_mass": "",
             "price": 0
         },
         {
-            "id": "vacuum_pump_65",
-            "display_name": "Vacuum Pump - 65 L/min",
+            "id": "F102493",
+            "display_name": "VAC Chamber Insert - SC 25",
+            "fts_pn": "150 507",
             "type": "boolean",
-            "group": "vacuum_pumps",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 507. Mass: g",
             "requires": {
                 "options": {
-                    "vacuum": true
+                    "vac_chamber": "VAC Chamber - Max 40"
                 }
             },
+            "accessory_mass": "",
             "price": 0
         },
         {
-            "id": "vacuum_pump_100",
-            "display_name": "Vacuum Pump - 100 L/min",
+            "id": "F102494",
+            "display_name": "VAC Chamber Insert - SC 12",
+            "fts_pn": "150 506",
             "type": "boolean",
-            "group": "vacuum_pumps",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 506. Mass: g",
             "requires": {
                 "options": {
-                    "vacuum": true
+                    "vac_chamber": "VAC Chamber - Max 40"
                 }
             },
+            "accessory_mass": "",
             "price": 0
         },
         {
-            "id": "vacuum_pump_175",
-            "display_name": "Vacuum Pump - 175 L/min",
+            "id": "F102496",
+            "display_name": "VAC Chamber Insert - Max 20",
+            "fts_pn": "150 502",
             "type": "boolean",
-            "group": "vacuum_pumps",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 502. Mass: g",
             "requires": {
                 "options": {
-                    "vacuum": true
+                    "vac_chamber": "VAC Chamber - Max 40"
                 }
             },
+            "accessory_mass": "",
             "price": 0
         },
         {
-            "id": "mobile_stand_medium_plus",
-            "display_name": "Medium + Cart",
+            "id": "F102496_150_504",
+            "display_name": "VAC Chamber Insert - Max 20 Long",
+            "fts_pn": "150 504",
             "type": "boolean",
-            "group": "accessories",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 504. Mass: g",
             "requires": {
-                "chassis": [
-                    "Medium +"
-                ]
+                "options": {
+                    "vac_chamber": "VAC Chamber - Max 40"
+                }
             },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F102497",
+            "display_name": "VAC Chamber Insert - SC 60",
+            "fts_pn": "150 508",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 508. Mass: g",
+            "requires": {
+                "options": {
+                    "vac_chamber": "VAC Chamber - Max 40"
+                }
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F102498",
+            "display_name": "VAC Chamber Insert - SC 6",
+            "fts_pn": "150 512",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 512. Mass: g",
+            "requires": {
+                "options": {
+                    "vac_chamber": "VAC Chamber - SC 90"
+                }
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F102499",
+            "display_name": "VAC Chamber Insert - SC 12",
+            "fts_pn": "150 513",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 513. Mass: g",
+            "requires": {
+                "options": {
+                    "vac_chamber": "VAC Chamber - SC 90"
+                }
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F103017",
+            "display_name": "VAC Chamber Insert - SC 25",
+            "fts_pn": "150 514",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 514. Mass: g",
+            "requires": {
+                "options": {
+                    "vac_chamber": "VAC Chamber - SC 90"
+                }
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F103018",
+            "display_name": "VAC Chamber Insert - SC 60",
+            "fts_pn": "150 515",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 515. Mass: g",
+            "requires": {
+                "options": {
+                    "vac_chamber": "VAC Chamber - SC 90"
+                }
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F103121",
+            "display_name": "20ml Vial",
+            "fts_pn": "150 198",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 198. Mass: 130g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "130",
+            "price": 0
+        },
+        {
+            "id": "F103155",
+            "display_name": "Max 100 Aluminum Metal Cup",
+            "fts_pn": "150 190",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 150 190. Mass: 77g",
+            "requires": {
+                "basket": [
+                    "330"
+                ],
+                "mass": 100
+            },
+            "accessory_mass": "77",
+            "price": 0
+        },
+        {
+            "id": "F100284",
+            "display_name": "0.6 Gal Heavy Holder - Trans Pail",
+            "fts_pn": "7001 101",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 101. Mass: 410g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "410",
+            "price": 0
+        },
+        {
+            "id": "F100285",
+            "display_name": "0.6 Gal Super/Ultra Heavy - Trans Pail",
+            "fts_pn": "7001 104",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 104. Mass: 825g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "825",
+            "price": 0
+        },
+        {
+            "id": "F100286",
+            "display_name": "0.6 Gal Ludicrous Heavy - Trans Pail",
+            "fts_pn": "7001 105",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 105. Mass: 1075g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1075",
+            "price": 0
+        },
+        {
+            "id": "F100503",
+            "display_name": "Max 300/SC 960",
+            "fts_pn": "2800 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 123. Mass: 800g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "800",
+            "price": 0
+        },
+        {
+            "id": "F100504",
+            "display_name": "Max 200",
+            "fts_pn": "2800 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 120. Mass: 1050g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1050",
+            "price": 0
+        },
+        {
+            "id": "F100505",
+            "display_name": "Max 100",
+            "fts_pn": "2800 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 121. Mass: 1160g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1160",
+            "price": 0
+        },
+        {
+            "id": "F100618",
+            "display_name": "2.0L SS Regular",
+            "fts_pn": "2800 357",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 357. Mass: 174g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "174",
+            "price": 0
+        },
+        {
+            "id": "F100809",
+            "display_name": "1.2L SS Heavy",
+            "fts_pn": "2800 353",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 353. Mass: g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F100814",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "2800 126",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 126. Mass: 1175g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1175",
+            "price": 0
+        },
+        {
+            "id": "F100818",
+            "display_name": "SC 750/1000",
+            "fts_pn": "2800 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 124. Mass: 830g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "830",
+            "price": 0
+        },
+        {
+            "id": "F100819",
+            "display_name": "SC 2000",
+            "fts_pn": "2800 2000",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 2000. Mass: 450g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "450",
+            "price": 0
+        },
+        {
+            "id": "F100820",
+            "display_name": "SC 1400",
+            "fts_pn": "2800 1400",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 1400. Mass: 230g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "230",
+            "price": 0
+        },
+        {
+            "id": "F100821",
+            "display_name": "SC 500",
+            "fts_pn": "2800 125",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 125. Mass: 1050g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1050",
+            "price": 0
+        },
+        {
+            "id": "F100822",
+            "display_name": "SC 2000 Heavy",
+            "fts_pn": "2800 2000Heavy",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 2000Heavy. Mass: 830g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "830",
+            "price": 0
+        },
+        {
+            "id": "F100823",
+            "display_name": "SC 1500 Light",
+            "fts_pn": "2800 1500Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 1500Light. Mass: 280 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "280 empty",
+            "price": 0
+        },
+        {
+            "id": "F100926",
+            "display_name": "SC 1500 Heavy",
+            "fts_pn": "2800 1500Heavy",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 1500Heavy. Mass: 680 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "680 empty",
+            "price": 0
+        },
+        {
+            "id": "F100941",
+            "display_name": "1.2L SS Light",
+            "fts_pn": "2800 354",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 354. Mass: 825g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "825",
+            "price": 0
+        },
+        {
+            "id": "F101036",
+            "display_name": "SC 1500",
+            "fts_pn": "2800 1500",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 1500. Mass: 480 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "480 empty",
+            "price": 0
+        },
+        {
+            "id": "F101037",
+            "display_name": "SC 2000 Light",
+            "fts_pn": "2800 2000Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 2000Light. Mass: 250 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "250 empty",
+            "price": 0
+        },
+        {
+            "id": "F101050",
+            "display_name": "0.6 Gal Holder - White Pail",
+            "fts_pn": "7001 102",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 102. Mass: 190 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "190 empty",
+            "price": 0
+        },
+        {
+            "id": "F101051",
+            "display_name": "0.6 Gal Heavy Holder - White Pail",
+            "fts_pn": "7001 103",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 103. Mass: 410 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "410 empty",
+            "price": 0
+        },
+        {
+            "id": "F101052",
+            "display_name": "0.6 Gal Super/Ultra Heavy - White Pail",
+            "fts_pn": "7001 106",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 106. Mass: 825g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "825",
+            "price": 0
+        },
+        {
+            "id": "F101053",
+            "display_name": "0.6 Gal Ludicrous Heavy - White Pail",
+            "fts_pn": "7001 107",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 107. Mass: 1075g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "1075",
+            "price": 0
+        },
+        {
+            "id": "F101849",
+            "display_name": "2.0L SS Heavy",
+            "fts_pn": "2800 358",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 358. Mass: 825g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "825",
+            "price": 0
+        },
+        {
+            "id": "F102238",
+            "display_name": "0.6 Gal Holder - Trans Pail",
+            "fts_pn": "7001 100",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 7001 100. Mass: 190 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "190 empty",
+            "price": 0
+        },
+        {
+            "id": "F103118",
+            "display_name": "1.2L SS Regular",
+            "fts_pn": "2800 355",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2800 355. Mass: 950g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "950",
+            "price": 0
+        },
+        {
+            "id": "F103131",
+            "display_name": "0.6 Gal Max 300/SC 960 - Trans Pail",
+            "fts_pn": "1000 500",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1000 500. Mass: 300 emptyg",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "300 empty",
+            "price": 0
+        },
+        {
+            "id": "F103140",
+            "display_name": "0.6 Gal Max 300/SC 960 - White Pail",
+            "fts_pn": "1000 501",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1000 501. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "2800"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F101034",
+            "display_name": "SC 500",
+            "fts_pn": "2000 110",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 110. Mass: 650g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "650",
+            "price": 0
+        },
+        {
+            "id": "F101621",
+            "display_name": "Semco 2.5oz",
+            "fts_pn": "2000 340",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 340. Mass: 960g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "960",
+            "price": 0
+        },
+        {
+            "id": "F103109",
+            "display_name": "SC 750/SC 1000",
+            "fts_pn": "2000 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 124. Mass: 600g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "600",
+            "price": 0
+        },
+        {
+            "id": "F103115",
+            "display_name": "Max 100 Long",
+            "fts_pn": "2000 121L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 121L. Mass: 950g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "950",
+            "price": 0
+        },
+        {
+            "id": "F103123",
+            "display_name": "Max 200",
+            "fts_pn": "2000 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 120. Mass: 800g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "800",
+            "price": 0
+        },
+        {
+            "id": "F103124",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "2000 126",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 126. Mass: 950g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "950",
+            "price": 0
+        },
+        {
+            "id": "F103125",
+            "display_name": "SC 960/SC 1200",
+            "fts_pn": "2000 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 123. Mass: 400g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "400",
+            "price": 0
+        },
+        {
+            "id": "F103130",
+            "display_name": "SC 1400",
+            "fts_pn": "2000 1400",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 1400. Mass: 280g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "280",
+            "price": 0
+        },
+        {
+            "id": "F103133",
+            "display_name": "Max 100",
+            "fts_pn": "2000 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 2000 121. Mass: 950g",
+            "requires": {
+                "basket": [
+                    "2000"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "950",
+            "price": 0
+        },
+        {
+            "id": "F100808",
+            "display_name": "1.2L Stainless Steel",
+            "fts_pn": "1400 355",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1400 355. Mass: 420g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "420",
+            "price": 0
+        },
+        {
+            "id": "F101028",
+            "display_name": "Max 200",
+            "fts_pn": "1100 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 120. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F101029",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "1100 128",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 128. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F101031",
+            "display_name": "Max 300/SC 960",
+            "fts_pn": "1100 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 123. Mass: 250g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "250",
+            "price": 0
+        },
+        {
+            "id": "F101032",
+            "display_name": "Max 100",
+            "fts_pn": "1100 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 121. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F101033",
+            "display_name": "SC 750/SC 1000",
+            "fts_pn": "1100 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 124. Mass: 250g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "250",
+            "price": 0
+        },
+        {
+            "id": "F102107",
+            "display_name": "SC 90 Double",
+            "fts_pn": "1100 129double",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 129double. Mass: 465g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "465",
+            "price": 0
+        },
+        {
+            "id": "F102119",
+            "display_name": "3cc Syringe Hexa",
+            "fts_pn": "1100 3053hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 3053hexa. Mass: 594g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "594",
+            "price": 0
+        },
+        {
+            "id": "F102120",
+            "display_name": "5cc Syringe Hexa",
+            "fts_pn": "1100 3052hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 3052hexa. Mass: 575g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "575",
+            "price": 0
+        },
+        {
+            "id": "F102121",
+            "display_name": "10cc Syringe",
+            "fts_pn": "1100 3055",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 3055. Mass: 533g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "533",
+            "price": 0
+        },
+        {
+            "id": "F102129",
+            "display_name": "SC 90",
+            "fts_pn": "1100 129",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 129. Mass: g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F102318",
+            "display_name": "Insert 5",
+            "fts_pn": "110 500",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 500. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F102321",
+            "display_name": "Insert 1",
+            "fts_pn": "110 501",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 501. Mass: 100g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "100",
+            "price": 0
+        },
+        {
+            "id": "F102322",
+            "display_name": "Insert 2",
+            "fts_pn": "110 502",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 502. Mass: 200g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "200",
+            "price": 0
+        },
+        {
+            "id": "F102323",
+            "display_name": "Insert 3",
+            "fts_pn": "110 503",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 503. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F103112",
+            "display_name": "Semco 6.0oz",
+            "fts_pn": "110 301",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 301. Mass: 800g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "800",
+            "price": 0
+        },
+        {
+            "id": "F103113",
+            "display_name": "Max 100 Long",
+            "fts_pn": "1100 121L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 121L. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F103114",
+            "display_name": "30cc Syringe Hexa",
+            "fts_pn": "1100 341",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 341. Mass: 900g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "900",
+            "price": 0
+        },
+        {
+            "id": "F103119",
+            "display_name": "SC 750/SC 1000 Light",
+            "fts_pn": "1100 125",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 125. Mass: g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F103128",
+            "display_name": "Cart No. 4 Holder",
+            "fts_pn": "1100 130",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 130. Mass: g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F103129",
+            "display_name": "SC 330",
+            "fts_pn": "1100 131",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 131. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F103147",
+            "display_name": "VAC Chamber - Max 300 Long",
+            "fts_pn": "110 902",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 110 902. Mass: 530g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "530",
+            "price": 0
+        },
+        {
+            "id": "F101030",
+            "display_name": "SC 500",
+            "fts_pn": "1100 127",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1100 127. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1400"
+                ],
+                "mass": 1000
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F103116",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "801 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 801 120. Mass: 650g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "650",
+            "price": 0
+        },
+        {
+            "id": "F103117",
+            "display_name": "Max 100",
+            "fts_pn": "800 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 800 121. Mass: 650g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "650",
+            "price": 0
+        },
+        {
+            "id": "F103122",
+            "display_name": "Max 200 Heavy",
+            "fts_pn": "800 120heavy",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 800 120heavy. Mass: 450g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "450",
+            "price": 0
+        },
+        {
+            "id": "F103126",
+            "display_name": "SC 90",
+            "fts_pn": "801 140",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 801 140. Mass: 650g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "650",
+            "price": 0
+        },
+        {
+            "id": "F103127",
+            "display_name": "Max 200",
+            "fts_pn": "800 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 800 120. Mass: 400g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "400",
+            "price": 0
+        },
+        {
+            "id": "F103134",
+            "display_name": "SC 500",
+            "fts_pn": "801 110",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 801 110. Mass: 450g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "450",
+            "price": 0
+        },
+        {
+            "id": "F103138",
+            "display_name": "SC 750/SC 1000",
+            "fts_pn": "801 100",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 801 100. Mass: 400g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "400",
+            "price": 0
+        },
+        {
+            "id": "F103141",
+            "display_name": "Semco 2.5oz",
+            "fts_pn": "800 340",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 800 340. Mass: g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 700
+            },
+            "accessory_mass": "",
+            "price": 0
+        },
+        {
+            "id": "F100455",
+            "display_name": "SC 90",
+            "fts_pn": "601 163",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 163. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F100456",
+            "display_name": "Max 100",
+            "fts_pn": "600 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 121. Mass: 450g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "450",
+            "price": 0
+        },
+        {
+            "id": "F100461",
+            "display_name": "Max 20 Quad",
+            "fts_pn": "600 124quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 124quad. Mass: 430g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "430",
+            "price": 0
+        },
+        {
+            "id": "F100462",
+            "display_name": "SC 500",
+            "fts_pn": "601 110",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 110. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F100463",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "601 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 120. Mass: 450g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "450",
+            "price": 0
+        },
+        {
+            "id": "F100465",
+            "display_name": "Max 20",
+            "fts_pn": "600 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 124. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F100466",
+            "display_name": "Max 200",
+            "fts_pn": "600 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 120. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F100467",
+            "display_name": "Max 60",
+            "fts_pn": "600 122",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 122. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F100468",
+            "display_name": "Max 40",
+            "fts_pn": "600 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 123. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F100575",
+            "display_name": "1.2L Metal SS Jar",
+            "fts_pn": "1200 355",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 1200 355. Mass: 400g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "400",
+            "price": 0
+        },
+        {
+            "id": "F101665",
+            "display_name": "Semco 6.0oz",
+            "fts_pn": "600 345",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 345. Mass: 390 emptyg",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "390 empty",
+            "price": 0
+        },
+        {
+            "id": "F101721",
+            "display_name": "SC 750/SC 1000",
+            "fts_pn": "601 100",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 100. Mass: 200g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "200",
+            "price": 0
+        },
+        {
+            "id": "F102469",
+            "display_name": "Semco 2.5oz",
+            "fts_pn": "600 340",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 340. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F102470",
+            "display_name": "Max 10",
+            "fts_pn": "600 126",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 126. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F102474",
+            "display_name": "Semco 2.5oz Triple",
+            "fts_pn": "600 342",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 342. Mass: 360g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "360",
+            "price": 0
+        },
+        {
+            "id": "F102477",
+            "display_name": "Max 40 Long",
+            "fts_pn": "600 123L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 123L. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F102478",
+            "display_name": "Cart No. 1",
+            "fts_pn": "600 300",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 300. Mass: 500g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "500",
+            "price": 0
+        },
+        {
+            "id": "F102481",
+            "display_name": "SC 330 Holder",
+            "fts_pn": "601 130",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 130. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F103135",
+            "display_name": "VAC Chamber Adaptor - 330-100 Holders",
+            "fts_pn": "601 507",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 601 507. Mass: 40g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "40",
+            "price": 0
+        },
+        {
+            "id": "F103139",
+            "display_name": "30cc Syringe Hexa",
+            "fts_pn": "600 341",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 600 341. Mass: 410 emptyg",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "410 empty",
+            "price": 0
+        },
+        {
+            "id": "F103153",
+            "display_name": "Topi-CLICK",
+            "fts_pn": "MMI-333",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: MMI-333. Mass: 525g",
+            "requires": {
+                "basket": [
+                    "SC",
+                    "1200",
+                    "FB"
+                ],
+                "mass": 500
+            },
+            "accessory_mass": "525",
+            "price": 0
+        },
+        {
+            "id": "F100459",
+            "display_name": "Max 100",
+            "fts_pn": "400 121",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 121. Mass: 240g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "240",
+            "price": 0
+        },
+        {
+            "id": "F100461_400_124quad",
+            "display_name": "Max 20 Quad",
+            "fts_pn": "400 124quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 124quad. Mass: 280g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "280",
+            "price": 0
+        },
+        {
+            "id": "F101729",
+            "display_name": "30cc Syringe Quad",
+            "fts_pn": "400 3054quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3054quad. Mass: 320g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "320",
+            "price": 0
+        },
+        {
+            "id": "F102276",
+            "display_name": "30cc Syringe",
+            "fts_pn": "400 3054",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3054. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102292",
+            "display_name": "SC 60",
+            "fts_pn": "401 162",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 162. Mass: 340g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "340",
+            "price": 0
+        },
+        {
+            "id": "F102293",
+            "display_name": "SC 12 Hexa",
+            "fts_pn": "401 160hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 160hexa. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102294",
+            "display_name": "SC 6 Hexa",
+            "fts_pn": "401 159hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 159hexa. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102295",
+            "display_name": "SC 6",
+            "fts_pn": "401 159",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 159. Mass: 390g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "390",
+            "price": 0
+        },
+        {
+            "id": "F102307",
+            "display_name": "SC 25 Penta",
+            "fts_pn": "401 161penta",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 161penta. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102308",
+            "display_name": "SC 12",
+            "fts_pn": "401 160",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 160. Mass: 385g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "385",
+            "price": 0
+        },
+        {
+            "id": "F102309",
+            "display_name": "10cc Syringe",
+            "fts_pn": "400 3055",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3055. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102310",
+            "display_name": "Max 200",
+            "fts_pn": "400 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 120. Mass: 200g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "200",
+            "price": 0
+        },
+        {
+            "id": "F102311",
+            "display_name": "Max 40",
+            "fts_pn": "400 123",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 123. Mass: 320g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "320",
+            "price": 0
+        },
+        {
+            "id": "F102312",
+            "display_name": "Max 60",
+            "fts_pn": "400 122",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 122. Mass: 315g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "315",
+            "price": 0
+        },
+        {
+            "id": "F102313",
+            "display_name": "SC 90",
+            "fts_pn": "401 163",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 163. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102314",
+            "display_name": "SC 185/SC 250",
+            "fts_pn": "401 120",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 120. Mass: 220g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "220",
+            "price": 0
+        },
+        {
+            "id": "F102315",
+            "display_name": "SC 750/SC 1000",
+            "fts_pn": "401 100",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 100. Mass: 125g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "125",
+            "price": 0
+        },
+        {
+            "id": "F102316",
+            "display_name": "SC 330",
+            "fts_pn": "401 130",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 130. Mass: 215g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "215",
+            "price": 0
+        },
+        {
+            "id": "F102324",
+            "display_name": "SC 60 Quad",
+            "fts_pn": "401 162quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 162quad. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102325",
+            "display_name": "SC 25",
+            "fts_pn": "401 161",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 161. Mass: 370g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "370",
+            "price": 0
+        },
+        {
+            "id": "F102326",
+            "display_name": "SC 500",
+            "fts_pn": "401 110",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 110. Mass: 150g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "150",
+            "price": 0
+        },
+        {
+            "id": "F102338",
+            "display_name": "3cc Syringe Hexa",
+            "fts_pn": "400 3053hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3053hexa. Mass: 350g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "350",
+            "price": 0
+        },
+        {
+            "id": "F102339",
+            "display_name": "Max 15 Quad",
+            "fts_pn": "400 127quad",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 127quad. Mass: 320g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "320",
+            "price": 0
+        },
+        {
+            "id": "F102344",
+            "display_name": "Max 10 Hexa",
+            "fts_pn": "400 126hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 126hexa. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102350",
+            "display_name": "Max 200 Super Light",
+            "fts_pn": "400 120SuperLight",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 120SuperLight. Mass: 126g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "126",
+            "price": 0
+        },
+        {
+            "id": "F102351",
+            "display_name": "3cc Syringe",
+            "fts_pn": "400 3053",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3053. Mass: 350g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "350",
+            "price": 0
+        },
+        {
+            "id": "F102353",
+            "display_name": "10cc Syringe Hexa",
+            "fts_pn": "400 3055hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3055hexa. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102354",
+            "display_name": "Max 15",
+            "fts_pn": "400 127",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 127. Mass: 380g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "380",
+            "price": 0
+        },
+        {
+            "id": "F102355",
+            "display_name": "Max 200 Light",
+            "fts_pn": "400 120Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 120Light. Mass: 150g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "150",
+            "price": 0
+        },
+        {
+            "id": "F102356",
+            "display_name": "5cc Syringe",
+            "fts_pn": "400 3052",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3052. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102357",
+            "display_name": "Max 10",
+            "fts_pn": "400 126",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 126. Mass: 320g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "320",
+            "price": 0
+        },
+        {
+            "id": "F102358",
+            "display_name": "Max 20",
+            "fts_pn": "400 124",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 124. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102359",
+            "display_name": "Max 100 Light",
+            "fts_pn": "400 121Light",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 121Light. Mass: 180g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "180",
+            "price": 0
+        },
+        {
+            "id": "F102360",
+            "display_name": "20ml Vial",
+            "fts_pn": "400 198",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 198. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102361",
+            "display_name": "Semco 2.5oz",
+            "fts_pn": "400 3051",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3051. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102362",
+            "display_name": "Max 40 Double",
+            "fts_pn": "400 123double",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 123double. Mass: 230g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "230",
+            "price": 0
+        },
+        {
+            "id": "F102363",
+            "display_name": "Max 40 Triple",
+            "fts_pn": "400 123triple",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 123triple. Mass: 275g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "275",
+            "price": 0
+        },
+        {
+            "id": "F102364",
+            "display_name": "Max 40 Long Triple",
+            "fts_pn": "400 123Ltriple",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 123Ltriple. Mass: 280g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "280",
+            "price": 0
+        },
+        {
+            "id": "F102370",
+            "display_name": "5cc Syringe Hexa",
+            "fts_pn": "400 3052hexa",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3052hexa. Mass: 320g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "320",
+            "price": 0
+        },
+        {
+            "id": "F102464",
+            "display_name": "Cart No. 1",
+            "fts_pn": "400 3011",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3011. Mass: 225g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "225",
+            "price": 0
+        },
+        {
+            "id": "F102465",
+            "display_name": "4ml Vial Deca",
+            "fts_pn": "400 197",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 197. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102468",
+            "display_name": "30cc Syringe Hexa Holder",
+            "fts_pn": "400 341",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 341. Mass: 275 emptyg",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "275 empty",
+            "price": 0
+        },
+        {
+            "id": "F102471",
+            "display_name": "20ml Vial Hexa",
+            "fts_pn": "400 199",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 199. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F102475",
+            "display_name": "Semco 2.5oz Double",
+            "fts_pn": "400 3051double",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3051double. Mass: 250g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "250",
+            "price": 0
+        },
+        {
+            "id": "F102479",
+            "display_name": "Max 20 Long",
+            "fts_pn": "400 124L",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 124L. Mass: 285g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "285",
+            "price": 0
+        },
+        {
+            "id": "F102480",
+            "display_name": "Cart No. 2",
+            "fts_pn": "400 3021",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3021. Mass: 250g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "250",
+            "price": 0
+        },
+        {
+            "id": "F102482",
+            "display_name": "Cart No. 3",
+            "fts_pn": "400 3031",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3031. Mass: 190g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "190",
+            "price": 0
+        },
+        {
+            "id": "F103132",
+            "display_name": "Cart No. 4",
+            "fts_pn": "400 3041",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 400 3041. Mass: 215g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "215",
+            "price": 0
+        },
+        {
+            "id": "F103144",
+            "display_name": "VAC Chamber - 330-100 Holders",
+            "fts_pn": "401 502",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 502. Mass: 280g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "280",
+            "price": 0
+        },
+        {
+            "id": "F103150",
+            "display_name": "VAC Chamber - Max 100 Long",
+            "fts_pn": "401 501",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 401 501. Mass: 300g",
+            "requires": {
+                "basket": [
+                    "1200"
+                ],
+                "mass": 300
+            },
+            "accessory_mass": "300",
+            "price": 0
+        },
+        {
+            "id": "F100340",
+            "display_name": "15L Metal Pail Holder",
+            "fts_pn": "14000 113",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 113. Mass: 1,440g",
+            "requires": {
+                "basket": [
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,440",
+            "price": 0
+        },
+        {
+            "id": "F100551",
+            "display_name": "7L Metal Pail Holder",
+            "fts_pn": "14000 112",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 112. Mass: 1,290g",
+            "requires": {
+                "basket": [
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,290",
+            "price": 0
+        },
+        {
+            "id": "F101085",
+            "display_name": "2.5 Gal WALL Insert - White Pail",
+            "fts_pn": "14000 250",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 250. Mass: 1,750g",
+            "requires": {
+                "basket": [
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,750",
+            "price": 0
+        },
+        {
+            "id": "F100287",
+            "display_name": "1.25 Gal WALL Insert - White Pail",
+            "fts_pn": "14000 156",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 156. Mass: 1,950g",
+            "requires": {
+                "basket": [
+                    "10000",
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,950",
+            "price": 0
+        },
+        {
+            "id": "F100288",
+            "display_name": "0.6 Gal WALL Insert - Translucent Pail",
+            "fts_pn": "14000 136",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 136. Mass: 1,850g",
+            "requires": {
+                "basket": [
+                    "10000",
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,850",
+            "price": 0
+        },
+        {
+            "id": "F101439",
+            "display_name": "0.6 Gal WALL Insert - White Pail",
+            "fts_pn": "14000 137",
+            "type": "boolean",
+            "group": "holders",
+            "is_configurable": true,
+            "notes": "FTS P/N: 14000 137. Mass: 1,750g",
+            "requires": {
+                "basket": [
+                    "10000",
+                    "14000",
+                    "20000"
+                ],
+                "mass": {
+                    "min": 5000,
+                    "max": 20000
+                }
+            },
+            "accessory_mass": "1,750",
             "price": 0
         }
     ]

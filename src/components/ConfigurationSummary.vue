@@ -5,6 +5,7 @@ import type { ConfiguratorLogic, Configuration, CatalogOption } from '../logic/c
 const props = defineProps<{
     logic: ConfiguratorLogic;
     config: Configuration;
+    accessories?: Record<string, any>; // Relaxed type for compatibility
     title?: string;
 }>();
 
@@ -19,7 +20,11 @@ const formatValue = (val: any): string => {
 
 const formatOptionLabel = (opt: CatalogOption): string => {
     const val = props.config.options[opt.id];
-    // For boolean options that are true, just show the name
+    // For boolean options with quantity
+    if (opt.type === 'boolean' && typeof val === 'number' && val > 0) {
+        return `${opt.display_name} x${val}`;
+    }
+    // For boolean options that are true
     if (opt.type === 'boolean' && val === true) {
         return opt.display_name;
     }
@@ -36,7 +41,16 @@ const machineImage = computed(() => {
 });
 
 const totalPrice = computed(() => {
-    return props.logic.getTotalPrice(props.config);
+    const baseTotal = props.logic.getTotalPrice(props.config);
+    if (!props.accessories) return baseTotal;
+    
+    let accTotal = 0;
+    for (const [accId, qty] of Object.entries(props.accessories)) {
+        const price = props.logic.getOptionPrice(accId, qty, props.config);
+        const multiplier = typeof qty === 'number' ? qty : 1;
+        accTotal += price * multiplier;
+    }
+    return baseTotal + accTotal;
 });
 
 const productCode = computed(() => {
@@ -70,13 +84,26 @@ const machineMods = computed(() => {
 });
 
 const selectedAccessories = computed(() => {
+    if (props.accessories) {
+        return props.logic.getAccessories().filter(acc => {
+            return props.accessories![acc.id] !== undefined && acc.id !== 'fap_warranty_years';
+        });
+    }
+
     return props.logic.getAccessories().filter(acc => {
         const val = props.config.options[acc.id];
-        // Don't show the duration enum directly as a top-level accessory, 
-        // it's handled via getDisplayPrice for the plan itself.
-        return (val === true || (acc.type === 'enum' && val !== undefined)) && acc.id !== 'fap_warranty_years';
+        const isSelected = val === true || (typeof val === 'number' && val > 0) || (acc.type === 'enum' && val !== undefined);
+        return isSelected && acc.id !== 'fap_warranty_years';
     });
 });
+
+const getAccQuantity = (accId: string) => {
+    if (props.accessories) return props.accessories[accId] || 0;
+    const val = props.config.options[accId];
+    if (typeof val === 'number') return val;
+    if (val === true) return 1;
+    return 0;
+};
 </script>
 
 <template>
@@ -119,9 +146,11 @@ const selectedAccessories = computed(() => {
                     </div>
                     <div class="summary-sub-items">
                         <div v-for="acc in selectedAccessories" :key="acc.id" class="summary-row sub-item">
-                            <span class="summary-label indented">{{ acc.display_name }}{{ acc.type === 'enum' ? ': ' +
-                                formatValue(config.options[acc.id]) : '' }}</span>
-                            <span class="summary-price">{{ formatPrice(getDisplayPrice(acc)) }}</span>
+                            <span class="summary-label indented">
+                                {{ acc.display_name }}{{ acc.type === 'enum' ? ': ' + formatValue(accessories ? (accessories[acc.id] ?? config.options[acc.id]) : config.options[acc.id]) : '' }}
+                                <template v-if="getAccQuantity(acc.id) > 1"> (x{{ getAccQuantity(acc.id) }})</template>
+                            </span>
+                            <span class="summary-price">{{ formatPrice(logic.getOptionPrice(acc.id, (accessories ? (accessories[acc.id] ?? config.options[acc.id]) : config.options[acc.id]), config) * (typeof getAccQuantity(acc.id) === 'number' ? getAccQuantity(acc.id) : 1)) }}</span>
                         </div>
                     </div>
                 </div>
