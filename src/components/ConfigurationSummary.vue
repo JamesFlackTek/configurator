@@ -9,12 +9,22 @@ const props = defineProps<{
 }>();
 
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
 };
 
 const formatValue = (val: any): string => {
-  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
-  return String(val);
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+    return String(val);
+};
+
+const formatOptionLabel = (opt: CatalogOption): string => {
+    const val = props.config.options[opt.id];
+    // For boolean options that are true, just show the name
+    if (opt.type === 'boolean' && val === true) {
+        return opt.display_name;
+    }
+    // For other options, show name: value
+    return `${opt.display_name}: ${formatValue(val)}`;
 };
 
 const machineName = computed(() => {
@@ -38,26 +48,23 @@ const orderCode = computed(() => {
 });
 
 const getDisplayPrice = (item: CatalogOption) => {
-    let price = item.price || 0;
-    if ((item.id === 'fap_gold' || item.id === 'fap_platinum') && props.config.options[item.id] === true) {
-        const years = props.config.options['fap_warranty_years'] as number || 1;
-        price *= years;
-    }
-    return price;
+    const val = props.config.options[item.id];
+    return props.logic.getOptionPrice(item.id, val, props.config);
 };
+
 
 // Split options into Machine Mods (from machine catalog) and Accessories (from accessories catalog)
 const machineMods = computed(() => {
     return props.logic.getMachineOptions().filter(opt => {
         const val = props.config.options[opt.id];
         const isSelected = val !== undefined && (val !== false || opt.type !== 'boolean') && opt.id !== 'model_variant';
-        
+
         // Hide Blue Label-specific info for standard machines
         if (props.config.modelId !== 'blue_label') {
             const blueLabelOnly = ['chassis', 'basket', 'weight_options_standard'];
             if (blueLabelOnly.includes(opt.id)) return false;
         }
-        
+
         return isSelected;
     });
 });
@@ -76,47 +83,50 @@ const selectedAccessories = computed(() => {
     <div class="summary-container">
         <!-- Machine Identity Preview -->
         <div class="glass-card identity-card" style="margin-bottom: 1rem; padding: 1rem;">
-             <h3 class="machine-title-display" style="font-size: 1.1rem; margin-bottom: 0.5rem;">{{ machineName }}</h3>
-             <div class="sidebar-preview">
+            <h3 class="machine-title-display" style="font-size: 1.1rem; margin-bottom: 0.5rem;">{{ machineName }}</h3>
+            <div class="sidebar-preview">
                 <img v-if="machineImage" :src="machineImage" alt="Machine Preview" class="machine-preview-img-small" />
-             </div>
+            </div>
         </div>
 
         <div class="glass-card">
             <h3 class="summary-title">{{ title || 'Order Summary' }}</h3>
-            
+
             <div class="summary-list">
                 <!-- Machine Module -->
                 <div class="summary-group">
                     <div class="summary-row primary">
                         <span class="summary-label main-item">{{ machineName }}</span>
-                        <span class="summary-price">{{ formatPrice(logic.getModelBasePrice(config.modelId, config.options['model_variant'] as string)) }}</span>
+                        <span class="summary-price">{{ formatPrice(logic.getModelBasePrice(config.modelId,
+                            config.options['model_variant'] as string)) }}</span>
                     </div>
-                    
+
                     <!-- Machine Options (Modifications) -->
                     <div class="summary-sub-items">
                         <div v-for="opt in machineMods" :key="opt.id" class="summary-row sub-item">
-                            <span class="summary-label indented">{{ opt.display_name }}: {{ formatValue(config.options[opt.id]) }}</span>
-                            <span class="summary-price" v-if="opt.price">{{ formatPrice(opt.price) }}</span>
-                            <span class="summary-price" v-else>$0</span>
+                            <span class="summary-label indented">{{ formatOptionLabel(opt) }}</span>
+                            <span class="summary-price">{{ formatPrice(getDisplayPrice(opt)) }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Accessories Module -->
-                <div v-if="selectedAccessories.length > 0" class="summary-group" style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                <div v-if="selectedAccessories.length > 0" class="summary-group"
+                    style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
                     <div class="summary-row secondary">
-                        <span class="summary-label main-item" style="color: var(--text-secondary); font-size: 0.9rem;">Accessories</span>
+                        <span class="summary-label main-item"
+                            style="color: var(--text-secondary); font-size: 0.9rem;">Accessories</span>
                     </div>
                     <div class="summary-sub-items">
                         <div v-for="acc in selectedAccessories" :key="acc.id" class="summary-row sub-item">
-                            <span class="summary-label indented">{{ acc.display_name }}{{ acc.type === 'enum' ? ': ' + formatValue(config.options[acc.id]) : '' }}</span>
+                            <span class="summary-label indented">{{ acc.display_name }}{{ acc.type === 'enum' ? ': ' +
+                                formatValue(config.options[acc.id]) : '' }}</span>
                             <span class="summary-price">{{ formatPrice(getDisplayPrice(acc)) }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="codes-section">
                 <div class="code-item">
                     <span class="code-label">Product Code:</span>

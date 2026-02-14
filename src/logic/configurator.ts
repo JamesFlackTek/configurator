@@ -297,26 +297,13 @@ export class ConfiguratorLogic {
         const variant = config.options['model_variant'] as string || undefined;
         total += this.getModelBasePrice(config.modelId!, variant);
 
-        // Option prices
+        // Option prices - use getOptionPrice for proper chassis-based pricing
         for (const [optionId, value] of Object.entries(config.options)) {
             const option = this.getOption(optionId);
             if (!option) continue;
 
-            let itemPrice = (option.price || 0);
-
-            // Value-based pricing for enums/indices
-            if (option.option_prices && value !== undefined) {
-                const valStr = String(value);
-                if (option.option_prices[valStr] !== undefined) {
-                    itemPrice = option.option_prices[valStr];
-                }
-            }
-
-            // Scaled FAP logic
-            if ((optionId === 'fap_gold' || optionId === 'fap_platinum') && value === true) {
-                const years = config.options['fap_warranty_years'] as number || 1;
-                itemPrice *= years;
-            }
+            // Use getOptionPrice to handle chassis-based pricing and other special cases
+            const itemPrice = this.getOptionPrice(optionId, value, config);
 
             if (option.type === 'boolean' && value === true) {
                 total += itemPrice;
@@ -339,6 +326,30 @@ export class ConfiguratorLogic {
         if (!option) return 0;
 
         let price = (option.price || 0);
+
+        // Chassis-based pricing (for options like ul_cert)
+        if (typeof price === 'object' && config) {
+            let chassis = config.options['chassis'] as string;
+            
+            // For standard machines, determine chassis from model ID
+            if (!chassis && config.modelId) {
+                const modelId = config.modelId;
+                if (modelId === '330_100' || modelId === '515_200') {
+                    chassis = 'small';
+                } else if (modelId === '1200_xxx' || modelId === '1400_xxxx' || modelId === '1200_xxx_twin') {
+                    chassis = 'medium';
+                } else if (modelId === '2000_xxxx' || modelId === '2800_1000' || modelId === '2800_xxxx' || modelId === 'large_twin') {
+                    chassis = 'large';
+                }
+            }
+            
+            if (chassis && price[chassis] !== undefined) {
+                price = price[chassis];
+            } else {
+                // Fallback to first available price if chassis not found
+                price = Object.values(price)[0] as number || 0;
+            }
+        }
 
         // Value-based pricing for enums/indices
         if (option.option_prices && value !== undefined) {

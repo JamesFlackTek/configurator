@@ -90,15 +90,6 @@
         {
             "model_id": "blue_label",
             "model_label": "Blue Label",
-            "option_id": "custom_weight_option",
-            "raw": "Enter min/max total mass",
-            "allowed_values": [
-                "Enter min/max total mass"
-            ]
-        },
-        {
-            "model_id": "blue_label",
-            "model_label": "Blue Label",
             "option_id": "ul_cert",
             "raw": "yes, no",
             "allowed_values": [

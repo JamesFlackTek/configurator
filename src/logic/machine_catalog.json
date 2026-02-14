@@ -103,22 +103,18 @@
       }
     },
     {
-      "id": "custom_weight_option",
-      "display_name": "Custom Weight Option",
-      "type": "custom",
-      "group": "weights",
-      "is_configurable": true,
-      "notes": null,
-      "price": 0
-    },
-    {
       "id": "ul_cert",
       "display_name": "UL Certification",
       "type": "boolean",
       "group": "compliance",
       "is_configurable": true,
       "notes": null,
-      "price": 2500
+      "price": {
+        "small": 2850,
+        "medium": 2850,
+        "medium_plus": 2850,
+        "large": 4850
+      }
     },
     {
       "id": "remote_safety",
