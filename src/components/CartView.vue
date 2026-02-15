@@ -43,52 +43,55 @@ const getOptionQuantity = (item: CartItem, optionId: string) => {
     return item.accessories[optionId] || 0;
 };
 
+// SVG Icon Definitions
+const ICONS = {
+    power: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    support: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+    calendar: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    settings: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+    sensors: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    vacuum: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+    cart: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`,
+    robot: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/><path d="M9 11V9a3 3 0 0 1 6 0v2"/></svg>`,
+    industrial: `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 0 0-5.34-1.63M2 20h5v-2a3 3 0 0 1 5.34-1.63m-9-9.27c.56.01 1.05.3 1.36.74A3 3 0 1 0 8 11.27m5.34-1.63c.56.01 1.05.3 1.36.74A3 3 0 1 0 19 11.27"/><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+};
+
 const getMachineSummary = (item: CartItem) => {
     const config = item.machineConfig;
     const options = config.options;
-    const summary: string[] = [];
+    const summary: { text: string; icon: keyof typeof ICONS }[] = [];
 
     // 1. Voltage
-    if (options.voltage) summary.push(`${options.voltage}V`);
+    if (options.voltage) summary.push({ text: `${options.voltage}V`, icon: 'power' });
 
     // 2. Vacuum & Pumps
     if (options.vacuum) {
-        const pump = props.logic.getMachineOptions().find(opt => 
-            opt.group === 'vacuum_pumps' && options[opt.id] === true
-        );
-        if (pump) {
-            const match = pump.display_name.match(/(\d+\s*L\/min)/);
-            summary.push(`Vacuum (${match ? match[0] : pump.display_name})`);
-        } else {
-            summary.push('Vacuum Ready');
-        }
+        summary.push({ text: 'Vacuum System', icon: 'vacuum' });
     }
 
     // 3. Certifications & Compliance
-    if (options.ul_cert) summary.push('UL Certified');
-    if (options.c1d2) summary.push('C1D2');
-    if (options.ce_cert) summary.push('CE');
+    if (options.ul_cert) summary.push({ text: 'UL Certified', icon: 'shield' });
+    if (options.c1d2) summary.push({ text: 'C1D2', icon: 'shield' });
+    if (options.ce_cert) summary.push({ text: 'CE', icon: 'shield' });
 
     // 4. Support Plans
-    if (options.fap_standard) summary.push('FAP Standard');
-    if (options.fap_gold) summary.push('FAP Gold');
-    if (options.fap_platinum) summary.push('FAP Platinum');
-    if (options.fap_warranty_years) summary.push(`${options.fap_warranty_years}yr Warranty`);
+    if (options.fap_standard || options.fap_gold || options.fap_platinum) {
+        const text = options.fap_gold ? 'FAP Gold' : options.fap_platinum ? 'FAP Platinum' : 'FAP Standard';
+        summary.push({ text, icon: 'support' });
+    }
+    if (options.fap_warranty_years) summary.push({ text: `${options.fap_warranty_years}yr Warranty`, icon: 'calendar' });
 
     // 5. Carts / Stands & Mechanical
-    if (options.medium_cart) summary.push('Medium Cart');
-    if (options.mobile_stand_medium_plus) summary.push('Medium+ Cart');
-    if (options.aux_box) summary.push('Aux Box');
-    if (options.automatic_lid) summary.push('Auto Lid');
-    if (options.robot_ready) summary.push('Robot Ready');
-    if (options.industrialized) summary.push('Industrialized');
-    if (options.adjustable_arm) summary.push('Adjustable Arm');
+    if (options.medium_cart || options.mobile_stand_medium_plus) summary.push({ text: 'Industrial Stand', icon: 'cart' });
+    if (options.automatic_lid) summary.push({ text: 'Auto Lid', icon: 'settings' });
+    if (options.robot_ready) summary.push({ text: 'Robot Ready', icon: 'robot' });
+    if (options.industrialized) summary.push({ text: 'Industrialized', icon: 'settings' });
 
     // 6. Interface & Sensors
-    if (options.temp_monitoring) summary.push('Temp Monitoring');
-    if (options.remote_operation) summary.push('Remote Operation');
-    if (options.echo_mode) summary.push('Echo Mode');
-    if (options.label_printer) summary.push('Label Printer');
+    if (options.temp_monitoring || options.remote_operation || options.echo_mode || options.label_printer) {
+        summary.push({ text: 'Advanced Sensors', icon: 'sensors' });
+    }
 
     return summary;
 };
@@ -102,14 +105,23 @@ const getMachineSummary = (item: CartItem) => {
         </div>
 
         <div v-if="cart.length === 0" class="empty-cart-state glass-card">
-            <div class="empty-icon">🛒</div>
+            <div class="empty-cart-container fade-in">
+            <div class="empty-cart-visual">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </div>
             <h3>Your cart is empty</h3>
-            <p>Start by selecting a machine from the catalog.</p>
-            <button class="primary-btn" @click="emit('new-machine')">Browse Catalog</button>
+            <p>Start by selecting a machine from our catalog to begin your custom configuration.</p>
+            <button class="primary-btn browse-btn" @click="emit('new-machine')">Browse Catalog</button>
+        </div>
         </div>
 
         <div v-else class="cart-content">
             <div class="cart-items-list">
+                <TransitionGroup name="list">
                 <div v-for="item in cart" :key="item.id" class="glass-card cart-item">
                     <div class="item-main">
                         <div class="item-details">
@@ -117,8 +129,9 @@ const getMachineSummary = (item: CartItem) => {
                             <div class="item-code">Order Code: {{ logic.generateOrderCode(item.machineConfig) }}</div>
                                                         <!-- Machine Summary Details -->
                              <div class="machine-summary-tags mt-2">
-                                 <span v-for="tag in getMachineSummary(item)" :key="tag" class="summary-tag">
-                                     {{ tag }}
+                                 <span v-for="tag in getMachineSummary(item)" :key="tag.text" class="summary-tag">
+                                     <span class="tag-icon" v-html="ICONS[tag.icon]"></span>
+                                     <span class="tag-text">{{ tag.text }}</span>
                                  </span>
                              </div>
 
@@ -162,6 +175,7 @@ const getMachineSummary = (item: CartItem) => {
                         <button class="action-btn remove" @click="emit('remove', item.id)">Remove</button>
                     </div>
                 </div>
+                </TransitionGroup>
             </div>
 
             <aside class="cart-summary-sidebar">
@@ -297,13 +311,33 @@ const getMachineSummary = (item: CartItem) => {
 }
 
 .summary-tag {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2px 8px;
-    border-radius: 12px;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px 10px;
+    border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.summary-tag:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tag-icon {
+    display: flex;
+    align-items: center;
+    color: var(--accent-primary);
+    opacity: 0.9;
 }
 
 .mt-3 {
@@ -479,12 +513,50 @@ const getMachineSummary = (item: CartItem) => {
 
 .empty-cart-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / -1;
+}
+
+.empty-cart-visual {
+    width: 120px;
+    height: 120px;
+    background: rgba(88, 166, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(88, 166, 255, 0.1);
+    box-shadow: 0 0 30px rgba(88, 166, 255, 0.05);
 }
 
 .empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
+    width: 50px;
+    height: 50px;
+    color: var(--accent-primary);
+    opacity: 0.8;
+}
+
+.browse-btn {
+    max-width: 240px;
+}
+
+/* List Animations */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.list-move {
+  transition: transform 0.5s ease;
 }
 
 @media (max-width: 800px) {

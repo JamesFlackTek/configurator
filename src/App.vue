@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { ConfiguratorLogic, type Configuration } from './logic/configurator';
 import StandardConfigurator from './components/StandardConfigurator.vue';
 import BlueLabelConfigurator from './components/BlueLabelConfigurator.vue';
@@ -60,9 +60,9 @@ const handleResetOptions = () => {
 };
 
 // Persistence
-const saveCart = () => {
+watch(cart, () => {
     localStorage.setItem('flacktek_cart', JSON.stringify(cart.value));
-};
+}, { deep: true });
 
 const handleAddToCart = () => {
   if (!currentModelId.value) return;
@@ -97,7 +97,6 @@ const handleAddToCart = () => {
     }
   }
 
-  saveCart();
   currentView.value = 'cart';
 };
 
@@ -121,7 +120,6 @@ const handleUpdateAccessories = (data: { optionId: string, value: any }) => {
                 item.accessories[data.optionId] = data.value;
             }
             configOptions.value = { ...item.accessories };
-            saveCart();
         }
     }
 };
@@ -133,7 +131,6 @@ const handleCompleteAccessories = () => {
 
 const handleRemoveFromCart = (itemId: string) => {
   cart.value = cart.value.filter(item => item.id !== itemId);
-  saveCart();
 };
 
 const handleUpdateCartQuantity = (itemId: string, delta: number) => {
@@ -143,7 +140,6 @@ const handleUpdateCartQuantity = (itemId: string, delta: number) => {
         if (item.quantity === 0) {
             handleRemoveFromCart(itemId);
         } else {
-            saveCart();
         }
     }
 };
@@ -162,7 +158,6 @@ const handleUpdateCartOption = (itemId: string, optionId: string, delta: number)
         } else {
             item.accessories[optionId] = nextQty;
         }
-        saveCart();
     }
 };
 
